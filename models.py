@@ -4,25 +4,85 @@ import pandas as pd
 from rich.console import Console
 from rich.table import Table
 
-@dataclass
-class Competitor():
-    names: str = ""
-    number: int = 0
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy import ForeignKey, Integer, String
 
-@dataclass
-class Judge():
-    name: str = ""
-    identifier: str = ""
+# declaring the base classe of sql alchemy
+class SQLBase(DeclarativeBase):
+    pass
 
-@dataclass
-class Score():
-    judge: Optional[Judge] = field(default=None)
-    competitor: Optional[Competitor] = field(default=None)
-    rank: int = 0
+class Event(SQLBase):
+    __tablename__ = "events"
 
-@dataclass
-class Competition():
-    name: str = ""
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    
+    participants: Mapped[list["Participant"]] = relationship("Participant")
+    competitors: Mapped[list["Competitor"]] =  relationship("Competitor", back_populates="event")
+    judges: Mapped[list["Judge"]] = relationship("Judge")
+    competitions: Mapped[list["Competition"]] = relationship("Competition")
+
+class Participant(SQLBase):
+    __tablename__ = "participants"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+
+    def __init__(self, name: str):
+        self.name = name
+
+class Competitor(SQLBase):
+    __tablename__ = "competitors"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    event_id: Mapped[int] = mapped_column(ForeignKey("events.id"),nullable=False)
+    participant_id: Mapped[int] = mapped_column(ForeignKey("participants.id"), nullable=False)
+    number: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    event: Mapped["Event"] = relationship("Event", back_populates="competitors")
+    participant: Mapped["Participant"] = relationship("Participant")
+    
+    # for the name just parse the participant name
+    @property
+    def name(self)->str:
+        return self.participant.name
+
+
+class Judge(SQLBase):
+    __tablename__ = "judges"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    event_id: Mapped[int] = mapped_column(ForeignKey("events.id"), nullable=False)
+    participant_id: Mapped[int]  = mapped_column(ForeignKey("participants.id"), nullable=False)
+    identifier: Mapped[str] = mapped_column(String, nullable=False)
+
+    event: Mapped["Event"] = relationship("Event", back_populates="judges")
+    participant: Mapped["Participant"] = relationship("Participant")
+
+    #for the name just parse the participant name
+    @property
+    def name(self)->str:
+        return self.participant.name
+
+class Score(SQLBase):
+    __tablename__ = "scores"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
+    judge_id: Mapped[int] = mapped_column(ForeignKey("judges.id"),  nullable=False)
+    competitor_id: Mapped[int] = mapped_column(ForeignKey("competitors.id"), nullable=False)
+    competition_id: Mapped[int] = mapped_column(ForeignKey("competitions.id"),nullable=False)
+    rank: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    judge: Mapped["Judge"] = relationship("Judge")
+    competitor: Mapped["Competitor"] = relationship("Competitor")
+    competition: Mapped["Competition"] = relationship("Competition")
+
+class Competition(SQLBase):
+    __tablename__ = "competitions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    ###RENDU ICI considérer relations many-to-many et association table###
     competitors: list[Competitor] = field(default_factory=list)
     judges: list[Judge] = field(default_factory=list)
     scores: list[Score] = field(default_factory=list)
@@ -85,10 +145,3 @@ class Competition():
         #make sur there is no double scores (a judge scoring twice or more the same competitor)
         raise NotImplementedError("To be implemented")
 
-@dataclass
-class Event():
-
-    name: str = ""
-    competitors: list[Competitor] = field(default_factory=list)
-    judges: list[Judge] = field(default_factory=list)
-    competitions: list[Competition] = field(default_factory=list)
