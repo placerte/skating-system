@@ -19,8 +19,8 @@ class Score():
     judge: Optional[Judge] = field(default=None)
     competitor: Optional[Competitor] = field(default=None)
     rank: int = 0
-@dataclass
 
+@dataclass
 class Competition():
     name: str = ""
     competitors: list[Competitor] = field(default_factory=list)
@@ -85,4 +85,10 @@ class Competition():
         #make sur there is no double scores (a judge scoring twice or more the same competitor)
         raise NotImplementedError("To be implemented")
 
+@dataclass
+class Event():
 
+    name: str = ""
+    competitors: list[Competitor] = field(default_factory=list)
+    judges: list[Judge] = field(default_factory=list)
+    competitions: list[Competition] = field(default_factory=list)

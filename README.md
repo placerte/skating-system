@@ -1,1 +1,28 @@
-A simple scoring helper APP written in Python
+# A simple scoring helper APP written in Python
+
+## TODOs
+
+- [x] Basic Models
+- [ ] Build Minimal CLI app
+    - [ ] Create an event
+    - [ ] Build a competitor list
+    - [ ] Print competitors list
+    - [ ] Build a judges list
+    - [ ] Print judges list
+    - [ ] Create a competition
+    - [ ] Register competitors 
+- [ ] Test basic features:
+- [ ] Implement Rules:
+  - [ ] Rule 1
+  - [ ] Rule 2
+  - [ ] Rule 3
+  - [ ] Rule 4
+  - [ ] Rule 5
+  - [ ] Rule 6
+  - [ ] Rule 7
+  - [ ] Rule 8
+  - [ ] Rule 9
+  - [ ] Rule 10
+  - [ ] Rule 11
+- [ ] Implement SQLite DB
+
