@@ -2,14 +2,23 @@ from dataclasses import dataclass, field
 from typing import Optional
 import pandas as pd
 from rich.console import Console
-from rich.table import Table
+from rich.table import Table as RichTable
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy import ForeignKey, Integer, String, Column
+from sqlalchemy import Table as SQLTable
 
 # declaring the base classe of sql alchemy
 class SQLBase(DeclarativeBase):
     pass
+
+# Many-to-many association tables
+at_competitions_competitors: SQLTable = SQLTable(
+        "at_competitions_competitors",
+        SQLBase.metadata,
+        Column("competition_id", ForeignKey("competitions.id"), primary_key=True),
+        Column("competitor_id", ForeignKey("competitors.id"), primary_key=True)
+        )
 
 class Event(SQLBase):
     __tablename__ = "events"
@@ -124,7 +133,7 @@ class Competition(SQLBase):
         """
         df = self.get_score_table()
         # Create a Rich Table with a title
-        table = Table(title="Score Table")
+        table = RichTable(title="Score Table")
         
         # Add columns to the table based on the DataFrame's columns
         for column in df.columns:
