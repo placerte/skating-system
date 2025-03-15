@@ -20,6 +20,22 @@ at_competitions_competitors: SQLTable = SQLTable(
         Column("competitor_id", ForeignKey("competitors.id"), primary_key=True)
         )
 
+at_competitions_judges: SQLTable = SQLTable(
+        "at_competitions_judges",
+        SQLBase.metadata,
+        Column("competition_id", ForeignKey("competitions.id"), primary_key=True),
+        Column("judge_id", ForeignKey("judges.id"),primary_key=True)
+        )
+
+class Participant(SQLBase):
+    __tablename__ = "participants"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+
+    def __init__(self, name: str):
+        self.name = name
+
 class Event(SQLBase):
     __tablename__ = "events"
 
@@ -31,15 +47,6 @@ class Event(SQLBase):
     judges: Mapped[list["Judge"]] = relationship("Judge")
     competitions: Mapped[list["Competition"]] = relationship("Competition")
 
-class Participant(SQLBase):
-    __tablename__ = "participants"
-    
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String, nullable=False)
-
-    def __init__(self, name: str):
-        self.name = name
-
 class Competitor(SQLBase):
     __tablename__ = "competitors"
 
@@ -48,9 +55,14 @@ class Competitor(SQLBase):
     participant_id: Mapped[int] = mapped_column(ForeignKey("participants.id"), nullable=False)
     number: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    event: Mapped["Event"] = relationship("Event", back_populates="competitors")
-    participant: Mapped["Participant"] = relationship("Participant")
+    event: Mapped[Event] = relationship(Event, back_populates="competitors")
+    participant: Mapped[Participant] = relationship(Participant)
     
+    competitions: Mapped[list["Competition"]] = relationship(
+            "Competition",
+            secondary=at_competitions_competitors,
+            back_populates="competitors")
+
     # for the name just parse the participant name
     @property
     def name(self)->str:
@@ -67,6 +79,10 @@ class Judge(SQLBase):
 
     event: Mapped["Event"] = relationship("Event", back_populates="judges")
     participant: Mapped["Participant"] = relationship("Participant")
+    competitions: Mapped[list["Competition"]] = relationship(
+            "Competition",
+            secondary=at_competitions_judges,
+            back_populates="judges")
 
     #for the name just parse the participant name
     @property
@@ -91,66 +107,73 @@ class Competition(SQLBase):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
-    ###RENDU ICI considérer relations many-to-many et association table###
-    competitors: list[Competitor] = field(default_factory=list)
-    judges: list[Judge] = field(default_factory=list)
-    scores: list[Score] = field(default_factory=list)
+    
+    competitors: Mapped[list["Competitor"]] = relationship(
+            "Competitor",
+            secondary=at_competitions_competitors,
+            back_populates="competitions")
+    judges: Mapped[list["Judge"]] = relationship(
+            "Judge",
+            secondary=at_competitions_judges,
+            back_populates="competitions")
+    scores: Mapped[list[Score]] = relationship(Score)
+    #$scores: list[Score] = field(default_factory=list)
 
-    def get_all_scores_of_competitor(self, competitor: Competitor)-> list[int]:
-        scores_int: list[int] = []
-        score: Score
-        
-        for score in self.scores:
-            if score.competitor == competitor:
-                scores_int.append(score.rank)
-
-        return scores_int
-
-    def get_score_table(self) -> pd.DataFrame:
-        """
-        Creates a score table as a Pandas DataFrame.
-        The DataFrame has a "Competitor" column and one column per judge,
-        where each cell contains the rank given by that judge to the competitor.
-        If a score is missing, pd.NA is used.
-        """
-        data = []
-        for competitor in self.competitors:
-            row = {"Competitor": competitor.names}
-            for judge in self.judges:
-                score_value = next(
-                    (score.rank for score in self.scores
-                     if score.competitor == competitor and score.judge == judge),
-                    pd.NA
-                )
-                row[judge.name] = score_value
-            data.append(row)
-        df = pd.DataFrame(data)
-        return df
-
-    def print_score_table(self):
-        """
-        Prints the score table using Rich's Console and Table.
-        """
-        df = self.get_score_table()
-        # Create a Rich Table with a title
-        table = RichTable(title="Score Table")
-        
-        # Add columns to the table based on the DataFrame's columns
-        for column in df.columns:
-            table.add_column(column, justify="center", style="cyan", no_wrap=True)
-        
-        # Add rows from the DataFrame
-        for _, row in df.iterrows():
-            table.add_row(*(str(cell) for cell in row))
-        
-        console = Console()
-        console.print(table)
-    def get_sum_of_ranks_of_competitor(self, competitor: Competitor)-> int:
-        scores_int: list[int] = self.get_all_scores_of_competitor(competitor)
-        return sum(scores_int)
-
-    def validate_scores(self):
-        #make sure there all scores are covered (all judges judged all competitors)
-        #make sur there is no double scores (a judge scoring twice or more the same competitor)
-        raise NotImplementedError("To be implemented")
+#    def get_all_scores_of_competitor(self, competitor: Competitor)-> list[int]:
+#        scores_int: list[int] = []
+#        score: Score
+#        
+#        for score in self.scores:
+#            if score.competitor == competitor:
+#                scores_int.append(score.rank)
+#
+#        return scores_int
+#
+#    def get_score_table(self) -> pd.DataFrame:
+#        """
+#        Creates a score table as a Pandas DataFrame.
+#        The DataFrame has a "Competitor" column and one column per judge,
+#        where each cell contains the rank given by that judge to the competitor.
+#        If a score is missing, pd.NA is used.
+#        """
+#        data = []
+#        for competitor in self.competitors:
+#            row = {"Competitor": competitor.names}
+#            for judge in self.judges:
+#                score_value = next(
+#                    (score.rank for score in self.scores
+#                     if score.competitor == competitor and score.judge == judge),
+#                    pd.NA
+#                )
+#                row[judge.name] = score_value
+#            data.append(row)
+#        df = pd.DataFrame(data)
+#        return df
+#
+#    def print_score_table(self):
+#        """
+#        Prints the score table using Rich's Console and Table.
+#        """
+#        df = self.get_score_table()
+#        # Create a Rich Table with a title
+#        table = RichTable(title="Score Table")
+#        
+#        # Add columns to the table based on the DataFrame's columns
+#        for column in df.columns:
+#            table.add_column(column, justify="center", style="cyan", no_wrap=True)
+#        
+#        # Add rows from the DataFrame
+#        for _, row in df.iterrows():
+#            table.add_row(*(str(cell) for cell in row))
+#        
+#        console = Console()
+#        console.print(table)
+#    def get_sum_of_ranks_of_competitor(self, competitor: Competitor)-> int:
+#        scores_int: list[int] = self.get_all_scores_of_competitor(competitor)
+#        return sum(scores_int)
+#
+#    def validate_scores(self):
+#        #make sure there all scores are covered (all judges judged all competitors)
+#        #make sur there is no double scores (a judge scoring twice or more the same competitor)
+#        raise NotImplementedError("To be implemented")
 

@@ -24,7 +24,7 @@
   - [ ] Rule 9
   - [ ] Rule 10
   - [ ] Rule 11
-- [ ] Implement SQLite DB
+- [x] Implement SQLite DB
 - [ ] Implement unicity on competitor: participant-number
 - [ ] Implement unicity on judge: participant-number
 - [ ] Implement auto numbering of competitors
