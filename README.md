@@ -3,6 +3,10 @@
 ## TODOs
 
 - [x] Basic Models
+- [ ] Create competitor role (LEAD - FOLLOW - SOLO - OTHER) RETHINK THIS AND GROUP TYPE...
+- [ ] Create group model (list of participants/competitors)
+    - [ ] group should have a type (SOLO - COUPLE - TROUP)
+- [ ] Implement scores at group level and not competitor level
 - [ ] Build Minimal CLI app
     - [ ] Create an event
     - [ ] Build a competitor list
