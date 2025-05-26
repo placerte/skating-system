@@ -3,6 +3,7 @@ from typing import Optional
 import pandas as pd
 from rich.console import Console
 from rich.table import Table as RichTable
+from utils import data_frame_to_rich_table
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, Integer, String, Column
@@ -117,6 +118,37 @@ class Competition(SQLBase):
             secondary=at_competitions_judges,
             back_populates="competitions")
     scores: Mapped[list[Score]] = relationship(Score)
+
+    def _get_competitors_names(self)->list[str]:
+        names: list[str] = []
+        for competitor in self.competitors:
+            names.append(competitor.name)
+        return names
+
+    def _get_judges_names(self)->list[str]:
+        names: list[str] = []
+        for judge in self.judges:
+            names.append(judge.name)
+        return names
+        
+    def set_judges(self, names: list[str]):
+        for name in names:
+            self.judges.append(Judge(name=name))
+
+    def set_competitors(self, names: list[str]):
+        for name in names:
+            self.competitors.append(Competitor(name=name))
+            
+    def _get_score_sheet(self)->pd.DataFrame:
+        competitors_names = self._get_competitors_names()
+        judges_names = self._get_judges_names()
+        df_score_sheet: pd.DataFrame = pd.DataFrame(index=competitors_names, columns=judges_names) # type: ignore
+        return df_score_sheet
+
+    def print_score_sheet(self):
+        console: Console = Console()
+        console.print(data_frame_to_rich_table(self._get_score_sheet()))
+
     #$scores: list[Score] = field(default_factory=list)
 
 #    def get_all_scores_of_competitor(self, competitor: Competitor)-> list[int]:

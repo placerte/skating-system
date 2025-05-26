@@ -4,14 +4,18 @@ from rich.table import Table
 from rich.console import Console
 import pandas as pd
 from utils import data_frame_to_rich_table
+from models import Competition, Competitor, Judge
 
-judges: list[str] = ["Judge 1", "Judge 2", "Judge 3", "Judge 4", "Judge 5" ]
-competitors: list[str] = ["Joe", "Anna", "Mary", "John", "Paul" ]
+lindy_mm_adv: Competition = Competition()
+lindy_mm_adv.name = "Lindy - Mix and Match - Advance"
 
-df_score_sheet: pd.DataFrame = pd.DataFrame(index=competitors, columns=judges) # type: ignore
+lindy_mm_adv.set_judges(["Judge 1", "Judge 2", "Judge 3", "Judge 4", "Judge 5" ])
+lindy_mm_adv.set_competitors(["Joe", "Anna", "Mary", "John", "Paul" ])
+
+lindy_mm_adv.print_score_sheet()
 
 ctr: int = 1
-
+"""
 for judge in judges:
     for competitor in competitors:
         df_score_sheet.loc[competitor,judge] = ctr
@@ -20,18 +24,6 @@ for judge in judges:
 console: Console = Console()
 score_sheet: Table = Table()
 score_sheet = data_frame_to_rich_table(df_score_sheet)
-
-console.print(score_sheet)
-
-"""
-score_sheet.add_column(header="Participant")
-score_sheet.add_column(header="Judge 1")
-score_sheet.add_column(header="Judge 2")
-score_sheet.add_column(header="Judge 3")
-score_sheet.add_column(header="Judge 4")
-score_sheet.add_column(header="Judge 5")
-
-score_sheet.add_row("Joe","1","2","3","4","5")
 
 console.print(score_sheet)
 """
