@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Protocol, List, Optional
 from domain.models import Event, Participant
 
+
 class EventRepo(Protocol):
     def load(self) -> Event: ...
     def save(self, event: Event) -> None: ...

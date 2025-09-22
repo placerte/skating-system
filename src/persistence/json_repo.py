@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List, Optional
 from domain.models import Event, Participant
 
+
 class JsonEventRepo:
     def __init__(self, file_path: Path, default_title: str = "My Event"):
         self.file_path = file_path
@@ -43,4 +44,6 @@ class JsonEventRepo:
         return self.load().participants[:]
 
     def find_participant(self, participant_id: str) -> Optional[Participant]:
-        return next((p for p in self.load().participants if p.id == participant_id), None)
+        return next(
+            (p for p in self.load().participants if p.id == participant_id), None
+        )

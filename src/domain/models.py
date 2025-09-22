@@ -3,6 +3,7 @@ from dataclasses import dataclass, asdict, field
 from typing import List
 from uuid import uuid4
 
+
 @dataclass
 class Participant:
     id: str
@@ -11,12 +12,18 @@ class Participant:
     email: str = ""
 
     @staticmethod
-    def new(first_name: str,last_name: str, email: str = "") -> "Participant":
-        return Participant(id=str(uuid4()), first_name=first_name.strip(), last_name=last_name.strip(), email=email.strip())
+    def new(first_name: str, last_name: str, email: str = "") -> "Participant":
+        return Participant(
+            id=str(uuid4()),
+            first_name=first_name.strip(),
+            last_name=last_name.strip(),
+            email=email.strip(),
+        )
 
     @property
-    def full_name(self)->str:
+    def full_name(self) -> str:
         return self.first_name + " " + self.last_name
+
 
 @dataclass
 class Event:

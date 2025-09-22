@@ -3,6 +3,7 @@ from typing import List
 from domain.models import Participant, Event
 from persistence.repo_port import EventRepo
 
+
 class EventService:
     def __init__(self, repo: EventRepo):
         self.repo = repo
@@ -10,7 +11,9 @@ class EventService:
     def get_event(self) -> Event:
         return self.repo.load()
 
-    def add_participant(self, first_name: str, last_name:str, email: str = "") -> Participant:
+    def add_participant(
+        self, first_name: str, last_name: str, email: str = ""
+    ) -> Participant:
         if not first_name.strip() and not last_name.strip():
             raise ValueError("Name is required.")
         p = Participant.new(first_name=first_name, last_name=last_name, email=email)
