@@ -1,3 +1,4 @@
 .venv/
 diagnostic.txt
 archive/
+__pycache__/
