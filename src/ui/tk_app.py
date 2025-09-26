@@ -6,28 +6,41 @@ from services.event_service import EventService
 import ttkbootstrap as tb
 from ttkbootstrap import ttk
 
+class EventTitleUI(ttk.Frame):
 
-class TkApp(tb.Window):
-    def __init__(self, svc: EventService, themename: str = "darkly"):
-        super().__init__(themename=themename)
-        self.svc = svc
-        self.title("Skating – Event Participants (POC)")
-        self.geometry("520x420")
+    title_var: tk.StringVar
+    service: EventService
 
-        style = ttk.Style()
-        style.configure("Treeview", rowheight=28)  # default ~20
+    def __init__(self, root: tb.Window, service: EventService):
+        super().__init__(root)
 
         # Header: event title (editable)
-        self.title_var = tk.StringVar(value=self.svc.get_event().title)
-        title_row = ttk.Frame(self)
+        self.service = service
+        self.title_var = tk.StringVar(value=service.get_event().title)
+
+        title_row = ttk.Frame(root)
         title_row.pack(fill="x", padx=8, pady=(8, 4))
         ttk.Label(title_row, text="Event Title:").pack(side="left")
         self.title_entry = ttk.Entry(title_row, textvariable=self.title_var, width=40)
         self.title_entry.pack(side="left", padx=6)
         ttk.Button(title_row, text="Save", command=self._save_title, bootstyle="success").pack(side="left")  # type: ignore
 
+    def _save_title(self):
+        self.service.rename_event(self.title_var.get())
+        messagebox.showinfo("Saved", "Event title saved.")  # <-- now defined
+
+class ParticipantListUI(ttk.Frame):
+
+    service: EventService
+
+    def __init__(self, root: tb.Window, service: EventService):
+        super().__init__(root)
+
         # Participants list
-        mid = ttk.Frame(self)
+
+        self.service = service
+
+        mid = ttk.Frame(root)
         mid.pack(fill="both", expand=True, padx=8, pady=8)
         self.tree = ttk.Treeview(
             mid,
@@ -46,8 +59,37 @@ class TkApp(tb.Window):
         self.tree.configure(yscrollcommand=sb.set)  # <-- fixed option name
         sb.pack(side="right", fill="y")
 
+    def _refresh(self):
+        for row in self.tree.get_children():
+            self.tree.delete(row)
+        for p in self.service.list_participants():
+            self.tree.insert(
+                "",
+                "end",
+                iid=p.id,
+                values=(p.number, p.first_name, p.last_name, p.email),
+            )
+
+    def _remove_selected(self):
+        sel = self.tree.selection()
+        if not sel:
+            return
+        for iid in sel:
+            self.service.remove_participant(iid)
+        self._refresh()
+
+class AddParticipantUI(ttk.Frame):
+
+    service: EventService
+    participant_list_ui: ParticipantListUI
+
+    def __init__(self, root:tb.Window, service:EventService, participant_list_ui: ParticipantListUI):
+        super().__init__(root)
+        self.service= service
+        self.participant_list_ui= participant_list_ui
+
         # Add form
-        form = ttk.Frame(self)
+        form = ttk.Frame(root)
         form.pack(fill="x", padx=8, pady=(0, 8))
         self.first_name_var = tk.StringVar()
         self.email_var = tk.StringVar()
@@ -69,29 +111,16 @@ class TkApp(tb.Window):
         # Delete button
         actions = ttk.Frame(self)
         actions.pack(fill="x", padx=8, pady=(0, 8))
-        ttk.Button(actions, text="Remove Selected", command=self._remove_selected, bootstyle="danger").pack(side="left")  # type: ignore
-
-        self._refresh()
-
-    def _refresh(self):
-        for row in self.tree.get_children():
-            self.tree.delete(row)
-        for p in self.svc.list_participants():
-            self.tree.insert(
-                "",
-                "end",
-                iid=p.id,
-                values=(p.number, p.first_name, p.last_name, p.email),
-            )
+        ttk.Button(actions, text="Remove Selected", command=participant_list_ui._remove_selected, bootstyle="danger").pack(side="left")  # type: ignore
 
     def _add(self):
         try:
-            p = self.svc.add_participant(
+            p = self.service.add_participant(
                 self.first_name_var.get(),
                 self.last_name_var.get(),
                 self.email_var.get(),
             )
-            self.tree.insert(
+            self.participant_list_ui.tree.insert(
                 "",
                 "end",
                 iid=p.id,
@@ -103,14 +132,25 @@ class TkApp(tb.Window):
         except ValueError as e:
             messagebox.showerror("Error", str(e))  # <-- now defined
 
-    def _remove_selected(self):
-        sel = self.tree.selection()
-        if not sel:
-            return
-        for iid in sel:
-            self.svc.remove_participant(iid)
-        self._refresh()
+class TkApp(tb.Window):
+    def __init__(self, svc: EventService, themename: str = "darkly"):
+        super().__init__(themename=themename)
+        self.title("Skating – Event Participants (POC)")
+        self.geometry("520x420")
 
-    def _save_title(self):
-        self.svc.rename_event(self.title_var.get())
-        messagebox.showinfo("Saved", "Event title saved.")  # <-- now defined
+        style = ttk.Style()
+        style.configure("Treeview", rowheight=28)  # default ~20
+
+        #top
+        event_title_ui: EventTitleUI = EventTitleUI(root=self, service=svc)
+        #mid
+        participant_list_ui: ParticipantListUI = ParticipantListUI(root=self, service=svc)
+        #bottom
+        add_participant_ui: AddParticipantUI = AddParticipantUI(root=self, service=svc, participant_list_ui=participant_list_ui)
+
+
+        participant_list_ui._refresh()
+
+
+
+

@@ -1,6 +1,6 @@
 {
   "id": "40e44149-5d1e-4b93-b020-cc25c767014c",
-  "title": "Skating Event",
+  "title": "My second test",
   "participants": [
     {
       "id": "39c69581-8dcc-4b30-9b98-6ab67dee6e03",
@@ -48,6 +48,22 @@
       "last_name": "Lacerte",
       "number": 104,
       "email": "mash@hotsm.com",
+      "obsolete": false
+    },
+    {
+      "id": "3ca11e94-4415-4aa9-9c3b-c4bf37dbd71e",
+      "first_name": "Florent",
+      "last_name": "Gauthier",
+      "number": 105,
+      "email": "flo@pos.com",
+      "obsolete": false
+    },
+    {
+      "id": "92c7c61c-6e8b-4ad4-b7cf-248a087d414a",
+      "first_name": "Ariane",
+      "last_name": "Vincent",
+      "number": 106,
+      "email": "av@hotmaiklcom",
       "obsolete": false
     }
   ]
