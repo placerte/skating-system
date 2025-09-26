@@ -1,6 +1,5 @@
 from __future__ import annotations
 from dataclasses import dataclass, asdict, field
-from typing import List
 from uuid import uuid4
 
 
@@ -9,15 +8,18 @@ class Participant:
     id: str
     first_name: str
     last_name: str
+    number: int 
     email: str = ""
+    obsolete: bool = False
 
     @staticmethod
-    def new(first_name: str, last_name: str, email: str = "") -> "Participant":
+    def new(first_name: str, last_name: str, email: str = "", number:int = -1) -> "Participant":
         return Participant(
             id=str(uuid4()),
             first_name=first_name.strip(),
             last_name=last_name.strip(),
             email=email.strip(),
+            number=number
         )
 
     @property
@@ -29,7 +31,7 @@ class Participant:
 class Event:
     id: str
     title: str
-    participants: List[Participant] = field(default_factory=list)
+    participants: list[Participant] = field(default_factory=list)
 
     @staticmethod
     def new(title: str) -> "Event":
@@ -41,6 +43,7 @@ class Event:
             "title": self.title,
             "participants": [asdict(p) for p in self.participants],
         }
+
 
     @staticmethod
     def from_dict(d: dict) -> "Event":

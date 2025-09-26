@@ -1,18 +1,54 @@
 {
-  "id": "30a6a523-f0a3-41c9-8a80-39e289f58f21",
-  "title": "Test1",
+  "id": "40e44149-5d1e-4b93-b020-cc25c767014c",
+  "title": "Skating Event",
   "participants": [
     {
-      "id": "47c63a91-6aa6-4df7-b108-30a00510831d",
+      "id": "39c69581-8dcc-4b30-9b98-6ab67dee6e03",
       "first_name": "Pierre",
-      "last_name": "Lacerte",
-      "email": "pl@fgmial.com"
+      "last_name": "Laceret",
+      "number": 100,
+      "email": "pl@gmail.com",
+      "obsolete": false
     },
     {
-      "id": "f8f90ed0-04cc-4da2-883d-c7388a6ecefd",
+      "id": "12cdd0f5-53de-4910-a702-b195f95c6baa",
       "first_name": "Audrey",
       "last_name": "Poulin",
-      "email": "ap@hotmail.com"
+      "number": 101,
+      "email": "ap@gmail.com",
+      "obsolete": false
+    },
+    {
+      "id": "0340d7e7-b2ff-4bb0-8bda-2cc7590d874d",
+      "first_name": "Denis",
+      "last_name": "Lacert",
+      "number": 102,
+      "email": "dl@fmsk.com",
+      "obsolete": true
+    },
+    {
+      "id": "a5b1f6c3-0823-46c3-b247-965eaee5ee2f",
+      "first_name": "Louise",
+      "last_name": "Langlois",
+      "number": 102,
+      "email": "ll#dfkjh.com",
+      "obsolete": false
+    },
+    {
+      "id": "1292e458-e5c6-40e3-a4f5-2c400113bf31",
+      "first_name": "Maude",
+      "last_name": "Langlois",
+      "number": 103,
+      "email": "ml@sdkj.com",
+      "obsolete": true
+    },
+    {
+      "id": "27ac925a-7af2-4533-b936-fd4fe2f6fe41",
+      "first_name": "Masha",
+      "last_name": "Lacerte",
+      "number": 104,
+      "email": "mash@hotsm.com",
+      "obsolete": false
     }
   ]
 }

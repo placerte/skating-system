@@ -1,0 +1,7 @@
+Diagnostics for /home/placerte/projects/skating-system/src/ui/tk_app.py
+Generated: 2025-09-26 00:16:14
+------------------------------------------------------------------------
+tk_app.py:27:70: ERROR [Pyright] (reportCallIssue): No parameter named "bootstyle"
+tk_app.py:37:13: ERROR [Pyright] (reportCallIssue): No parameter named "bootstyle"
+tk_app.py:61:57: ERROR [Pyright] (reportCallIssue): No parameter named "bootstyle"
+tk_app.py:66:84: ERROR [Pyright] (reportCallIssue): No parameter named "bootstyle"

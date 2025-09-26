@@ -1,7 +1,7 @@
 from __future__ import annotations
 import json
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 from domain.models import Event, Participant
 
 
@@ -37,11 +37,19 @@ class JsonEventRepo:
 
     def remove_participant(self, participant_id: str) -> None:
         ev = self.load()
-        ev.participants = [x for x in ev.participants if x.id != participant_id]
+        for participant in ev.participants:
+            if participant.id == participant_id:
+                participant.obsolete = True
         self.save(ev)
 
-    def list_participants(self) -> List[Participant]:
-        return self.load().participants[:]
+    def list_participants(self, show_obsolete: bool = False) -> list[Participant]:
+        all_participants: list[Participant] = self.load().participants[:]
+        if show_obsolete:
+            pass
+        else:
+            return all_participants
+
+        
 
     def find_participant(self, participant_id: str) -> Optional[Participant]:
         return next(
