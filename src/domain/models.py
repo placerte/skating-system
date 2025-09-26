@@ -8,18 +8,20 @@ class Participant:
     id: str
     first_name: str
     last_name: str
-    number: int 
+    number: int
     email: str = ""
     obsolete: bool = False
 
     @staticmethod
-    def new(first_name: str, last_name: str, email: str = "", number:int = -1) -> "Participant":
+    def new(
+        first_name: str, last_name: str, email: str = "", number: int = -1
+    ) -> "Participant":
         return Participant(
             id=str(uuid4()),
             first_name=first_name.strip(),
             last_name=last_name.strip(),
             email=email.strip(),
-            number=number
+            number=number,
         )
 
     @property
@@ -43,7 +45,6 @@ class Event:
             "title": self.title,
             "participants": [asdict(p) for p in self.participants],
         }
-
 
     @staticmethod
     def from_dict(d: dict) -> "Event":

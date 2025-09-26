@@ -17,7 +17,9 @@ class EventService:
         if not first_name.strip() and not last_name.strip():
             raise ValueError("Name is required.")
         number = self.get_next_participant_number()
-        p = Participant.new(first_name=first_name, last_name=last_name, email=email, number = number)
+        p = Participant.new(
+            first_name=first_name, last_name=last_name, email=email, number=number
+        )
         self.repo.add_participant(p)
         return p
 
@@ -29,28 +31,27 @@ class EventService:
         if include_obsolete:
             return all_participants
         else:
-            active_participants : list[Participant] = []
+            active_participants: list[Participant] = []
             for participant in all_participants:
                 if not participant.obsolete:
                     active_participants.append(participant)
             return active_participants
 
-
-    def get_next_participant_number(self, min_number: int = 100)->int:
+    def get_next_participant_number(self, min_number: int = 100) -> int:
         next_number: int = min_number
         participant: Optional[Participant]
         max_number: int = 1000000
-        while next_number<=max_number:
+        while next_number <= max_number:
             participant = self.get_participant_by_number(next_number)
             if participant is not None:
-                next_number +=1
+                next_number += 1
             else:
                 return next_number
-               
+
         return max_number
 
-    def get_participant_by_number(self, number:int)-> Optional[Participant]:
-        participants = self.list_participants(include_obsolete = True)
+    def get_participant_by_number(self, number: int) -> Optional[Participant]:
+        participants = self.list_participants(include_obsolete=True)
         participant: Optional[Participant] = None
 
         for p in participants:

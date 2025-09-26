@@ -49,8 +49,6 @@ class JsonEventRepo:
         else:
             return all_participants
 
-        
-
     def find_participant(self, participant_id: str) -> Optional[Participant]:
         return next(
             (p for p in self.load().participants if p.id == participant_id), None

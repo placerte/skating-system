@@ -1,13 +1,13 @@
 from __future__ import annotations
 import tkinter as tk
-from tkinter import messagebox  
+from tkinter import messagebox
 from services.event_service import EventService
 
 import ttkbootstrap as tb
 from ttkbootstrap import ttk
 
 
-class TkApp(tb.Window):  
+class TkApp(tb.Window):
     def __init__(self, svc: EventService, themename: str = "darkly"):
         super().__init__(themename=themename)
         self.svc = svc
@@ -24,7 +24,7 @@ class TkApp(tb.Window):
         ttk.Label(title_row, text="Event Title:").pack(side="left")
         self.title_entry = ttk.Entry(title_row, textvariable=self.title_var, width=40)
         self.title_entry.pack(side="left", padx=6)
-        ttk.Button(title_row, text="Save", command=self._save_title, bootstyle="success").pack(side="left") # type: ignore
+        ttk.Button(title_row, text="Save", command=self._save_title, bootstyle="success").pack(side="left")  # type: ignore
 
         # Participants list
         mid = ttk.Frame(self)
@@ -34,8 +34,8 @@ class TkApp(tb.Window):
             columns=("number", "first_name", "last_name", "email"),
             show="headings",
             height=12,
-            bootstyle="info"  # type: ignore optional styling
-            ) 
+            bootstyle="info",  # type: ignore optional styling
+        )
         self.tree.heading("number", text="Number")
         self.tree.heading("first_name", text="First Name")
         self.tree.heading("last_name", text="Last Name")
@@ -53,17 +53,23 @@ class TkApp(tb.Window):
         self.email_var = tk.StringVar()
         self.last_name_var = tk.StringVar()
         ttk.Label(form, text="First Name").grid(row=0, column=0, sticky="w")
-        ttk.Entry(form, textvariable=self.first_name_var, width=22).grid(row=0, column=1, padx=6)
+        ttk.Entry(form, textvariable=self.first_name_var, width=22).grid(
+            row=0, column=1, padx=6
+        )
         ttk.Label(form, text="Last Name").grid(row=0, column=2, sticky="w")
-        ttk.Entry(form, textvariable=self.last_name_var, width=22).grid(row=0, column=3, padx=6)
+        ttk.Entry(form, textvariable=self.last_name_var, width=22).grid(
+            row=0, column=3, padx=6
+        )
         ttk.Label(form, text="Email").grid(row=0, column=4, sticky="w")
-        ttk.Entry(form, textvariable=self.email_var, width=22).grid(row=0, column=5, padx=6)
-        ttk.Button(form, text="Add", command=self._add, bootstyle="primary").grid(row=0, column=6, padx=6) # type: ignore
+        ttk.Entry(form, textvariable=self.email_var, width=22).grid(
+            row=0, column=5, padx=6
+        )
+        ttk.Button(form, text="Add", command=self._add, bootstyle="primary").grid(row=0, column=6, padx=6)  # type: ignore
 
         # Delete button
         actions = ttk.Frame(self)
         actions.pack(fill="x", padx=8, pady=(0, 8))
-        ttk.Button(actions, text="Remove Selected", command=self._remove_selected, bootstyle="danger").pack(side="left") # type: ignore
+        ttk.Button(actions, text="Remove Selected", command=self._remove_selected, bootstyle="danger").pack(side="left")  # type: ignore
 
         self._refresh()
 
@@ -71,7 +77,12 @@ class TkApp(tb.Window):
         for row in self.tree.get_children():
             self.tree.delete(row)
         for p in self.svc.list_participants():
-            self.tree.insert("", "end", iid=p.id, values=(p.number, p.first_name, p.last_name, p.email))
+            self.tree.insert(
+                "",
+                "end",
+                iid=p.id,
+                values=(p.number, p.first_name, p.last_name, p.email),
+            )
 
     def _add(self):
         try:
@@ -80,7 +91,12 @@ class TkApp(tb.Window):
                 self.last_name_var.get(),
                 self.email_var.get(),
             )
-            self.tree.insert("", "end", iid=p.id, values=(p.number, p.first_name, p.last_name, p.email))
+            self.tree.insert(
+                "",
+                "end",
+                iid=p.id,
+                values=(p.number, p.first_name, p.last_name, p.email),
+            )
             self.first_name_var.set("")
             self.last_name_var.set("")
             self.email_var.set("")
@@ -98,4 +114,3 @@ class TkApp(tb.Window):
     def _save_title(self):
         self.svc.rename_event(self.title_var.get())
         messagebox.showinfo("Saved", "Event title saved.")  # <-- now defined
-
