@@ -65,6 +65,14 @@
       "number": 106,
       "email": "av@hotmaiklcom",
       "obsolete": false
+    },
+    {
+      "id": "fa443a85-719d-4850-9341-0f0c941348a4",
+      "first_name": "Test",
+      "last_name": "test",
+      "number": 107,
+      "email": "test@test.com",
+      "obsolete": true
     }
   ]
 }

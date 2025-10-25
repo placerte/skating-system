@@ -109,7 +109,7 @@ class AddParticipantUI(ttk.Frame):
         ttk.Button(form, text="Add", command=self._add, bootstyle="primary").grid(row=0, column=6, padx=6)  # type: ignore
 
         # Delete button
-        actions = ttk.Frame(self)
+        actions = self
         actions.pack(fill="x", padx=8, pady=(0, 8))
         ttk.Button(actions, text="Remove Selected", command=participant_list_ui._remove_selected, bootstyle="danger").pack(side="left")  # type: ignore
 
@@ -150,7 +150,4 @@ class TkApp(tb.Window):
 
 
         participant_list_ui._refresh()
-
-
-
 
