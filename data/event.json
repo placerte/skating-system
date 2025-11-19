@@ -16,7 +16,7 @@
       "last_name": "Poulin",
       "number": 101,
       "email": "ap@gmail.com",
-      "obsolete": false
+      "obsolete": true
     },
     {
       "id": "0340d7e7-b2ff-4bb0-8bda-2cc7590d874d",
