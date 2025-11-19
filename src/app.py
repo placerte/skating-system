@@ -3,6 +3,7 @@ from pathlib import Path
 from persistence.json_repo import JsonEventRepo
 from services.event_service import EventService
 from ui.tk_app import TkApp
+from ui.txt_ui import ParticipantTUI
 
 
 def main():
@@ -10,8 +11,11 @@ def main():
         file_path=Path("data/event.json"), default_title="Skating Event"
     )
     svc = EventService(repo)
-    app = TkApp(svc)
-    app.mainloop()
+    #app = TkApp(svc)
+    #app.mainloop()
+
+    app = ParticipantTUI(svc)
+    app.run()
 
 
 if __name__ == "__main__":
