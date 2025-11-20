@@ -3,6 +3,8 @@ from textual.app import App, ComposeResult
 from textual.containers import Container
 from textual.widgets import DataTable, Footer, Header, Static
 from services.event_service import EventService
+from ui.create_participant import CreateParticipantScreen
+from textual import work
 
 
 class ParticipantTUI(App):
@@ -31,13 +33,18 @@ class ParticipantTUI(App):
     }
     """
 
-    BINDINGS = [
-        ("q", "quit", "Quit"),
-        ("r", "reload", "Reload partipants"),
+    VIM_BINDINGS = [
         ("j", "cursor_down", ""),
         ("k", "cursor_up", ""),
         ("h", "cursor_left", ""),
-        ("l", "cursor_right", ""),
+        ("l", "cursor_right", "")
+    ]
+
+    BINDINGS = [
+        ("q", "quit", "Quit"),
+        ("r", "reload", "Reload partipants"),
+        ("a", "add_participant", "Add partipant"),
+        *VIM_BINDINGS
     ]
 
     service: EventService
@@ -93,6 +100,12 @@ class ParticipantTUI(App):
                           p.first_name,
                           p.last_name,
                           p.email)
+
+    @work
+    async def action_add_participant(self):
+        result = await self.push_screen_wait(CreateParticipantScreen())
+
+        print(result)
 
     def action_cursor_left(self):
         row, col = self._table.cursor_coordinate
