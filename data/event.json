@@ -8,7 +8,7 @@
       "last_name": "Laceret",
       "number": 100,
       "email": "pl@gmail.com",
-      "obsolete": false
+      "obsolete": true
     },
     {
       "id": "12cdd0f5-53de-4910-a702-b195f95c6baa",
@@ -32,7 +32,7 @@
       "last_name": "Langlois",
       "number": 102,
       "email": "ll#dfkjh.com",
-      "obsolete": false
+      "obsolete": true
     },
     {
       "id": "1292e458-e5c6-40e3-a4f5-2c400113bf31",
@@ -64,7 +64,7 @@
       "last_name": "Vincent",
       "number": 106,
       "email": "av@hotmaiklcom",
-      "obsolete": false
+      "obsolete": true
     },
     {
       "id": "fa443a85-719d-4850-9341-0f0c941348a4",
@@ -73,6 +73,30 @@
       "number": 107,
       "email": "test@test.com",
       "obsolete": true
+    },
+    {
+      "id": "95105ae9-bf38-472a-90c1-2dd47f3e9645",
+      "first_name": "Testfirst",
+      "last_name": "Testlast",
+      "number": 108,
+      "email": "tt@test.com",
+      "obsolete": true
+    },
+    {
+      "id": "c20e00fa-488a-4d33-a4c6-b6bdeb448c56",
+      "first_name": "Romeo",
+      "last_name": "Poulin",
+      "number": 109,
+      "email": "rp@patate.com",
+      "obsolete": false
+    },
+    {
+      "id": "fbb02af8-7240-4527-8589-23101b4bc2ad",
+      "first_name": "Audrey",
+      "last_name": "Poulin",
+      "number": 110,
+      "email": "ap@gmail.com",
+      "obsolete": false
     }
   ]
 }

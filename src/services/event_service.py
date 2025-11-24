@@ -26,6 +26,11 @@ class EventService:
     def remove_participant(self, participant_id: str) -> None:
         self.repo.remove_participant(participant_id)
 
+    def remove_participant_by_number(self, participant_number: int):
+        participant: Optional[Participant] = self.get_participant_by_number(participant_number)
+        if participant:
+            self.remove_participant(participant.id)
+
     def list_participants(self, include_obsolete: bool = False) -> list[Participant]:
         all_participants: list[Participant] = self.repo.list_participants()
         if include_obsolete:

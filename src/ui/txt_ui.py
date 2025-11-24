@@ -1,10 +1,20 @@
 from typing import Iterable
 from textual.app import App, ComposeResult
 from textual.containers import Container
+from textual.coordinate import Coordinate
 from textual.widgets import DataTable, Footer, Header, Static
 from services.event_service import EventService
 from ui.create_participant import CreateParticipantScreen
 from textual import work
+
+import logging
+
+logging.basicConfig(
+    filename="debug.log",
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s: %(message)s",
+)
+
 
 
 class ParticipantTUI(App):
@@ -43,7 +53,8 @@ class ParticipantTUI(App):
     BINDINGS = [
         ("q", "quit", "Quit"),
         ("r", "reload", "Reload partipants"),
-        ("a", "add_participant", "Add partipant"),
+        ("c", "create_participant", "Create partipant"),
+        ("d", "delete_participant", "Delete partipant"),
         *VIM_BINDINGS
     ]
 
@@ -102,10 +113,22 @@ class ParticipantTUI(App):
                           p.email)
 
     @work
-    async def action_add_participant(self):
+    async def action_create_participant(self):
         result = await self.push_screen_wait(CreateParticipantScreen())
 
-        print(result)
+        self.service.add_participant(
+                first_name=result["first_name"],
+                last_name=result["last_name"],
+                email=result["email"])
+        
+        await self.action_reload()
+
+    async def action_delete_participant(self):
+        current_index: int = self._table.cursor_row
+        participant_number: int = int(self._table.get_cell_at(Coordinate(current_index, 0)))
+        self.service.remove_participant_by_number(participant_number)
+
+        await self.action_reload()
 
     def action_cursor_left(self):
         row, col = self._table.cursor_coordinate

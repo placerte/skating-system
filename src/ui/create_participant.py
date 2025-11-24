@@ -1,6 +1,5 @@
-from textual.message import Message
 from textual.screen import ModalScreen
-from textual.containers import Container, Horizontal, Vertical, VerticalScroll
+from textual.containers import Container, Horizontal, Vertical
 from textual.widgets import Button, Input, Label
 
 class CreateParticipantScreen(ModalScreen):
