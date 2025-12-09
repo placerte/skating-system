@@ -50,3 +50,37 @@ class Event:
     def from_dict(d: dict) -> "Event":
         parts = [Participant(**p) for p in d.get("participants", [])]
         return Event(id=d["id"], title=d["title"], participants=parts)
+
+@dataclass
+class Group:
+    id: str
+    name: str
+    type: str
+    obsolete: bool = False
+
+    @staticmethod
+    def new(name: str, type:str) -> "Group":
+        return Group(
+            id=str(uuid4()),
+            name=name,
+            type=type)
+        
+@dataclass
+class GroupMember:
+    id: str
+    group_id: str
+    participant_id: str
+    role: str
+    obsolete: bool = False
+    
+    @staticmethod
+    def new(group_id:str, participant_id: str, role: str) -> "GroupMember":
+        return GroupMember(
+            id=str(uuid4()),
+            group_id=group_id,
+            participant_id=participant_id,
+            role=role)
+
+
+
+
