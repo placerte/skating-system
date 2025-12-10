@@ -150,6 +150,18 @@ wheels = [
 ]
 
 [[package]]
+name = "produm"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pathspec" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5a/cf/f6177000fc198a1ac22b327c7291bc7351ca1a1c2469f9b593aeab543029/produm-0.1.0.tar.gz", hash = "sha256:16a92da42edc29574fcd2cc1e74a89faf44de75c563f73e7c3998fcfb6d0ed77", size = 5534, upload-time = "2025-12-10T05:23:41.931Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/52/61/7c14725e4d982b9134cd0762579d748378515eb044393fc1d773b2e88e76/produm-0.1.0-py3-none-any.whl", hash = "sha256:fa69537439375bc186a3ecb599ab5f7fac5a8476e7a2fa4339190fe4b2b4b146", size = 7565, upload-time = "2025-12-10T05:23:41.061Z" },
+]
+
+[[package]]
 name = "pygments"
 version = "2.19.2"
 source = { registry = "https://pypi.org/simple" }
@@ -186,6 +198,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "black" },
+    { name = "produm" },
     { name = "textual" },
     { name = "ttkbootstrap" },
 ]
@@ -193,6 +206,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "black", specifier = ">=25.9.0" },
+    { name = "produm", specifier = ">=0.1.0" },
     { name = "textual", specifier = ">=6.6.0" },
     { name = "ttkbootstrap", specifier = ">=1.14.2" },
 ]

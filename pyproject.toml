@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "black>=25.9.0",
+    "produm>=0.1.0",
     "textual>=6.6.0",
     "ttkbootstrap>=1.14.2",
 ]
