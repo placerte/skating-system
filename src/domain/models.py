@@ -17,8 +17,8 @@ class Participant:
         first_name: str, last_name: str, email: str = "", number: int = -1
     ) -> "Participant":
         return Participant(
-            id=str(uuid4()),
-            first_name=first_name.strip(),
+            id = str(uuid4()),
+            first_name = first_name.strip(),
             last_name=last_name.strip(),
             email=email.strip(),
             number=number,
@@ -80,7 +80,3 @@ class GroupMember:
             group_id=group_id,
             participant_id=participant_id,
             role=role)
-
-
-
-

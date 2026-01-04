@@ -1,3 +1,62 @@
+# Skating System App - Diagrams
+
+## Classes
+
+```plantuml
+@startuml
+  !theme reddress-darkgreen
+  skinparam backgroundcolor transparent
+  skinparam dpi 300
+
+  class Event {
+    -id: UUID
+    -participants_ids: list[UUID]
+    -judges_ids: list[UUID]
+    -competitions: list[Competition]
+    +judges(): list[Participant]
+    +participants(): list[Participant]
+    +competitions(): list[Competition]
+  }
+
+  class Participant {
+    -id: UUID
+    +number: int
+    +first_name: str
+    +last_name: str
+    +email: str
+    -obsolete: bool
+  }
+
+  class Competition {
+    -id: UUID
+    +name: str
+    -judges_ids: list[UUID]
+    -entries: list[CompetitionEntry]
+  }
+
+  class Competitor {
+    -id: UUID
+    -participant_id: UUID
+    +role: str
+  }
+
+  class CompetitionEntry {
+    -competitors: list[Competitor]
+
+  }
+
+  Event --> Participant
+  Event --> Competition
+  Competition --> CompetitionEntry
+  CompetitionEntry --> Competitor
+  Competitor --> Participant
+
+@enduml
+```
+
+## ERD (for future use)
+
+```mermaid
 erDiagram
     Participant {
         UUID id PK
@@ -67,4 +126,4 @@ erDiagram
     %% Scoring
     CompetitionRegistration ||--o{ Score : receives
     JudgeAssignment        ||--o{ Score : gives
-
+```
