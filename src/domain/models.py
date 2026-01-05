@@ -32,51 +32,89 @@ class Participant:
 @dataclass
 class Event:
     id: str
-    title: str
+    name: str
     participants: list[Participant] = field(default_factory=list)
+    competitors: list[Competitor] = field(default_factory=list)
+    competitor_groups: list[CompetitorGroup] = field(default_factory=list)
+    competitions: list[Competition] = field(default_factory=list)
 
     @staticmethod
-    def new(title: str) -> "Event":
-        return Event(id=str(uuid4()), title=title.strip(), participants=[])
+    def new(name: str) -> "Event":
+        return Event(id=str(uuid4()), name=name.strip(), participants=[])
 
     def to_dict(self) -> dict:
         return {
             "id": self.id,
-            "title": self.title,
+            "name": self.name,
             "participants": [asdict(p) for p in self.participants],
+            "competitors": [asdict(c) for c in self.competitors],
+            "competitor_groups": [asdict(c) for c in self.competitor_groups],
+            "competitions": [asdict(c) for c in self.competitions],
         }
 
     @staticmethod
     def from_dict(d: dict) -> "Event":
         parts = [Participant(**p) for p in d.get("participants", [])]
-        return Event(id=d["id"], title=d["title"], participants=parts)
+        return Event(id=d["id"], name=d["name"], participants=parts)
 
 @dataclass
-class Group:
+class CompetitorGroup:
     id: str
     name: str
     type: str
+    competitor_ids: list[str] = []
     obsolete: bool = False
 
     @staticmethod
-    def new(name: str, type:str) -> "Group":
-        return Group(
+    def new(name: str, type:str) -> "CompetitorGroup":
+        return CompetitorGroup(
             id=str(uuid4()),
             name=name,
             type=type)
         
 @dataclass
-class GroupMember:
+class Competitor:
     id: str
-    group_id: str
     participant_id: str
     role: str
     obsolete: bool = False
     
     @staticmethod
-    def new(group_id:str, participant_id: str, role: str) -> "GroupMember":
-        return GroupMember(
+    def new(participant_id: str, role: str) -> "Competitor":
+        return Competitor(
             id=str(uuid4()),
-            group_id=group_id,
             participant_id=participant_id,
             role=role)
+
+@dataclass
+class Competition:
+    id: str
+    name: str
+    obsolete: bool = False
+    scores: list[Score] = field(default_factory=list)
+    competitor_group_ids: list[str] = field(default_factory=list)
+    judges_ids: list[str] = field(default_factory=list)
+
+    @staticmethod
+    def new(name: str) -> "Competition":
+        return Competition(
+            id=str(uuid4()),
+            name=name)
+
+@dataclass
+class Score:
+    id: str
+    value: int
+    judge_id: str
+    competitor_group_id: str
+    obsolete: bool = False
+
+    @staticmethod
+    def new(value: int, judge_id: str, competitor_group_id: str) -> "Score":
+        return Score(
+            id=str(uuid4()),
+            value=value,
+            judge_id=judge_id,
+            competitor_group_id=competitor_group_id
+        )
+
