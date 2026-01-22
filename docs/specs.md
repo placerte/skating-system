@@ -1,268 +1,228 @@
-# Skating System Ranking App — Specs
-
-## 1. Purpose
-
-A small offline app to rank competitors using the Skating System (judge-based ordinal rankings).
-
-The app is designed to be:
-
-- fast to operate during real events
-- resilient to messy real-world situations (late changes, re-entries, corrections)
-- transparent enough to explain outcomes (eventually via rule traces)
-
-The app is **offline-first**:  
-**one Event = one JSON file**.
-
-> UI intent and interaction flow are documented in: [ui_intent.md](ui_intent.md)
-
----
-
-## 2. Vocabulary
-
-- **Event**: a container for participants and competitions.
-- **Participant**: a singular real person.
-- **Entry**: a competition entry (solo, pair, or team).
-- **Judge**: a Participant acting as a judge in a Competition.
-- **Rank**: an ordinal placement (1 = best).
-- **Result**: the final ranking outcome of a Competition, computed from judge ranks.
-
-> The term **rank** is used everywhere.  
-> The term **score** is intentionally not used in this project.
-
----
-
-## 3. Core domain rules
-
-### 3.1 Identity rules
-
-- All domain entities have a **UUID** as their true identifier.
-- Human-friendly numbers or names are **not identities**.
-
-### 3.2 Participant numbering
-
-- Participants have a `number` used for display and quick identification.
-- Participant numbers are **not permanent identities**.
-- If a participant is recreated:
-  - they get a new UUID
-  - they get a new participant number
-- Numbers are not automatically reused.
-
-### 3.3 Obsolete instead of delete
-
-Entities are rarely deleted.
-
-Instead:
-
-- `is_obsolete: bool`
-- Obsolete entities:
-  - are hidden by default in selection lists
-  - remain in the JSON file for audit/history
-- UI must allow toggling “show obsolete”
-
-### 3.4 Ties
-
-- Ties are a **valid outcome** in the skating system.
-- The app must support ties conceptually.
-- Exact tie-handling behavior depends on the selected rulebook.
-- The MVP must **not assume ties are impossible**.
-
----
-
-## 4. Data model
-
-### 4.1 Event
-
-The Event is the persisted root object.
-
-Fields:
-
-- `id: UUID`
-- `name: str`
-- `participants: list[Participant]`
-- `entries: list[Entry]`
-- `competitions: list[Competition]`
-- optional: `created_at`, `updated_at`, `schema_version`
-
----
-
-### 4.2 Participant
-
-Represents a **single real person**.
-
-Fields:
-
-- `id: UUID`
-- `number: int` (human-friendly)
-- `first_name: str`
-- `last_name: str`
-- optional: `email: str | None`
-- `is_obsolete: bool`
-
-Notes:
-
-- A Participant may act as:
-  - a competitor (via Entry membership)
-  - a judge (in a Competition)
-- Judges are **not a separate entity type**.
-
----
-
-### 4.3 Entry
-
-An Entry represents what competes in a Competition (solo, pair, or team).
-
-Fields:
-
-- `id: UUID`
-- `name: str`
-- `members: list[EntryMember]`
-- `is_obsolete: bool`
-
-#### EntryMember (internal structure)
-
-- `participant_id: UUID`
-- `role: str`
-
-Notes:
-
-- EntryMember exists primarily for **data clarity and extensibility**.
-- It is expected to be **mostly invisible in the UI**.
-- Roles are free-form strings (ex: “Lead”, “Follow”, “Captain”).
-
-Entries:
-
-- can be reused across multiple Competitions in the same Event
-- can be created either:
-  - globally (Entry management screen)
-  - or inline while creating/editing a Competition
-
----
-
-### 4.4 Competition
-
-A Competition represents one ranked instance within an Event.
-
-Fields:
-
-- `id: UUID`
-- `name: str`
-- `judge_ids: list[UUID]` (Participants acting as judges)
-- `entry_ids: list[UUID]`
-- `rank_marks: list[RankMark]`
-- optional: `results: CompetitionResults`
-
-Notes:
-
-- Judges are selected from the same Participant pool.
-- A Participant may appear both as a competitor and a judge.
-
----
-
-### RankMark
-
-Represents one judge’s rank for one Entry.
-
-Fields:
-
-- `judge_id: UUID`
-- `entry_id: UUID`
-- `rank: int`
-- optional: `notes: str | None`
-
-Notes:
-
-- One `(judge_id, entry_id)` pair should have at most one RankMark.
-
----
-
-### CompetitionResults (optional cache)
-
-- final placements (ties allowed)
-- optional rule trace / audit log (future)
-
----
-
-## 5. Persistence (JSON)
-
-### 5.1 Storage
-
-- One Event = one JSON file
-- JSON fully represents the Event and all nested data
-
-### 5.2 Versioning
-
-- JSON must include a `schema_version` or `app_version`
-- Older versions should be migrated when feasible
-
-### 5.3 Serialization requirements
-
-- Full round-trip safety
-- UUID-based references
-- No silent data loss
-
-### 5.4 Validation on load (warnings, not crashes)
-
-Detect and warn:
-
-- duplicate participant numbers
-- missing referenced IDs
-- invalid rank values
-- duplicate `(judge, entry)` rank marks
-
----
+# Skating System Ranking App Specs
+
+This document groups requirements by topic. Each requirement has a simple
+ID for cross-reference in `docs/spec_tracking.md`.
+
+## 0. Scope and intent
+
+- GEN-1: The app ranks competitors using the Skating System (judge-based
+  ordinal rankings).
+- GEN-2: The app is offline-first. One Event equals one JSON file.
+- GEN-3: The app should be fast to operate, resilient to messy real-world
+  changes, and transparent enough to explain outcomes later.
+- GEN-4: The term "rank" is used everywhere. Do not use "score" in the domain.
+- GEN-5: This is a small personal PoC; optimize for clarity and usability over
+  completeness or production-scale features.
+
+Related: `docs/ui_intent.md` for flow, `docs/implementation.md` for modules.
+
+## 1. Vocabulary
+
+- VOC-1: Event is the container for participants and competitions.
+- VOC-2: Participant is a single real person.
+- VOC-3: Entry is what competes in a competition (solo, pair, team).
+- VOC-4: Judge is a participant acting as a judge in a competition.
+- VOC-5: Rank is an ordinal placement, with 1 as best.
+- VOC-6: Result is the final ranking outcome of a competition.
+
+## 2. Identity and lifecycle
+
+- ID-1: All domain entities have a UUID as their true identifier.
+- ID-2: Human-friendly numbers or names are not identities.
+- ID-3: When an entity is recreated, it gets a new UUID.
+
+- NUM-1: Participants have a display number for quick identification.
+- NUM-2: Participant numbers are not permanent identities.
+- NUM-3: If a participant is recreated, they get a new participant number.
+- NUM-4: Numbers are not automatically reused.
+- NUM-5: Participant numbers are unique within an event.
+- NUM-6: New participants get the next available number using max + 1.
+- NUM-7: Participant numbers start at 100 or higher (three digits minimum).
+- NUM-8: Manual participant number edits are not allowed in this PoC.
+
+- OBS-1: Entities are rarely deleted.
+- OBS-2: Use `is_obsolete: bool` instead of deletion.
+- OBS-3: Obsolete entities are hidden by default in selection lists.
+- OBS-4: Obsolete entities remain in the JSON file for audit and history.
+- OBS-5: UI must allow toggling "show obsolete".
+
+- TIE-1: Ties are valid outcomes.
+- TIE-2: The app must support ties conceptually.
+- TIE-3: The MVP must not assume ties are impossible.
+- TIE-4: Final results may contain multiple entries sharing the same rank.
+
+## 3. Data model
+
+### 3.1 Event
+
+- EVT-1: Event is the persisted root object.
+- EVT-2: Event fields: `id: UUID`, `name: str`.
+- EVT-3: Event contains `participants: list[Participant]`.
+- EVT-4: Event contains `entries: list[Entry]`.
+- EVT-5: Event contains `competitions: list[Competition]`.
+- EVT-6: Optional event fields: `created_at`, `updated_at`, `schema_version`.
+
+### 3.2 Participant
+
+- PAR-1: Participant represents a single real person.
+- PAR-2: Participant fields: `id: UUID`, `number: int`, `first_name: str`,
+  `last_name: str`, `email: str | None`, `is_obsolete: bool`.
+- PAR-3: A participant may act as competitor via entry membership.
+- PAR-4: A participant may act as judge in a competition.
+- PAR-5: Judges are not a separate entity type.
+
+### 3.3 Entry
+
+- ENT-1: Entry represents what competes in a competition.
+- ENT-2: Entry fields: `id: UUID`, `name: str`, `members: list[EntryMember]`,
+  `is_obsolete: bool`.
+
+EntryMember (internal structure):
+
+- MEM-1: EntryMember fields: `participant_id: UUID`, `role: str`.
+- MEM-2: EntryMember exists for data clarity and extensibility.
+- MEM-3: EntryMember is mostly invisible in the UI.
+- MEM-4: Roles are free-form strings (example: Lead, Follow, Captain).
+- MEM-5: Roles are optional; use blank or "Other" when not specified.
+
+Entry behavior:
+
+- ENT-3: Entries can be reused across competitions in the same event.
+- ENT-4: Entries can be created globally in the Entries screen.
+- ENT-5: Entries can be created inline while editing a competition.
+
+### 3.4 Competition
+
+- COM-1: Competition represents a ranked instance within an event.
+- COM-2: Competition fields: `id: UUID`, `name: str`.
+- COM-3: Competition fields: `judge_ids: list[UUID]`.
+- COM-4: Competition fields: `entry_ids: list[UUID]`.
+- COM-5: Competition fields: `rank_marks: list[RankMark]`.
+- COM-6: Optional competition fields: `results: CompetitionResults`.
+- COM-7: Judges are selected from the same participant pool.
+- COM-8: A participant may appear as both competitor and judge.
+
+### 3.5 RankMark
+
+- RM-1: RankMark represents one judge's rank for one entry.
+- RM-2: RankMark fields: `judge_id: UUID`, `entry_id: UUID`, `rank: int`.
+- RM-3: RankMark fields: optional `notes: str | None`.
+- RM-4: One `(judge_id, entry_id)` pair has at most one RankMark.
+
+### 3.6 CompetitionResults (optional cache)
+
+- RES-1: Results store final placements with ties allowed.
+- RES-2: Results may include a rule trace or audit log in the future.
+- RES-3: Display average ranks rounded to two decimals in the PoC view.
+- RES-4: When tied, order results by entry display label ascending.
+
+## 4. Persistence and serialization
+
+- PST-1: One Event equals one JSON file.
+- PST-2: JSON fully represents the Event and all nested data.
+- PST-3: JSON includes a `schema_version` or `app_version`.
+- PST-4: Older versions should be migrated when feasible.
+- PST-5: Serialization is full round-trip safe.
+- PST-6: References are UUID-based.
+- PST-7: No silent data loss.
+- PST-8: Unknown fields are preserved when possible; otherwise ignore with a
+  warning.
+- PST-9: Schema/version mismatches warn and attempt best-effort load.
+
+## 5. Validation behavior
+
+- VAL-1: Validation on load produces warnings, not crashes.
+- VAL-2: Detect duplicate participant numbers.
+- VAL-3: Detect missing referenced IDs.
+- VAL-4: Detect invalid rank values.
+- VAL-5: Detect duplicate `(judge_id, entry_id)` rank marks.
+- VAL-6: Required fields must be non-empty (event name, entry name,
+  competition name, participant names).
+- VAL-7: Entries must have at least one member.
+- VAL-8: Entries must not contain duplicate participants.
+- VAL-9: Rank values must be within 1..entry_count for that competition.
+- VAL-10: Missing ranks are allowed during entry.
+- VAL-11: When computing, missing ranks are treated as entry_count + 1 for
+  that judge.
+- VAL-12: Participant numbers must be >= 100.
+- VAL-13: Competition results require at least one judge and two entries.
 
 ## 6. User workflows (MVP)
 
-### 6.1 Event lifecycle
+Event lifecycle:
 
-- Create Event
-- Save Event
-- Open existing Event
+- WFE-1: Create event.
+- WFE-2: Save event.
+- WFE-3: Open existing event.
+- WFE-4: Support Save As to pick a new file path.
+- WFE-5: Warn on unsaved changes before opening another file or exiting.
+- WFE-6: If a file is missing or malformed, show a recoverable error and keep
+  the app running.
+- WFE-7: Default event file extension is `.json`.
 
-### 6.2 Participants
+Participants:
 
-- List
-- Add / edit
-- Obsolete / unobsolete
-- Search
+- WFP-1: List participants.
+- WFP-2: Add or edit participants.
+- WFP-3: Obsolete or unobsolete participants.
+- WFP-4: Search participants.
+- WFP-5: Search is case-insensitive and fuzzy (subsequence match with
+  contiguous/earlier matches preferred).
 
-### 6.3 Entries
+Entries:
 
-- Create / edit
-- Assign participants + roles
-- Obsolete / unobsolete
-- Search
+- WFN-1: Create or edit entries.
+- WFN-2: Assign participants and roles.
+- WFN-3: Obsolete or unobsolete entries.
+- WFN-4: Search entries.
+- WFN-5: Search is case-insensitive and fuzzy (subsequence match with
+  contiguous/earlier matches preferred).
 
-### 6.4 Competitions
+Competitions:
 
-- Create competition
-- Select judges
-- Select or create entries inline
-- Enter ranks
-- Compute and view results
+- WFC-1: Create competition.
+- WFC-2: Select judges.
+- WFC-3: Select or create entries inline.
+- WFC-4: Enter ranks.
+- WFC-5: Compute and view results.
 
----
+## 7. Computation (PoC)
 
-## 7. UI principles (non-binding)
+- CAL-1: Provide a simple provisional computation: average rank per entry
+  across judges, lower average is better, ties allowed.
+- CAL-2: Missing ranks use entry_count + 1 for that judge in computation.
+- CAL-3: Mark computed results as provisional if the full ruleset is not
+  implemented.
+- CAL-4: Allow recompute when ranks change.
 
-- keyboard-first
-- fast navigation
-- no crashes on user input
-- validation stays in context
+## 8. UI principles (non-binding)
 
----
+- UI-1: Keyboard-first.
+- UI-2: Fast navigation.
+- UI-3: No crashes on user input.
+- UI-4: Validation stays in context.
+- UI-5: "Show obsolete" is a per-screen option (not global).
+- UI-6: "Show obsolete" is off by default on every screen.
+- UI-7: Entry display uses participant number + full name for solo entries.
+- UI-8: Entries with a non-empty entry name display that name only.
+- UI-9: Couple entries display leader number plus both first names
+  (example: "401 Pierre & Ariane").
+- UI-10: Entry label selection order: named entry first, then solo (1 member),
+  then couple (2 members), then fallback label.
+- UI-11: Fallback label for bad/unknown input is
+  "Unnamed entry ({member_count} members)".
+- UI-12: Couple display uses the explicitly marked leader when available; if
+  missing, fall back to the first listed member.
 
-## 8. Skating System engine (future)
+## 9. Future engine
 
-- Real published ruleset
-- Tie handling per rulebook
-- Clean separation from UI and persistence
+- ENG-1: Implement a published skating system ruleset.
+- ENG-2: Tie handling per rulebook.
+- ENG-3: Keep engine cleanly separated from UI and persistence.
 
----
+## 10. Non-goals (MVP)
 
-## 9. Non-goals (MVP)
-
-- multi-event databases
-- cloud sync
-- authentication
-- printing / PDF exports
+- NG-1: Multi-event databases.
+- NG-2: Cloud sync.
+- NG-3: Authentication.
+- NG-4: Printing or PDF exports.
