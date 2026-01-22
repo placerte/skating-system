@@ -13,6 +13,8 @@ The app is designed to be:
 The app is **offline-first**:  
 **one Event = one JSON file**.
 
+> UI intent and interaction flow are documented in: [ui_intent.md](ui_intent.md)
+
 ---
 
 ## 2. Vocabulary

@@ -3,6 +3,7 @@
 This document maps specs → modules. It is allowed to change, but should remain small.
 
 Authoritative documents:
+
 - Domain spec: [specs.md](specs.md)
 - UI intent: [ui_intent.md](ui_intent.md)
 
@@ -54,4 +55,3 @@ src/
 - Competitions CRUD (select judges/entries)
 - Rank entry matrix + store RankMarks
 - Results placeholder (engine not implemented yet)
-
