@@ -21,6 +21,8 @@ Owner preferences:
 Authoritative docs:
 
 - Domain rules: `docs/specs.md`.
+- Clarifications: `docs/specs_details.md`.
+- Spec tracking: `docs/spec_tracking.md`.
 - UI intent and flow: `docs/ui_intent.md`.
 - Module boundaries: `docs/implementation.md`.
 
@@ -66,11 +68,11 @@ Type checking can be done with Pyright if installed:
 
 ### Tests
 
-No tests are present yet, but use pytest when added.
+Pytest is available and should be used for tests.
 
 - Run all tests: `uv run python -m pytest`
-- Single test file: `uv run python -m pytest tests/test_event.py`
-- Single test case: `uv run python -m pytest tests/test_event.py -k test_name`
+- Single test file: `uv run python -m pytest tests/test_event_service.py`
+- Single test case: `uv run python -m pytest tests/test_event_service.py -k test_name`
 
 If pytest is not installed, add it as a dev dependency first.
 

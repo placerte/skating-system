@@ -44,6 +44,8 @@ State touched:
 Notes:
 
 - Later: show validation warnings summary somewhere on this screen
+- Prefer keybindings and footer hints over button-heavy layouts
+- Use modal prompts for rename/load/save actions
 
 ---
 
@@ -205,3 +207,12 @@ Notes:
 
 - Partial input allowed
 - Later: show validation warnings inline (duplicate ranks per judge, out-of-range, etc.)
+
+---
+
+## Textual UI conventions
+
+- Use Textual keybindings with a `Footer` for discovery
+- Keep screens uncluttered; prefer modal prompts for short inputs
+- Default home actions: `r` rename, `l` load, `s` save, `p/e/c` navigate
+- Show status messages inline on the current screen

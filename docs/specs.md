@@ -159,6 +159,11 @@ Event lifecycle:
 - WFE-6: If a file is missing or malformed, show a recoverable error and keep
   the app running.
 - WFE-7: Default event file extension is `.json`.
+- WFE-8: When a relative filename is provided, use the default directory
+  `~/skating-events`.
+- WFE-9: Remember the last loaded or saved event path and load it on startup
+  when available.
+- WFE-10: Use modal prompts for rename and load/save actions (keybindings).
 
 Participants:
 

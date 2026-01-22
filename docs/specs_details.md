@@ -70,6 +70,23 @@ Each entry references a Spec ID and captures the PoC-level behavior.
 - Decision: At least one judge and two entries.
 - Rationale: Results are not meaningful otherwise.
 
+## Event file behavior
+
+### WFE-8
+- Question: What default location is used for event files?
+- Decision: Use `~/skating-events` when a relative filename is provided.
+- Rationale: Keeps files organized without requiring full paths.
+
+### WFE-9
+- Question: Should the app remember the last loaded event?
+- Decision: Yes; store the last path and auto-load it on startup.
+- Rationale: Matches expected PoC convenience.
+
+### WFE-10
+- Question: How should rename/load/save be triggered in the home screen?
+- Decision: Use keybindings that open modal prompts ("r" rename, "l" load, "s" save).
+- Rationale: Keeps the home UI uncluttered and matches Textual conventions.
+
 ## Computation (PoC)
 
 ### CAL-1

@@ -104,6 +104,9 @@ Legend for Status: planned, in-progress, implemented, deferred, dropped.
 | WFE-5 | Workflow | Warn unsaved changes | ui | planned | |
 | WFE-6 | Workflow | Recoverable load error | ui, persistence | planned | |
 | WFE-7 | Workflow | Default .json extension | ui, persistence | planned | |
+| WFE-8 | Workflow | Default dir ~/skating-events | ui | planned | |
+| WFE-9 | Workflow | Remember last event path | ui | planned | |
+| WFE-10 | Workflow | Modal prompts for load/save/rename | ui | planned | |
 | WFP-1 | Workflow | List participants | ui/screens/participants.py | planned | |
 | WFP-2 | Workflow | Add or edit participants | ui/modals/participant_form.py | planned | |
 | WFP-3 | Workflow | Obsolete or unobsolete participants | ui/screens/participants.py | planned | |
