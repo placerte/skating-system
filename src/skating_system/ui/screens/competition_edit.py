@@ -539,12 +539,17 @@ class CompetitionEditScreen(Screen[None]):
             if entry is None:
                 continue
             label = event_service.entry_display_label(entry, participant_lookup)
-            labeled.append((placement.rank, label, placement.average_rank))
+            labeled.append((placement.final_place, label, placement.rule_trace))
 
         labeled.sort(key=lambda item: (item[0], item[1]))
         lines = []
-        for rank, label, avg in labeled:
-            lines.append(f"{rank}. {label}\n   (avg {avg:.2f})")
+        for final_place, label, trace in labeled:
+            place_str = (
+                f"{final_place:.1f}" if final_place % 1 != 0 else f"{int(final_place)}"
+            )
+            lines.append(f"{place_str}. {label}")
+            if trace:
+                lines.append(f"   ({trace})")
 
         self.query_one("#results-content", Static).update("\n".join(lines))
 

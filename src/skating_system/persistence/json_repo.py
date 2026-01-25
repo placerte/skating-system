@@ -194,8 +194,8 @@ def _load_results(
         placements.append(
             Placement(
                 entry_id=entry_id,
-                rank=int(item.get("rank", 0)),
-                average_rank=float(item.get("average_rank", 0.0)),
+                final_place=float(item.get("final_place", item.get("rank", 0))),
+                rule_trace=str(item.get("rule_trace", "")),
             )
         )
     return CompetitionResults(
@@ -273,8 +273,8 @@ def _dump_results(results: CompetitionResults | None) -> dict[str, Any] | None:
         "placements": [
             {
                 "entry_id": str(placement.entry_id),
-                "rank": placement.rank,
-                "average_rank": placement.average_rank,
+                "final_place": placement.final_place,
+                "rule_trace": placement.rule_trace,
             }
             for placement in results.placements
         ],

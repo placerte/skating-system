@@ -40,14 +40,14 @@ class RankMark:
 @dataclass
 class Placement:
     entry_id: UUID
-    rank: int
-    average_rank: float
+    final_place: float
+    rule_trace: str = ""
 
 
 @dataclass
 class CompetitionResults:
     placements: list[Placement] = field(default_factory=list)
-    is_provisional: bool = True
+    is_provisional: bool = False
 
 
 @dataclass
