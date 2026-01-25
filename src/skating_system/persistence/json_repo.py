@@ -75,9 +75,13 @@ class JsonEventRepo:
             payload = {**self._unknown_top_level, **payload}
             warnings.append("Unknown top-level fields preserved on save.")
 
-        file_path.write_text(
-            json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8"
+        # Atomic-ish write: write to a temp file then replace.
+        tmp_path = file_path.with_name(f"{file_path.name}.tmp")
+        tmp_path.write_text(
+            json.dumps(payload, indent=2, sort_keys=True),
+            encoding="utf-8",
         )
+        tmp_path.replace(file_path)
         return warnings
 
 

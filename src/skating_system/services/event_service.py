@@ -188,6 +188,25 @@ def set_rank_mark(
     return mark
 
 
+def clear_rank_mark(
+    event: Event,
+    competition_id: UUID,
+    *,
+    judge_id: UUID,
+    entry_id: UUID,
+) -> bool:
+    competition = find_competition(event, competition_id)
+    if competition is None:
+        return False
+
+    for index, mark in enumerate(competition.rank_marks):
+        if mark.judge_id == judge_id and mark.entry_id == entry_id:
+            competition.rank_marks.pop(index)
+            event.updated_at = datetime.utcnow()
+            return True
+    return False
+
+
 def find_participant(event: Event, participant_id: UUID) -> Participant | None:
     return next(
         (

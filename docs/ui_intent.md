@@ -129,34 +129,36 @@ Notes:
 - Entries are often created here (teams, stable groups)
 - However, creating entries inline inside a Competition workflow should be supported for speed
 
+Smart workflows:
+
+- See `docs/ui_workflows.md` for the "Entry Member Typeahead" (autocomplete combobox)
+  behavior used when building teams.
+
 ---
 
-## Screen: Competitions
+## Screen: Competitions (List)
 
 Purpose:
 
 - Create and manage competitions
-- Enter a competition to edit ranks and view results
+- Navigate to Competition Edit screen
 
 Layout:
 
 - Table of competitions
-- Columns (suggested): name, judges count, entries count, status, last computed
-  - status: e.g. “draft / partial / ready” (simple heuristic)
+- Columns: name, judges count, entries count, status, computed
+  - status: e.g. "draft / partial / ready" (simple heuristic)
 
 Actions:
 
-- Add competition
-- Edit competition setup (name, judges, entries)
-- Open ranking screen for selected competition
-- Optional: duplicate competition (future convenience)
-- Optional: delete = obsolete (if you ever add `is_obsolete` to competitions)
+- Add competition (name only)
+- Edit competition (opens Competition Edit screen)
+- Search
 
 Keybindings:
 
-- a → Add competition
-- e → Edit competition setup
-- Enter → Open ranking screen
+- a → Add competition (name-only modal)
+- e → Edit competition (opens Competition Edit screen)
 - / → Search
 - Esc → Back
 
@@ -164,49 +166,57 @@ State touched:
 
 - Event.competitions
 
-Notes:
-
-- Competition setup should allow:
-  - selecting judges from participants
-  - selecting entries from entries
-  - creating entries inline (modal) without leaving the competition workflow
-
 ---
 
-## Screen: Competition Ranking
+## Screen: Competition Edit
 
 Purpose:
 
+- Configure competition (add judges, add entries, rename)
 - Enter ranks
-- View computed results
+- Compute and view results
 
 Layout:
 
-- Rank matrix:
-  - rows = entries
-  - columns = judges
-  - cell value = rank integer
-- Result panel (ordered placements, ties visible)
+- Main: Rank matrix (scrollable horizontally if needed)
+  - Row headers: Entry display labels (per specs)
+  - Column headers: Judge first name only (to save width)
+  - Cells: Rank value (integer) or empty
+- Right sidebar: Results panel (fixed, always visible)
+  - Ordered placements with ties
+  - Average ranks displayed to 2 decimals
+  - "Provisional" label
+  - Hint: "Press 'c' to compute"
 
 Keybindings:
 
-- arrows → move
-- h, j, k, l → move
-- Enter → edit cell
-- 1 to 9 → quick edit current cell (sets rank immediately)
-  - If possible: support multi-digit entry without slowing workflow (e.g. typing digits builds a number with short timeout)
-- r → recompute
-- Esc → back
+- j → Add judge (opens typeahead picker modal)
+- e → Add entry (opens typeahead picker modal)
+- r → Rename competition (text prompt)
+- Enter → Edit cell rank
+- c → Clear cell (if focused on matrix cell)
+- C (shift+c) → Compute results
+- d → Remove judge/entry (if focused on matrix header row/column)
+- arrows / h,j,k,l → Navigate matrix
+- Esc → Back to Competitions list (auto-save)
 
 State touched:
 
+- Competition.name
+- Competition.judge_ids
+- Competition.entry_ids
 - Competition.rank_marks
-- Competition.results (optional cache)
+- Competition.results
 
 Notes:
 
-- Partial input allowed
-- Later: show validation warnings inline (duplicate ranks per judge, out-of-range, etc.)
+- Matrix scrolls horizontally if many judges
+- Results sidebar stays fixed on right
+- Judge columns have fixed width (truncate long names if needed)
+- Empty matrix shows overlay: "Press 'j' to add judges, 'e' to add entries"
+- Remove actions (d) are immediate, no confirmation
+- Partial ranks allowed; compute uses entry_count + 1 for missing ranks
+- Compute is manual only (press 'C'), not automatic after each edit
 
 ---
 

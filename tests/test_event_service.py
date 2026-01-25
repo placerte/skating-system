@@ -74,3 +74,44 @@ def test_entry_display_label_couple_leader_role() -> None:
 
 def test_fuzzy_match_score_misses() -> None:
     assert event_service.fuzzy_match_score("zz", "Pierre") is None
+
+
+def test_clear_rank_mark_removes_existing_mark() -> None:
+    event = Event(id=uuid4(), name="Test")
+    judge = event_service.add_participant(event, first_name="J", last_name="1")
+    entry_participant = event_service.add_participant(
+        event, first_name="E", last_name="1"
+    )
+    entry = event_service.add_entry(
+        event,
+        name="",
+        members=[EntryMember(participant_id=entry_participant.id)],
+    )
+    other_entry = event_service.add_entry(
+        event,
+        name="Other",
+        members=[EntryMember(participant_id=entry_participant.id, role="Other")],
+    )
+    competition = event_service.add_competition(
+        event,
+        name="Comp",
+        judge_ids=[judge.id],
+        entry_ids=[entry.id, other_entry.id],
+    )
+
+    event_service.set_rank_mark(
+        event,
+        competition.id,
+        judge_id=judge.id,
+        entry_id=entry.id,
+        rank=1,
+    )
+
+    removed = event_service.clear_rank_mark(
+        event,
+        competition.id,
+        judge_id=judge.id,
+        entry_id=entry.id,
+    )
+    assert removed is True
+    assert not competition.rank_marks

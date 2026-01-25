@@ -62,8 +62,15 @@ class SkatingApp(App[None]):
             self.last_warnings = warnings
             return warnings
 
-        target_path.parent.mkdir(parents=True, exist_ok=True)
-        warnings = self.repo.save_event(target_path, self.event)
+        try:
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            warnings = self.repo.save_event(target_path, self.event)
+        except OSError as exc:
+            warnings = [str(exc)]
+            self.last_warnings = warnings
+            self.dirty = True
+            return warnings
+
         self.file_path = target_path
         self.dirty = False
         self.last_warnings = warnings
@@ -72,6 +79,14 @@ class SkatingApp(App[None]):
 
     def mark_dirty(self) -> None:
         self.dirty = True
+
+    def commit_change(self) -> list[str]:
+        """Mark the event dirty, and auto-save if a file path exists."""
+
+        self.dirty = True
+        if self.file_path is None:
+            return []
+        return self.save_event(self.file_path)
 
     def _load_last_event(self) -> None:
         config_path = self._config_path()

@@ -18,6 +18,14 @@ Owner preferences:
 - Prefer simple, readable code over heavy architecture patterns.
 - Smaller files with small, focused functions are preferred.
 
+Additional preferences from `persona.md`:
+
+- Technical, pragmatic; optimize for clarity and control over elegance.
+- Prefer explicit logic (simple loops/ifs) over dense comprehensions or abstractions.
+- Avoid "magic" and reflection (e.g., `getattr`, dynamic wiring) unless clearly justified.
+- Keep tooling minimal and Linux/CLI-friendly; `uv` is the default.
+- When making tradeoffs, state assumptions and keep changes small; expand only when needed.
+
 Authoritative docs:
 
 - Domain rules: `docs/specs.md`.

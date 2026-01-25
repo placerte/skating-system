@@ -118,19 +118,20 @@ class HomeScreen(Screen[None]):
             return
 
         event.name = name
-        marker = getattr(self.app, "mark_dirty", None)
-        if marker is not None:
-            marker()
-        file_path = getattr(self.app, "file_path", None)
-        saver = getattr(self.app, "save_event", None)
-        if file_path is not None and saver is not None:
-            warnings = saver(file_path)
-            if warnings:
-                self._set_status("; ".join(warnings))
-            else:
-                self._set_status("Event name updated and saved.")
+
+        committer = getattr(self.app, "commit_change", None)
+        if committer is not None:
+            warnings = committer()
         else:
-            self._set_status("Event name updated (not saved).")
+            warnings = []
+
+        file_path = getattr(self.app, "file_path", None)
+        if file_path is None:
+            self._set_status("Event name updated (not saved yet).")
+        elif warnings:
+            self._set_status("; ".join(warnings))
+        else:
+            self._set_status("Event name updated (auto-saved).")
         self._refresh_event_info()
 
     def _handle_load_prompt(self, value: str | None) -> None:

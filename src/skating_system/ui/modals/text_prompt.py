@@ -44,12 +44,14 @@ class TextPrompt(ModalScreen[str | None]):
         placeholder: str,
         confirm_label: str = "OK",
         initial_value: str = "",
+        allow_empty: bool = False,
     ) -> None:
         super().__init__()
         self._title = title
         self._placeholder = placeholder
         self._confirm_label = confirm_label
         self._initial_value = initial_value
+        self._allow_empty = allow_empty
 
     def compose(self):
         with Vertical(id="dialog"):
@@ -81,7 +83,7 @@ class TextPrompt(ModalScreen[str | None]):
 
     def _confirm(self) -> None:
         value = self.query_one("#prompt-input", Input).value.strip()
-        if not value:
+        if not value and not self._allow_empty:
             self.dismiss(None)
             return
         self.dismiss(value)
