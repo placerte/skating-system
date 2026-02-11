@@ -1,3 +1,5 @@
 .venv/
 diagnostic.txt
 archive/
+__pycache__/
+*-dump-*
