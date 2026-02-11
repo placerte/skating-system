@@ -25,10 +25,7 @@ def test_compute_results_missing_ranks_use_last_place() -> None:
         rank_marks=[RankMark(judge_id=judge_a, entry_id=entry_a, rank=1)],
     )
 
-    results = compute_results(competition)
+    result, errors = compute_results(competition)
 
-    placement_map = {p.entry_id: p for p in results.placements}
-
-    assert placement_map[entry_a].final_place == 1.0
-    assert placement_map[entry_b].final_place == 2.0
-    assert len(placement_map[entry_a].rule_trace) > 0
+    assert result is None
+    assert any("missing ranks" in error.lower() for error in errors)

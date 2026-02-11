@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import cast
 from uuid import UUID
 
 from textual.screen import Screen
@@ -7,7 +8,8 @@ from textual.widgets import DataTable, Footer, Static
 
 from skating_system.domain.models import Competition, Event
 from skating_system.services import event_service
-from skating_system.services.ranking_service import compute_and_store_results
+from skating_system.services.ranking_service import compute_results
+from skating_system.ui.app_state import AppState
 from skating_system.ui.modals.text_prompt import TextPrompt
 
 
@@ -139,8 +141,12 @@ class RankingScreen(Screen[None]):
         if event is None or competition is None:
             self._set_status("No competition loaded.")
             return
-
-        compute_and_store_results(competition)
+        result, errors = compute_results(competition)
+        if errors or result is None:
+            self._set_status("; ".join(errors) if errors else "Unable to compute.")
+            return
+        app = cast(AppState, self.app)
+        app.set_competition_result(self._competition_id, result)
         warnings = self._commit_change()
         if warnings:
             self._set_status("; ".join(warnings))
@@ -206,7 +212,8 @@ class RankingScreen(Screen[None]):
         self._refresh_matrix()
 
     def _refresh_headers(self) -> None:
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event:
             self.query_one("#event-info", Static).update(f"Event: {event.name}")
         else:
@@ -275,51 +282,44 @@ class RankingScreen(Screen[None]):
             self.query_one("#results", Static).update("")
             return
 
-        if competition.results is None or not competition.results.placements:
+        app = cast(AppState, self.app)
+        results = app.get_competition_result(self._competition_id)
+        if results is None or not results.placements:
             self.query_one("#results", Static).update("No results computed.")
             return
 
         participant_lookup = {p.id: p for p in event.participants}
         entry_lookup = {e.id: e for e in event.entries}
 
-        placements = list(competition.results.placements)
-        labeled: list[tuple[int, str, float]] = []
+        placements = list(results.placements)
+        labeled: list[tuple[float, str]] = []
         for placement in placements:
             entry = entry_lookup.get(placement.entry_id)
             if entry is None:
                 continue
             label = event_service.entry_display_label(entry, participant_lookup)
-            labeled.append((placement.final_place, label, placement.rule_trace))
+            labeled.append((placement.final_place, label))
 
         labeled.sort(key=lambda item: (item[0], item[1]))
         lines = []
-        for final_place, label, trace in labeled:
+        for final_place, label in labeled:
             place_str = (
                 f"{final_place:.1f}" if final_place % 1 != 0 else f"{int(final_place)}"
             )
             lines.append(f"{place_str}. {label}")
-            if trace:
-                lines.append(f"   {trace}")
-
-        provisional = " (provisional)" if competition.results.is_provisional else ""
-        self.query_one("#results", Static).update(
-            "Results" + provisional + "\n" + "\n".join(lines)
-        )
+        self.query_one("#results", Static).update("Results\n" + "\n".join(lines))
 
     def _set_status(self, message: str) -> None:
         self.query_one("#status", Static).update(message)
 
     def _commit_change(self) -> list[str]:
-        committer = getattr(self.app, "commit_change", None)
-        if committer is None:
-            marker = getattr(self.app, "mark_dirty", None)
-            if marker is not None:
-                marker()
-            return []
-        return committer()
+        app = cast(AppState, self.app)
+        app.mark_dirty()
+        return app.commit_change()
 
     def _get_event_competition(self) -> tuple[Event | None, Competition | None]:
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             return None, None
         competition = event_service.find_competition(event, self._competition_id)

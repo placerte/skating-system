@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import cast
 from uuid import UUID
 
 from textual.screen import Screen
@@ -11,6 +12,7 @@ from skating_system.ui.modals.participant_form import (
     ParticipantFormData,
 )
 from skating_system.ui.modals.text_prompt import TextPrompt
+from skating_system.ui.app_state import AppState
 
 
 class ParticipantsScreen(Screen[None]):
@@ -50,7 +52,8 @@ class ParticipantsScreen(Screen[None]):
         self.app.pop_screen()
 
     def action_add(self) -> None:
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self._set_status("No event loaded.")
             return
@@ -59,7 +62,8 @@ class ParticipantsScreen(Screen[None]):
         self.app.push_screen(form, self._handle_add_result)
 
     def action_edit(self) -> None:
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self._set_status("No event loaded.")
             return
@@ -88,7 +92,8 @@ class ParticipantsScreen(Screen[None]):
         )
 
     def action_toggle_obsolete(self) -> None:
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self._set_status("No event loaded.")
             return
@@ -130,7 +135,8 @@ class ParticipantsScreen(Screen[None]):
         self._refresh_table()
 
     def _refresh_event_info(self) -> None:
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event:
             info = f"Event: {event.name}"
         else:
@@ -142,7 +148,8 @@ class ParticipantsScreen(Screen[None]):
         table.clear()
         self._visible_participant_ids = []
 
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self.query_one("#filters", Static).update("")
             return
@@ -185,7 +192,8 @@ class ParticipantsScreen(Screen[None]):
             self._set_status("Add cancelled.")
             return
 
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self._set_status("No event loaded.")
             return
@@ -212,7 +220,8 @@ class ParticipantsScreen(Screen[None]):
             self._set_status("Edit cancelled.")
             return
 
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self._set_status("No event loaded.")
             return
@@ -243,10 +252,6 @@ class ParticipantsScreen(Screen[None]):
         self._refresh_table()
 
     def _commit_change(self) -> list[str]:
-        committer = getattr(self.app, "commit_change", None)
-        if committer is None:
-            marker = getattr(self.app, "mark_dirty", None)
-            if marker is not None:
-                marker()
-            return []
-        return committer()
+        app = cast(AppState, self.app)
+        app.mark_dirty()
+        return app.commit_change()

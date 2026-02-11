@@ -8,12 +8,10 @@ from uuid import UUID, uuid4
 
 from skating_system.domain.models import (
     Competition,
-    CompetitionResults,
     Entry,
     EntryMember,
     Event,
     Participant,
-    Placement,
     RankMark,
 )
 from skating_system.persistence.schema import read_schema_version
@@ -39,6 +37,7 @@ class JsonEventRepo:
             "created_at",
             "updated_at",
             "schema_version",
+            "app_version",
         }
         self._unknown_top_level = {
             key: value for key, value in raw.items() if key not in known_keys
@@ -65,6 +64,7 @@ class JsonEventRepo:
             created_at=_parse_datetime(raw.get("created_at"), warnings, "event"),
             updated_at=_parse_datetime(raw.get("updated_at"), warnings, "event"),
             schema_version=schema_version,
+            app_version=raw.get("app_version"),
         )
         return event, warnings
 
@@ -155,7 +155,7 @@ def _load_competitions(
                     raw.get("entry_ids", []), warnings, "entry_ids"
                 ),
                 rank_marks=_load_rank_marks(raw.get("rank_marks", []), warnings),
-                results=_load_results(raw.get("results"), warnings),
+                results=None,
             )
         )
     return competitions
@@ -181,29 +181,6 @@ def _load_rank_marks(
     return marks
 
 
-def _load_results(
-    raw: dict[str, Any] | None, warnings: list[str]
-) -> CompetitionResults | None:
-    if not raw:
-        return None
-    placements: list[Placement] = []
-    for item in raw.get("placements", []):
-        entry_id = _parse_uuid(item.get("entry_id"), warnings, "results.entry")
-        if entry_id is None:
-            continue
-        placements.append(
-            Placement(
-                entry_id=entry_id,
-                final_place=float(item.get("final_place", item.get("rank", 0))),
-                rule_trace=str(item.get("rule_trace", "")),
-            )
-        )
-    return CompetitionResults(
-        placements=placements,
-        is_provisional=bool(raw.get("is_provisional", True)),
-    )
-
-
 def _dump_event(event: Event) -> dict[str, Any]:
     return {
         "id": str(event.id),
@@ -218,6 +195,7 @@ def _dump_event(event: Event) -> dict[str, Any]:
         "created_at": _dump_datetime(event.created_at),
         "updated_at": _dump_datetime(event.updated_at),
         "schema_version": event.schema_version,
+        "app_version": event.app_version,
     }
 
 
@@ -248,6 +226,7 @@ def _dump_entry(entry: Entry) -> dict[str, Any]:
 
 
 def _dump_competition(competition: Competition) -> dict[str, Any]:
+    # reference [S-260210-1.20]
     return {
         "id": str(competition.id),
         "name": competition.name,
@@ -262,23 +241,6 @@ def _dump_competition(competition: Competition) -> dict[str, Any]:
             }
             for mark in competition.rank_marks
         ],
-        "results": _dump_results(competition.results),
-    }
-
-
-def _dump_results(results: CompetitionResults | None) -> dict[str, Any] | None:
-    if results is None:
-        return None
-    return {
-        "placements": [
-            {
-                "entry_id": str(placement.entry_id),
-                "final_place": placement.final_place,
-                "rule_trace": placement.rule_trace,
-            }
-            for placement in results.placements
-        ],
-        "is_provisional": results.is_provisional,
     }
 
 

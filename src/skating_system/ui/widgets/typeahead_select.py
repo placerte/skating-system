@@ -132,13 +132,13 @@ class TypeaheadSelect(Widget, Generic[T]):
         self.post_message(self.Selected(sender=self, item=item, item_id=item_id))
 
     def action_cursor_down(self) -> None:
-        focused = getattr(self.screen, "focused", None)
+        focused = self.screen.focused
         if focused != self.query_one("#query", Input):
             return
         self.query_one("#options", OptionList).action_cursor_down()
 
     def action_cursor_up(self) -> None:
-        focused = getattr(self.screen, "focused", None)
+        focused = self.screen.focused
         if focused != self.query_one("#query", Input):
             return
         self.query_one("#options", OptionList).action_cursor_up()

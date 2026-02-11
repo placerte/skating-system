@@ -6,6 +6,7 @@ CURRENT_SCHEMA_VERSION = 1
 
 
 def read_schema_version(raw: dict[str, Any]) -> tuple[int | None, list[str]]:
+    # reference [S-260210-1.22]
     warnings: list[str] = []
     schema_version = raw.get("schema_version")
     app_version = raw.get("app_version")

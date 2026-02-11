@@ -3,7 +3,7 @@ from __future__ import annotations
 from uuid import uuid4
 
 from skating_system.domain.models import Competition, RankMark
-from skating_system.services.skating_scorer import compute_skating_system
+from skating_system.services.skating_scorer import compute_solve_result
 
 
 def test_simple_majority():
@@ -56,12 +56,14 @@ def test_simple_majority():
         rank_marks=rank_marks,
     )
 
-    placements = compute_skating_system(competition)
+    result, errors = compute_solve_result(competition)
+    assert not errors
+    assert result is not None
+    placements = result.placements
 
     assert len(placements) == 6
     assert placements[0].entry_id == entries[0]
     assert placements[0].final_place == 1.0
-    assert "Majority at t=1" in placements[0].rule_trace
     assert placements[1].entry_id == entries[1]
     assert placements[1].final_place == 2.0
     assert placements[2].entry_id == entries[2]
@@ -108,21 +110,21 @@ def test_no_majority_advance_threshold():
         rank_marks=rank_marks,
     )
 
-    placements = compute_skating_system(competition)
+    result, errors = compute_solve_result(competition)
+    assert not errors
+    assert result is not None
+    placements = result.placements
 
     assert len(placements) == 4
     assert placements[0].entry_id == entries[0]
     assert placements[0].final_place == 1.0
-    assert "No majority at t=1" in placements[0].rule_trace
-    assert "Majority at t=2" in placements[0].rule_trace
 
 
 def test_equal_majority_sum_break():
     """
     Test 3: Equal majority, resolved by sum.
-    Entry 0 has 3 ranks at or below 1st (judges 0,1,2 give 1,1,1), sum=3.
-    Entry 1 has 3 ranks at or below 2nd (judges 0,1,3 give 2,2,1), sum=5.
-    Entry 0 wins by Rule 7 (lower sum).
+    No majority at t=1. At t=2, entries 0 and 1 both reach count=4.
+    Entry 0 has lower sum and wins by Rule 7.
     """
     judges = [uuid4() for _ in range(5)]
     entries = [uuid4() for _ in range(3)]
@@ -131,18 +133,18 @@ def test_equal_majority_sum_break():
         RankMark(judges[0], entries[0], 1),
         RankMark(judges[0], entries[1], 2),
         RankMark(judges[0], entries[2], 3),
-        RankMark(judges[1], entries[0], 1),
-        RankMark(judges[1], entries[1], 2),
+        RankMark(judges[1], entries[0], 2),
+        RankMark(judges[1], entries[1], 1),
         RankMark(judges[1], entries[2], 3),
-        RankMark(judges[2], entries[0], 1),
+        RankMark(judges[2], entries[0], 2),
         RankMark(judges[2], entries[1], 3),
-        RankMark(judges[2], entries[2], 2),
-        RankMark(judges[3], entries[1], 1),
+        RankMark(judges[2], entries[2], 1),
         RankMark(judges[3], entries[0], 3),
-        RankMark(judges[3], entries[2], 2),
-        RankMark(judges[4], entries[2], 1),
-        RankMark(judges[4], entries[0], 3),
-        RankMark(judges[4], entries[1], 3),
+        RankMark(judges[3], entries[1], 2),
+        RankMark(judges[3], entries[2], 1),
+        RankMark(judges[4], entries[0], 1),
+        RankMark(judges[4], entries[1], 2),
+        RankMark(judges[4], entries[2], 3),
     ]
 
     competition = Competition(
@@ -153,25 +155,22 @@ def test_equal_majority_sum_break():
         rank_marks=rank_marks,
     )
 
-    placements = compute_skating_system(competition)
+    result, errors = compute_solve_result(competition)
+    assert not errors
+    assert result is not None
+    placements = result.placements
 
     assert len(placements) == 3
     placement_map = {p.entry_id: p for p in placements}
 
     assert placement_map[entries[0]].final_place == 1.0
-    assert (
-        "Rule 7: lower sum wins" in placement_map[entries[0]].rule_trace
-        or "Majority" in placement_map[entries[0]].rule_trace
-    )
 
 
 def test_unbreakable_tie_fractional():
     """
     Test 4: Unbreakable tie with fractional rank.
-    4 judges, 4 entries. Entries 0 and 1 get EXACTLY mirrored rank distributions.
-    Both get {1,2,2,2} from the four judges (in different order).
-    At t=1: both have count=1, at t=2: both have count=4, sum=7.
-    They should share place 1.5 (average of 1 and 2).
+    4 judges, 4 entries. Entries 0 and 1 have identical rank distributions.
+    They remain tied through all thresholds and share place 1.5.
     """
     judges = [uuid4() for _ in range(4)]
     entries = [uuid4() for _ in range(4)]
@@ -179,20 +178,20 @@ def test_unbreakable_tie_fractional():
     rank_marks = [
         RankMark(judges[0], entries[0], 1),
         RankMark(judges[0], entries[1], 2),
-        RankMark(judges[0], entries[2], 3),
-        RankMark(judges[0], entries[3], 4),
+        RankMark(judges[0], entries[2], 4),
+        RankMark(judges[0], entries[3], 3),
         RankMark(judges[1], entries[0], 2),
         RankMark(judges[1], entries[1], 1),
         RankMark(judges[1], entries[2], 3),
         RankMark(judges[1], entries[3], 4),
-        RankMark(judges[2], entries[0], 2),
+        RankMark(judges[2], entries[0], 3),
         RankMark(judges[2], entries[1], 2),
-        RankMark(judges[2], entries[2], 1),
-        RankMark(judges[2], entries[3], 3),
+        RankMark(judges[2], entries[2], 4),
+        RankMark(judges[2], entries[3], 1),
         RankMark(judges[3], entries[0], 2),
-        RankMark(judges[3], entries[1], 2),
-        RankMark(judges[3], entries[2], 3),
-        RankMark(judges[3], entries[3], 1),
+        RankMark(judges[3], entries[1], 3),
+        RankMark(judges[3], entries[2], 1),
+        RankMark(judges[3], entries[3], 4),
     ]
 
     competition = Competition(
@@ -203,7 +202,10 @@ def test_unbreakable_tie_fractional():
         rank_marks=rank_marks,
     )
 
-    placements = compute_skating_system(competition)
+    result, errors = compute_solve_result(competition)
+    assert not errors
+    assert result is not None
+    placements = result.placements
 
     assert len(placements) == 4
     placement_map = {p.entry_id: p for p in placements}
@@ -212,8 +214,6 @@ def test_unbreakable_tie_fractional():
         placement_map[entries[0]].final_place == placement_map[entries[1]].final_place
     )
     assert placement_map[entries[0]].final_place == 1.5
-    assert "shared place=1.5" in placement_map[entries[0]].rule_trace
-    assert "shared place=1.5" in placement_map[entries[1]].rule_trace
 
 
 def test_missing_rank_handling():
@@ -244,14 +244,10 @@ def test_missing_rank_handling():
         rank_marks=rank_marks,
     )
 
-    placements = compute_skating_system(competition)
+    result, errors = compute_solve_result(competition)
 
-    assert len(placements) == 3
-    placement_map = {p.entry_id: p for p in placements}
-
-    assert placement_map[entries[0]].final_place == 1.0
-    assert placement_map[entries[1]].final_place == 2.0
-    assert placement_map[entries[2]].final_place == 3.0
+    assert result is None
+    assert any("missing ranks" in error.lower() for error in errors)
 
 
 def test_rule_6_greater_count():
@@ -295,16 +291,15 @@ def test_rule_6_greater_count():
         rank_marks=rank_marks,
     )
 
-    placements = compute_skating_system(competition)
+    result, errors = compute_solve_result(competition)
+    assert not errors
+    assert result is not None
+    placements = result.placements
 
     assert len(placements) == 4
     placement_map = {p.entry_id: p for p in placements}
 
     assert placement_map[entries[0]].final_place == 1.0
-    assert (
-        "Rule 6: greater count wins" in placement_map[entries[0]].rule_trace
-        or "Majority" in placement_map[entries[0]].rule_trace
-    )
 
 
 def test_complex_scenario_multiple_ties():
@@ -361,10 +356,12 @@ def test_complex_scenario_multiple_ties():
         rank_marks=rank_marks,
     )
 
-    placements = compute_skating_system(competition)
+    result, errors = compute_solve_result(competition)
+    assert not errors
+    assert result is not None
+    placements = result.placements
 
     assert len(placements) == 5
     assert all(p.final_place > 0 for p in placements)
-    assert all(len(p.rule_trace) > 0 for p in placements)
     assert placements[0].final_place == 1.0
     assert placements[0].entry_id == entries[0]

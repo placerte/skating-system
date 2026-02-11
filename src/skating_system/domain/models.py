@@ -70,3 +70,4 @@ class Event:
     created_at: datetime | None = None
     updated_at: datetime | None = None
     schema_version: int | None = None
+    app_version: str | None = None

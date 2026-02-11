@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import UUID, uuid4
 
 from skating_system.domain.models import (
@@ -14,7 +14,7 @@ from skating_system.domain.models import (
 
 
 def create_event(name: str) -> Event:
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     return Event(
         id=uuid4(),
         name=name.strip(),
@@ -47,7 +47,7 @@ def add_participant(
         is_obsolete=False,
     )
     event.participants.append(participant)
-    event.updated_at = datetime.utcnow()
+    event.updated_at = datetime.now(timezone.utc)
     return participant
 
 
@@ -65,7 +65,7 @@ def update_participant(
     participant.first_name = first_name.strip()
     participant.last_name = last_name.strip()
     participant.email = email.strip() if isinstance(email, str) else email
-    event.updated_at = datetime.utcnow()
+    event.updated_at = datetime.now(timezone.utc)
     return participant
 
 
@@ -74,7 +74,7 @@ def toggle_participant_obsolete(event: Event, participant_id: UUID) -> bool:
     if participant is None:
         return False
     participant.is_obsolete = not participant.is_obsolete
-    event.updated_at = datetime.utcnow()
+    event.updated_at = datetime.now(timezone.utc)
     return True
 
 
@@ -91,7 +91,7 @@ def add_entry(
         is_obsolete=False,
     )
     event.entries.append(entry)
-    event.updated_at = datetime.utcnow()
+    event.updated_at = datetime.now(timezone.utc)
     return entry
 
 
@@ -107,7 +107,7 @@ def update_entry(
         return None
     entry.name = name.strip()
     entry.members = list(members)
-    event.updated_at = datetime.utcnow()
+    event.updated_at = datetime.now(timezone.utc)
     return entry
 
 
@@ -116,7 +116,7 @@ def toggle_entry_obsolete(event: Event, entry_id: UUID) -> bool:
     if entry is None:
         return False
     entry.is_obsolete = not entry.is_obsolete
-    event.updated_at = datetime.utcnow()
+    event.updated_at = datetime.now(timezone.utc)
     return True
 
 
@@ -136,7 +136,7 @@ def add_competition(
         results=None,
     )
     event.competitions.append(competition)
-    event.updated_at = datetime.utcnow()
+    event.updated_at = datetime.now(timezone.utc)
     return competition
 
 
@@ -154,7 +154,7 @@ def update_competition(
     competition.name = name.strip()
     competition.judge_ids = list(judge_ids)
     competition.entry_ids = list(entry_ids)
-    event.updated_at = datetime.utcnow()
+    event.updated_at = datetime.now(timezone.utc)
     return competition
 
 
@@ -174,7 +174,7 @@ def set_rank_mark(
     if existing:
         existing.rank = rank
         existing.notes = notes
-        event.updated_at = datetime.utcnow()
+        event.updated_at = datetime.now(timezone.utc)
         return existing
 
     mark = RankMark(
@@ -184,7 +184,7 @@ def set_rank_mark(
         notes=notes,
     )
     competition.rank_marks.append(mark)
-    event.updated_at = datetime.utcnow()
+    event.updated_at = datetime.now(timezone.utc)
     return mark
 
 
@@ -202,7 +202,7 @@ def clear_rank_mark(
     for index, mark in enumerate(competition.rank_marks):
         if mark.judge_id == judge_id and mark.entry_id == entry_id:
             competition.rank_marks.pop(index)
-            event.updated_at = datetime.utcnow()
+            event.updated_at = datetime.now(timezone.utc)
             return True
     return False
 

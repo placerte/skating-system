@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+from typing import cast
 from uuid import UUID
 
 from textual.screen import Screen
@@ -12,7 +14,8 @@ from skating_system.ui.modals.competition_form import (
     CompetitionFormData,
 )
 from skating_system.ui.modals.text_prompt import TextPrompt
-from skating_system.ui.screens.competition_edit import CompetitionEditScreen
+from skating_system.ui.app_state import AppState
+from skating_system.ui.screens.competition_edit import MatrixScreen
 
 
 class CompetitionsScreen(Screen[None]):
@@ -21,7 +24,10 @@ class CompetitionsScreen(Screen[None]):
         ("e", "edit", "Edit"),
         ("enter", "open", "Open"),
         ("/", "search", "Search"),
-        ("escape", "back", "Back"),
+        ("l", "load_event", "Load"),
+        ("s", "save_event", "Save"),
+        ("r", "rename_event", "Rename"),
+        ("q", "quit", "Quit"),
     ]
 
     def __init__(self) -> None:
@@ -47,10 +53,11 @@ class CompetitionsScreen(Screen[None]):
         self._refresh_table()
 
     def action_back(self) -> None:
-        self.app.pop_screen()
+        self.app.exit()
 
     def action_add(self) -> None:
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self._set_status("No event loaded.")
             return
@@ -59,7 +66,8 @@ class CompetitionsScreen(Screen[None]):
         self.app.push_screen(form, self._handle_add_result)
 
     def action_edit(self) -> None:
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self._set_status("No event loaded.")
             return
@@ -75,10 +83,12 @@ class CompetitionsScreen(Screen[None]):
             self._refresh_table()
             return
 
-        self.app.push_screen(CompetitionEditScreen(competition_id))
+        self.app.push_screen(MatrixScreen(competition_id))
 
     def action_open(self) -> None:
-        event = getattr(self.app, "event", None)
+        # reference [S-260210-1.12]
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self._set_status("No event loaded.")
             return
@@ -93,7 +103,50 @@ class CompetitionsScreen(Screen[None]):
             self._refresh_table()
             return
 
-        self.app.push_screen(CompetitionEditScreen(competition_id))
+        self.app.push_screen(MatrixScreen(competition_id))
+
+    def action_load_event(self) -> None:
+        app = cast(AppState, self.app)
+        default_dir = app.default_dir
+        initial = app.file_path
+        initial_value = str(initial) if initial else str(default_dir / "event.json")
+        prompt = TextPrompt(
+            title="Load event",
+            placeholder="Event file path",
+            confirm_label="Load",
+            initial_value=initial_value,
+        )
+        self.app.push_screen(prompt, self._handle_load_prompt)
+
+    def action_save_event(self) -> None:
+        app = cast(AppState, self.app)
+        default_dir = app.default_dir
+        initial = app.file_path
+        initial_value = str(initial) if initial else str(default_dir / "event.json")
+        prompt = TextPrompt(
+            title="Save event",
+            placeholder="Event file path",
+            confirm_label="Save",
+            initial_value=initial_value,
+        )
+        self.app.push_screen(prompt, self._handle_save_prompt)
+
+    def action_rename_event(self) -> None:
+        app = cast(AppState, self.app)
+        event = app.event
+        if event is None:
+            self._set_status("No event to rename.")
+            return
+        prompt = TextPrompt(
+            title="Rename event",
+            placeholder="Event name",
+            confirm_label="Rename",
+            initial_value=event.name,
+        )
+        self.app.push_screen(prompt, self._handle_rename_prompt)
+
+    def action_quit(self) -> None:
+        self.app.exit()
 
     def action_search(self) -> None:
         prompt = TextPrompt(
@@ -106,11 +159,12 @@ class CompetitionsScreen(Screen[None]):
         self.app.push_screen(prompt, self._handle_search_result)
 
     def _refresh_event_info(self) -> None:
-        event = getattr(self.app, "event", None)
-        if event:
-            info = f"Event: {event.name}"
-        else:
-            info = "Event: None"
+        app = cast(AppState, self.app)
+        event = app.event
+        file_path = app.file_path
+        event_name = event.name if event else "No event"
+        path = str(file_path) if file_path else "No file"
+        info = f"Event: {event_name} | File: {path}"
         self.query_one("#event-info", Static).update(info)
 
     def _refresh_table(self) -> None:
@@ -118,7 +172,8 @@ class CompetitionsScreen(Screen[None]):
         table.clear()
         self._visible_competition_ids = []
 
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self.query_one("#filters", Static).update("")
             return
@@ -130,7 +185,14 @@ class CompetitionsScreen(Screen[None]):
         for competition in competitions:
             self._visible_competition_ids.append(competition.id)
             ready = "yes" if _is_ready(competition) else ""
-            computed = "yes" if competition.results is not None else ""
+            result = app.get_competition_result(competition.id)
+            stale = app.competition_is_stale(competition.id)
+            if result is None:
+                computed = ""
+            elif stale:
+                computed = "stale"
+            else:
+                computed = "yes"
             table.add_row(
                 competition.name,
                 str(len(competition.judge_ids)),
@@ -156,7 +218,8 @@ class CompetitionsScreen(Screen[None]):
             self._set_status("Add cancelled.")
             return
 
-        event = getattr(self.app, "event", None)
+        app = cast(AppState, self.app)
+        event = app.event
         if event is None:
             self._set_status("No event loaded.")
             return
@@ -167,6 +230,8 @@ class CompetitionsScreen(Screen[None]):
             judge_ids=[],
             entry_ids=[],
         )
+        if event.competitions:
+            app.mark_competition_stale(event.competitions[-1].id)
         warnings = self._commit_change()
         if warnings:
             self._set_status("; ".join(warnings))
@@ -180,14 +245,77 @@ class CompetitionsScreen(Screen[None]):
         self._query = value
         self._refresh_table()
 
+    def _handle_load_prompt(self, value: str | None) -> None:
+        if value is None:
+            self._set_status("Load cancelled.")
+            return
+        path = self._resolve_path(value)
+        if path is None:
+            self._set_status("Enter a file path to load.")
+            return
+        if not path.exists():
+            self._set_status("File not found.")
+            return
+        app = cast(AppState, self.app)
+        warnings = app.load_event(path)
+        if warnings:
+            self._set_status("; ".join(warnings))
+        else:
+            self._set_status("Event loaded.")
+        self._refresh_event_info()
+        self._refresh_table()
+
+    def _handle_save_prompt(self, value: str | None) -> None:
+        if value is None:
+            self._set_status("Save cancelled.")
+            return
+        path = self._resolve_path(value)
+        if path is None:
+            self._set_status("Enter a file path to save.")
+            return
+        app = cast(AppState, self.app)
+        warnings = app.save_event(path)
+        if warnings:
+            self._set_status("; ".join(warnings))
+        else:
+            self._set_status("Event saved.")
+        self._refresh_event_info()
+
+    def _handle_rename_prompt(self, name: str | None) -> None:
+        if name is None:
+            self._set_status("Rename cancelled.")
+            return
+        app = cast(AppState, self.app)
+        event = app.event
+        if event is None:
+            self._set_status("No event to rename.")
+            return
+        event.name = name
+        warnings = app.commit_change()
+        file_path = app.file_path
+        if file_path is None:
+            self._set_status("Event name updated (not saved yet).")
+        elif warnings:
+            self._set_status("; ".join(warnings))
+        else:
+            self._set_status("Event name updated (auto-saved).")
+        self._refresh_event_info()
+
+    def _resolve_path(self, raw: str) -> Path | None:
+        if not raw:
+            return None
+        path = Path(raw)
+        if not path.is_absolute():
+            app = cast(AppState, self.app)
+            path = app.default_dir / path
+        if path.suffix.lower() != ".json":
+            path = path.with_suffix(".json")
+        return path
+
     def _commit_change(self) -> list[str]:
-        committer = getattr(self.app, "commit_change", None)
-        if committer is None:
-            marker = getattr(self.app, "mark_dirty", None)
-            if marker is not None:
-                marker()
-            return []
-        return committer()
+        app = cast(AppState, self.app)
+        app.mark_dirty()
+        return app.commit_change()
 
 
 def _search_competitions(event: Event, query: str) -> list[Competition]:

@@ -2,13 +2,16 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from uuid import UUID
 
 from textual.app import App
 
 from skating_system.domain.models import Event
 from skating_system.persistence.json_repo import JsonEventRepo
 from skating_system.services.event_service import create_event
-from skating_system.ui.screens.home import HomeScreen
+from skating_system.services.ranking_service import compute_results
+from skating_system.services.skating_scorer import SolveResult
+from skating_system.ui.screens.competitions import CompetitionsScreen
 
 
 class SkatingApp(App[None]):
@@ -22,18 +25,23 @@ class SkatingApp(App[None]):
         self.dirty = False
         self.default_dir = Path.home() / "skating-events"
         self.last_warnings: list[str] = []
+        self.solve_cache: dict[UUID, SolveResult] = {}
+        self.stale_competitions: set[UUID] = set()
+        self.auto_recompute = True
         self._load_last_event()
 
     def on_mount(self) -> None:
         if self.event is None:
             self.event = create_event("Untitled Event")
-        self.push_screen(HomeScreen())
+        self.push_screen(CompetitionsScreen())
 
     def new_event(self, name: str) -> None:
         self.event = create_event(name)
         self.file_path = None
         self.dirty = False
         self.last_warnings = []
+        self.solve_cache = {}
+        self.stale_competitions = set()
 
     def load_event(self, file_path: Path) -> list[str]:
         try:
@@ -47,6 +55,11 @@ class SkatingApp(App[None]):
         self.file_path = file_path
         self.dirty = False
         self.last_warnings = warnings
+        self.solve_cache = {}
+        self.stale_competitions = set()
+        # reference [S-260210-1.21]
+        if self.auto_recompute:
+            self._recompute_loaded_event()
         self._store_last_event(file_path)
         return warnings
 
@@ -77,6 +90,19 @@ class SkatingApp(App[None]):
         self._store_last_event(target_path)
         return warnings
 
+    def set_competition_result(self, competition_id: UUID, result: SolveResult) -> None:
+        self.solve_cache[competition_id] = result
+        self.stale_competitions.discard(competition_id)
+
+    def mark_competition_stale(self, competition_id: UUID) -> None:
+        self.stale_competitions.add(competition_id)
+
+    def competition_is_stale(self, competition_id: UUID) -> bool:
+        return competition_id in self.stale_competitions
+
+    def get_competition_result(self, competition_id: UUID) -> SolveResult | None:
+        return self.solve_cache.get(competition_id)
+
     def mark_dirty(self) -> None:
         self.dirty = True
 
@@ -104,6 +130,16 @@ class SkatingApp(App[None]):
         if not path.exists():
             return
         self.load_event(path)
+
+    def _recompute_loaded_event(self) -> None:
+        if self.event is None:
+            return
+        for competition in self.event.competitions:
+            result, errors = compute_results(competition)
+            if errors or result is None:
+                self.stale_competitions.add(competition.id)
+                continue
+            self.solve_cache[competition.id] = result
 
     def _store_last_event(self, file_path: Path) -> None:
         config_path = self._config_path()
