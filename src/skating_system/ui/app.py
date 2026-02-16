@@ -8,6 +8,7 @@ from textual.app import App
 
 from skating_system.domain.models import Event
 from skating_system.persistence.json_repo import JsonEventRepo
+from skating_system.services import event_service
 from skating_system.services.event_service import create_event
 from skating_system.services.ranking_service import compute_results
 from skating_system.services.skating_scorer import SolveResult
@@ -134,12 +135,20 @@ class SkatingApp(App[None]):
     def _recompute_loaded_event(self) -> None:
         if self.event is None:
             return
+        entry_labels = self._entry_label_lookup(self.event)
         for competition in self.event.competitions:
-            result, errors = compute_results(competition)
+            result, errors = compute_results(competition, entry_labels=entry_labels)
             if errors or result is None:
                 self.stale_competitions.add(competition.id)
                 continue
             self.solve_cache[competition.id] = result
+
+    def _entry_label_lookup(self, event: Event) -> dict[UUID, str]:
+        participant_lookup = {p.id: p for p in event.participants}
+        return {
+            entry.id: event_service.entry_display_label(entry, participant_lookup)
+            for entry in event.entries
+        }
 
     def _store_last_event(self, file_path: Path) -> None:
         config_path = self._config_path()

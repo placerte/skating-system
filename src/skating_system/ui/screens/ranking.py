@@ -141,7 +141,8 @@ class RankingScreen(Screen[None]):
         if event is None or competition is None:
             self._set_status("No competition loaded.")
             return
-        result, errors = compute_results(competition)
+        entry_labels = self._entry_label_lookup(event)
+        result, errors = compute_results(competition, entry_labels=entry_labels)
         if errors or result is None:
             self._set_status("; ".join(errors) if errors else "Unable to compute.")
             return
@@ -324,6 +325,13 @@ class RankingScreen(Screen[None]):
             return None, None
         competition = event_service.find_competition(event, self._competition_id)
         return event, competition
+
+    def _entry_label_lookup(self, event: Event) -> dict[UUID, str]:
+        participant_lookup = {p.id: p for p in event.participants}
+        return {
+            entry.id: event_service.entry_display_label(entry, participant_lookup)
+            for entry in event.entries
+        }
 
 
 def _find_mark(competition: Competition, *, judge_id: UUID, entry_id: UUID):

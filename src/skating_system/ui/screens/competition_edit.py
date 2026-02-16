@@ -11,7 +11,11 @@ from textual.widgets import DataTable, Footer, Static
 from skating_system.domain.models import Competition, Entry, Event, Participant
 from skating_system.services import event_service
 from skating_system.services.ranking_service import compute_results
-from skating_system.services.skating_scorer import SolveResult, classify_cell
+from skating_system.services.skating_scorer import (
+    SolveResult,
+    classify_cell,
+    render_transcript,
+)
 from skating_system.ui.helpers import judge_letters
 from skating_system.ui.modals.text_prompt import TextPrompt
 from skating_system.ui.app_state import AppState
@@ -226,7 +230,8 @@ class MatrixScreen(Screen[None]):
         if event is None or competition is None:
             self._set_status("No competition loaded.")
             return
-        result, errors = compute_results(competition)
+        entry_labels = self._entry_label_lookup(event)
+        result, errors = compute_results(competition, entry_labels=entry_labels)
         if errors or result is None:
             self._set_status("; ".join(errors) if errors else "Unable to compute.")
             return
@@ -600,9 +605,7 @@ class MatrixScreen(Screen[None]):
             lines.append(f"{place_str}. {label}")
 
         self.query_one("#results-content", Static).update("\n".join(lines))
-        transcript = self._render_transcript(
-            solve_result, entry_lookup, participant_lookup
-        )
+        transcript = self._render_transcript(solve_result)
         self.query_one("#transcript-content", Static).update(transcript)
 
     def _refresh_empty_overlay(self) -> None:
@@ -690,33 +693,16 @@ class MatrixScreen(Screen[None]):
             return f"{place:.1f}"
         return f"{int(place)}"
 
-    def _render_transcript(
-        self,
-        result: SolveResult,
-        entry_lookup: dict[UUID, Entry],
-        participant_lookup: dict[UUID, Participant],
-    ) -> str:
+    def _render_transcript(self, result: SolveResult) -> str:
         # reference [S-260210-1.18]
-        def label_for_entry(entry_id: UUID) -> str:
-            entry = entry_lookup.get(entry_id)
-            if entry is None:
-                return str(entry_id)
-            return event_service.entry_display_label(entry, participant_lookup)
+        return render_transcript(result.transcript_root)
 
-        lines: list[str] = []
-
-        def visit(node, depth: int) -> None:
-            indent = "  " * depth
-            subset = ", ".join(label_for_entry(eid) for eid in node.subset_entry_ids)
-            line = f"{indent}{node.rule_applied}: {node.text}"
-            if subset:
-                line = f"{line} [{subset}]"
-            lines.append(line)
-            for child in node.children:
-                visit(child, depth + 1)
-
-        visit(result.transcript_root, 0)
-        return "\n".join(lines)
+    def _entry_label_lookup(self, event: Event) -> dict[UUID, str]:
+        participant_lookup = {p.id: p for p in event.participants}
+        return {
+            entry.id: event_service.entry_display_label(entry, participant_lookup)
+            for entry in event.entries
+        }
 
     def _restore_cursor(self, row: int | None, col: int | None) -> None:
         # reference [S-260210-1.11]

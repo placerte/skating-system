@@ -23,3 +23,6 @@ dev = [
     "pytest>=9.0.2",
     "pytest-asyncio>=0.25.3",
 ]
+
+[project.scripts]
+skating-system = "skating_system.ui.app:run"

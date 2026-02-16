@@ -65,7 +65,12 @@ def _build_event() -> tuple[SkatingApp, UUID]:
         event, competition.id, judge_id=judge_b.id, entry_id=entry_b.id, rank=1
     )
 
-    result, errors = compute_results(competition)
+    participant_lookup = {p.id: p for p in event.participants}
+    entry_labels = {
+        entry.id: event_service.entry_display_label(entry, participant_lookup)
+        for entry in event.entries
+    }
+    result, errors = compute_results(competition, entry_labels=entry_labels)
     assert not errors
     assert result is not None
 
