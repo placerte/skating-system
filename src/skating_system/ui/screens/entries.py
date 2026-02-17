@@ -11,6 +11,7 @@ from skating_system.services import event_service
 from skating_system.ui.modals.entry_form import EntryForm, EntryFormData
 from skating_system.ui.modals.text_prompt import TextPrompt
 from skating_system.ui.app_state import AppState
+from skating_system.ui.figlet_helpers import render_figlet
 
 
 class EntriesScreen(Screen[None]):
@@ -30,8 +31,7 @@ class EntriesScreen(Screen[None]):
         self._visible_entry_ids: list[UUID] = []
 
     def compose(self):
-        yield Static("Entries", id="title")
-        yield Static("", id="event-info")
+        yield Static("", id="event-title")
         yield Static("", id="filters")
         yield DataTable(id="entries")
         yield Static("", id="status")
@@ -143,11 +143,13 @@ class EntriesScreen(Screen[None]):
     def _refresh_event_info(self) -> None:
         app = cast(AppState, self.app)
         event = app.event
-        if event:
-            info = f"Event: {event.name}"
-        else:
-            info = "Event: None"
-        self.query_one("#event-info", Static).update(info)
+        event_name = event.name if event else "No event"
+        event_widget = self.query_one("#event-title", Static)
+        event_width = event_widget.size.width or self.size.width or 80
+        title = render_figlet(
+            event_name, font="smslant", width=event_width, align="center"
+        )
+        event_widget.update(title)
 
     def _refresh_table(self) -> None:
         table = self.query_one("#entries", DataTable)

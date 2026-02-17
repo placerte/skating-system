@@ -11,6 +11,7 @@ from skating_system.ui.screens.entries import EntriesScreen
 from skating_system.ui.screens.participants import ParticipantsScreen
 from skating_system.ui.modals.text_prompt import TextPrompt
 from skating_system.ui.app_state import AppState
+from skating_system.ui.figlet_helpers import render_figlet
 
 
 class HomeScreen(Screen[None]):
@@ -26,8 +27,7 @@ class HomeScreen(Screen[None]):
     ]
 
     def compose(self):
-        yield Static("Skating System", id="title")
-        yield Static("", id="event-info")
+        yield Static("", id="event-title")
         yield Static("", id="default-dir")
         yield Static("", id="status")
         yield Footer()
@@ -92,11 +92,13 @@ class HomeScreen(Screen[None]):
     def _refresh_event_info(self) -> None:
         app = cast(AppState, self.app)
         event = app.event
-        file_path = app.file_path
         event_name = event.name if event else "No event"
-        path = str(file_path) if file_path else "No file"
-        info = f"Event: {event_name} | File: {path}"
-        self.query_one("#event-info", Static).update(info)
+        event_widget = self.query_one("#event-title", Static)
+        event_width = event_widget.size.width or self.size.width or 80
+        title = render_figlet(
+            event_name, font="smslant", width=event_width, align="center"
+        )
+        event_widget.update(title)
 
         default_text = f"Default directory: {app.default_dir}"
         self.query_one("#default-dir", Static).update(default_text)

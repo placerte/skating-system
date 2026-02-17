@@ -145,8 +145,15 @@ class SkatingApp(App[None]):
 
     def _entry_label_lookup(self, event: Event) -> dict[UUID, str]:
         participant_lookup = {p.id: p for p in event.participants}
+
+        def first_word(label: str) -> str:
+            cleaned = label.strip()
+            return cleaned.split()[0] if cleaned else label
+
         return {
-            entry.id: event_service.entry_display_label(entry, participant_lookup)
+            entry.id: first_word(
+                event_service.entry_display_label(entry, participant_lookup)
+            )
             for entry in event.entries
         }
 
@@ -164,5 +171,16 @@ class SkatingApp(App[None]):
         return Path.home() / ".skating_system.json"
 
 
-def run() -> None:
-    SkatingApp().run()
+def run(
+    *,
+    initial_path: Path | None = None,
+    initial_warnings: list[str] | None = None,
+) -> None:
+    app = SkatingApp()
+    if initial_path is not None:
+        warnings = app.load_event(initial_path)
+        if warnings:
+            app.last_warnings = warnings
+    if initial_path is None and initial_warnings:
+        app.last_warnings = list(initial_warnings)
+    app.run()

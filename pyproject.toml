@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "black>=25.9.0",
+    "pyfiglet>=1.0.4",
     "produm>=0.1.0",
     "textual>=6.6.0",
     "ttkbootstrap>=1.14.2",
@@ -20,9 +21,10 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "pyinstaller>=6.11.0",
     "pytest>=9.0.2",
     "pytest-asyncio>=0.25.3",
 ]
 
 [project.scripts]
-skating-system = "skating_system.ui.app:run"
+skating-system = "skating_system.__main__:main"

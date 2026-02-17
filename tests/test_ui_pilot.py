@@ -66,8 +66,15 @@ def _build_event() -> tuple[SkatingApp, UUID]:
     )
 
     participant_lookup = {p.id: p for p in event.participants}
+
+    def first_word(label: str) -> str:
+        cleaned = label.strip()
+        return cleaned.split()[0] if cleaned else label
+
     entry_labels = {
-        entry.id: event_service.entry_display_label(entry, participant_lookup)
+        entry.id: first_word(
+            event_service.entry_display_label(entry, participant_lookup)
+        )
         for entry in event.entries
     }
     result, errors = compute_results(competition, entry_labels=entry_labels)

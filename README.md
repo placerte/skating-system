@@ -1,5 +1,35 @@
 # A simple scoring helper APP written in Python
 
+## CLI
+
+Run the Textual app via the installed script:
+
+```bash
+skating-system --help
+```
+
+Open an event file:
+
+```bash
+skating-system ./path/to/event-file.json
+```
+
+From a directory, auto-pick `event.json` (or the only `.json` file):
+
+```bash
+skating-system
+skating-system .
+```
+
+## Build (PyInstaller)
+
+Install dev dependencies, then run PyInstaller via uv:
+
+```bash
+uv sync --dev
+uv run pyinstaller --help
+```
+
 ## TODOs
 
 - [x] Basic Models
@@ -33,4 +63,3 @@
 - [ ] Implement unicity on judge: participant-number
 - [ ] Implement auto numbering of competitors
 - [ ] Implement auto identification of judges
-

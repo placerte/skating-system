@@ -4,9 +4,10 @@ from typing import cast
 from uuid import UUID
 
 from rich.text import Text
-from textual.containers import Horizontal, Vertical
+from textual.binding import Binding
+from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import Screen
-from textual.widgets import DataTable, Footer, Static
+from textual.widgets import DataTable, Footer, Static, Tree
 
 from skating_system.domain.models import Competition, Entry, Event, Participant
 from skating_system.services import event_service
@@ -14,9 +15,10 @@ from skating_system.services.ranking_service import compute_results
 from skating_system.services.skating_scorer import (
     SolveResult,
     classify_cell,
-    render_transcript,
 )
 from skating_system.ui.helpers import judge_letters
+from skating_system.ui.figlet_helpers import render_figlet
+from skating_system.ui.modals.keybind_help import KeybindHelp
 from skating_system.ui.modals.text_prompt import TextPrompt
 from skating_system.ui.app_state import AppState
 
@@ -29,6 +31,10 @@ class MatrixScreen(Screen[None]):
         layout: horizontal;
     }
 
+    MatrixScreen.sidebar-collapsed #sidebar {
+        display: none;
+    }
+
     MatrixScreen #main {
         width: 1fr;
     }
@@ -37,6 +43,10 @@ class MatrixScreen(Screen[None]):
         width: 35;
         padding: 1;
         border-left: solid $primary;
+    }
+
+    MatrixScreen #transcript-scroll {
+        height: 1fr;
     }
 
     MatrixScreen #empty-overlay {
@@ -48,38 +58,50 @@ class MatrixScreen(Screen[None]):
     """
 
     BINDINGS = [
-        ("j", "add_judge", "Add judge"),
-        ("e", "add_entry", "Add entry"),
-        ("r", "rename", "Rename"),
-        ("enter", "edit_cell", "Edit rank"),
-        ("c", "clear_cell", "Clear rank"),
-        ("C", "compute", "Compute"),
-        ("d", "remove", "Remove"),
-        ("escape", "back", "Back"),
-        ("1", "quick_rank(1)", ""),
-        ("2", "quick_rank(2)", ""),
-        ("3", "quick_rank(3)", ""),
-        ("4", "quick_rank(4)", ""),
-        ("5", "quick_rank(5)", ""),
-        ("6", "quick_rank(6)", ""),
-        ("7", "quick_rank(7)", ""),
-        ("8", "quick_rank(8)", ""),
-        ("9", "quick_rank(9)", ""),
+        Binding("J", "add_judge", "Add judge"),
+        Binding("E", "add_entry", "Add entry"),
+        Binding("r", "rename", "Rename"),
+        Binding("enter", "edit_cell", "Edit rank"),
+        Binding("c", "clear_cell", "Clear rank"),
+        Binding("C", "compute", "Compute"),
+        Binding("d", "remove", "Remove"),
+        Binding("t", "toggle_labels", "Toggle labels"),
+        Binding("?", "toggle_help", "Help"),
+        Binding("escape", "back", "Back"),
+        Binding("p", "toggle_panel", "Toggle panel", show=False),
+        Binding("[", "sidebar_narrower", "", show=False),
+        Binding("]", "sidebar_wider", "", show=False),
+        Binding("h", "move_left", "", show=False),
+        Binding("j", "move_down", "", show=False),
+        Binding("k", "move_up", "", show=False),
+        Binding("l", "move_right", "", show=False),
+        Binding("1", "quick_rank(1)", "", show=False),
+        Binding("2", "quick_rank(2)", "", show=False),
+        Binding("3", "quick_rank(3)", "", show=False),
+        Binding("4", "quick_rank(4)", "", show=False),
+        Binding("5", "quick_rank(5)", "", show=False),
+        Binding("6", "quick_rank(6)", "", show=False),
+        Binding("7", "quick_rank(7)", "", show=False),
+        Binding("8", "quick_rank(8)", "", show=False),
+        Binding("9", "quick_rank(9)", "", show=False),
     ]
 
     def __init__(self, competition_id: UUID) -> None:
         super().__init__()
         self._competition_id = competition_id
         self._columns_built = False
-        self._column_signature: tuple[int, int] | None = None
+        self._column_signature: tuple[int, int, bool] | None = None
         self._visible_entry_ids: list[UUID] = []
         self._visible_judge_ids: list[UUID] = []
+        self._compact_labels = False
+        self._sidebar_collapsed = False
+        self._sidebar_width = 45
 
     def compose(self):
         with Horizontal():
             with Vertical(id="main"):
-                yield Static("", id="title")
-                yield Static("", id="event-info")
+                yield Static("", id="event-title")
+                yield Static("", id="competition-title")
                 yield Static("", id="empty-overlay")
                 yield DataTable(id="matrix")
                 yield Static("", id="status")
@@ -89,13 +111,15 @@ class MatrixScreen(Screen[None]):
                 yield Static("Results", id="results-title")
                 yield Static("", id="results-content")
                 yield Static("Transcript", id="transcript-title")
-                yield Static("", id="transcript-content")
+                with VerticalScroll(id="transcript-scroll"):
+                    yield Tree("Transcript", id="transcript-tree")
                 yield Static("Press 'C' to compute", id="results-hint")
 
     def on_mount(self) -> None:
         table = self.query_one("#matrix", DataTable)
         table.add_columns("Entry")
         table.zebra_stripes = True
+        self._apply_sidebar_width()
 
     def on_show(self) -> None:
         self._refresh_headers()
@@ -155,21 +179,20 @@ class MatrixScreen(Screen[None]):
         table = self.query_one("#matrix", DataTable)
         row = table.cursor_row
         col = table.cursor_column
-        if row is None or col is None or col == 0:
+        if row is None or col is None:
             self._set_status("Select a judge cell.")
             return
 
-        if col > len(self._visible_judge_ids):
+        judge_index = self._judge_index_for_column(col)
+        if judge_index is None:
             self._set_status("Select a judge cell.")
             return
 
         if row < 0 or row >= len(self._visible_entry_ids):
             return
-        if (col - 1) < 0 or (col - 1) >= len(self._visible_judge_ids):
-            return
 
         entry_id = self._visible_entry_ids[row]
-        judge_id = self._visible_judge_ids[col - 1]
+        judge_id = self._visible_judge_ids[judge_index]
 
         existing = _find_mark(competition, judge_id=judge_id, entry_id=entry_id)
         initial = str(existing.rank) if existing else ""
@@ -195,21 +218,19 @@ class MatrixScreen(Screen[None]):
         table = self.query_one("#matrix", DataTable)
         row = table.cursor_row
         col = table.cursor_column
-        if row is None or col is None or col == 0:
+        if row is None or col is None:
             self._set_status("Select a judge cell to clear.")
             return
 
-        if col > len(self._visible_judge_ids):
+        judge_index = self._judge_index_for_column(col)
+        if judge_index is None:
             self._set_status("Select a judge cell to clear.")
             return
 
         if row < 0 or row >= len(self._visible_entry_ids):
             return
-        if (col - 1) < 0 or (col - 1) >= len(self._visible_judge_ids):
-            return
-
         entry_id = self._visible_entry_ids[row]
-        judge_id = self._visible_judge_ids[col - 1]
+        judge_id = self._visible_judge_ids[judge_index]
 
         removed = event_service.clear_rank_mark(
             event, self._competition_id, judge_id=judge_id, entry_id=entry_id
@@ -277,8 +298,8 @@ class MatrixScreen(Screen[None]):
                 return
 
         if col is not None and col > 0 and row == 0:
-            judge_index = col - 1
-            if 0 <= judge_index < len(self._visible_judge_ids):
+            judge_index = self._judge_index_for_column(col)
+            if judge_index is not None:
                 judge_id = self._visible_judge_ids[judge_index]
                 competition.judge_ids = [
                     jid for jid in competition.judge_ids if jid != judge_id
@@ -299,6 +320,38 @@ class MatrixScreen(Screen[None]):
 
         self._set_status("Select a row or column header to remove.")
 
+    def action_toggle_labels(self) -> None:
+        self._compact_labels = not self._compact_labels
+        self._columns_built = False
+        self._refresh_matrix()
+
+    def action_toggle_panel(self) -> None:
+        self._sidebar_collapsed = not self._sidebar_collapsed
+        self.set_class(self._sidebar_collapsed, "sidebar-collapsed")
+
+    def action_sidebar_narrower(self) -> None:
+        self._sidebar_width = max(25, self._sidebar_width - 5)
+        self._apply_sidebar_width()
+
+    def action_sidebar_wider(self) -> None:
+        self._sidebar_width = min(90, self._sidebar_width + 5)
+        self._apply_sidebar_width()
+
+    def action_move_left(self) -> None:
+        self._move_cursor(delta_row=0, delta_col=-1)
+
+    def action_move_right(self) -> None:
+        self._move_cursor(delta_row=0, delta_col=1)
+
+    def action_move_up(self) -> None:
+        self._move_cursor(delta_row=-1, delta_col=0)
+
+    def action_move_down(self) -> None:
+        self._move_cursor(delta_row=1, delta_col=0)
+
+    def action_toggle_help(self) -> None:
+        self.app.push_screen(KeybindHelp())
+
     def action_quick_rank(self, rank: int) -> None:
         """Quick rank entry: press 1-9 to set rank on selected cell."""
         event, competition = self._get_event_competition()
@@ -308,19 +361,17 @@ class MatrixScreen(Screen[None]):
         table = self.query_one("#matrix", DataTable)
         row = table.cursor_row
         col = table.cursor_column
-        if row is None or col is None or col == 0:
+        if row is None or col is None:
             return
 
-        if col > len(self._visible_judge_ids):
+        judge_index = self._judge_index_for_column(col)
+        if judge_index is None:
             return
 
         if row < 0 or row >= len(self._visible_entry_ids):
             return
-        if (col - 1) < 0 or (col - 1) >= len(self._visible_judge_ids):
-            return
-
         entry_id = self._visible_entry_ids[row]
-        judge_id = self._visible_judge_ids[col - 1]
+        judge_id = self._visible_judge_ids[judge_index]
 
         entry_count = len(competition.entry_ids)
         if rank < 1 or rank > entry_count:
@@ -486,15 +537,20 @@ class MatrixScreen(Screen[None]):
 
     def _refresh_headers(self) -> None:
         event, competition = self._get_event_competition()
-        if competition is None:
-            self.query_one("#title", Static).update("Competition: None")
-        else:
-            self.query_one("#title", Static).update(f"Competition: {competition.name}")
-
-        if event:
-            self.query_one("#event-info", Static).update(f"Event: {event.name}")
-        else:
-            self.query_one("#event-info", Static).update("Event: None")
+        event_widget = self.query_one("#event-title", Static)
+        event_width = event_widget.size.width or self.size.width or 80
+        event_name = event.name if event else "No event"
+        event_title = render_figlet(
+            event_name, font="smslant", width=event_width, align="center"
+        )
+        competition_widget = self.query_one("#competition-title", Static)
+        competition_width = competition_widget.size.width or event_width
+        competition_name = competition.name if competition else "No competition"
+        competition_title = render_figlet(
+            competition_name, font="mini", width=competition_width, align="left"
+        )
+        event_widget.update(event_title)
+        competition_widget.update(competition_title)
 
     def _ensure_judge_columns(self) -> None:
         event, competition = self._get_event_competition()
@@ -503,16 +559,17 @@ class MatrixScreen(Screen[None]):
 
         judge_count = len(competition.judge_ids)
         entry_count = len(competition.entry_ids)
-        signature = (judge_count, entry_count)
+        signature = (judge_count, entry_count, self._compact_labels)
         if self._columns_built and self._column_signature == signature:
             return
 
         table = self.query_one("#matrix", DataTable)
         table.clear(columns=True)
-        headers = ["Entry"]
-        # reference [S-260210-1.10], [S-260210-1.14]
-        headers.extend(judge_letters(judge_count))
+        headers = ["Entry", " "]
+        headers.extend(self._judge_header_labels(event, competition))
+        headers.append(" ")
         headers.extend(self._cutoff_headers(entry_count))
+        headers.append(" ")
         headers.append("Place")
         table.add_columns(*headers)
 
@@ -552,20 +609,22 @@ class MatrixScreen(Screen[None]):
             if entry is None:
                 continue
             self._visible_entry_ids.append(entry_id)
-            label = event_service.entry_display_label(entry, participant_lookup)
+            label = self._entry_label(entry, participant_lookup)
 
-            row_values: list[str | Text] = [label]
+            row_values: list[str | Text] = [label, ""]
             for judge_id in self._visible_judge_ids:
                 mark = _find_mark(competition, judge_id=judge_id, entry_id=entry_id)
                 row_values.append(
                     Text(str(mark.rank), justify="center") if mark else ""
                 )
 
+            row_values.append("")
             row_values.extend(
                 self._derived_cells(entry_id, solve_result, len(competition.entry_ids))
             )
 
             place = placements.get(entry_id)
+            row_values.append("")
             row_values.append(self._format_place(place) if place is not None else "")
             table.add_row(*row_values)
 
@@ -575,7 +634,7 @@ class MatrixScreen(Screen[None]):
         event, competition = self._get_event_competition()
         if event is None or competition is None:
             self.query_one("#results-content", Static).update("")
-            self.query_one("#transcript-content", Static).update("")
+            self._clear_transcript_tree()
             return
 
         solve_result = self._get_solve_result()
@@ -585,7 +644,7 @@ class MatrixScreen(Screen[None]):
 
         if solve_result is None:
             self.query_one("#results-content", Static).update("Not computed.")
-            self.query_one("#transcript-content", Static).update("")
+            self._clear_transcript_tree()
             return
 
         participant_lookup = {p.id: p for p in event.participants}
@@ -605,21 +664,24 @@ class MatrixScreen(Screen[None]):
             lines.append(f"{place_str}. {label}")
 
         self.query_one("#results-content", Static).update("\n".join(lines))
-        transcript = self._render_transcript(solve_result)
-        self.query_one("#transcript-content", Static).update(transcript)
+        self._render_transcript_tree(solve_result)
 
     def _refresh_empty_overlay(self) -> None:
         event, competition = self._get_event_competition()
         if competition is None:
-            self.query_one("#empty-overlay", Static).update("")
+            overlay = self.query_one("#empty-overlay", Static)
+            overlay.display = False
+            overlay.update("")
             return
 
         if not competition.judge_ids and not competition.entry_ids:
-            self.query_one("#empty-overlay", Static).update(
-                "Press 'j' to add judges\nPress 'e' to add entries"
-            )
+            overlay = self.query_one("#empty-overlay", Static)
+            overlay.display = True
+            overlay.update("Press 'J' to add judges\nPress 'E' to add entries")
         else:
-            self.query_one("#empty-overlay", Static).update("")
+            overlay = self.query_one("#empty-overlay", Static)
+            overlay.display = False
+            overlay.update("")
 
     def _mark_stale(self) -> None:
         # reference [S-260210-1.19]
@@ -676,7 +738,7 @@ class MatrixScreen(Screen[None]):
                 cutoff=cutoff,
             )
             if classification.is_dead:
-                cells.append(Text(text_value, style="dim"))
+                cells.append(Text(text_value, style="dim #4a4a4a"))
                 continue
 
             primary = f"{count}{'*' if has_majority else ''}"
@@ -693,14 +755,41 @@ class MatrixScreen(Screen[None]):
             return f"{place:.1f}"
         return f"{int(place)}"
 
-    def _render_transcript(self, result: SolveResult) -> str:
-        # reference [S-260210-1.18]
-        return render_transcript(result.transcript_root)
+    def _clear_transcript_tree(self) -> None:
+        tree = self.query_one("#transcript-tree", Tree)
+        tree.clear()
+
+    def _render_transcript_tree(self, result: SolveResult) -> None:
+        tree = self.query_one("#transcript-tree", Tree)
+        tree.clear()
+        tree.show_root = False
+
+        def render_label(text: str) -> Text:
+            if text.startswith("**") and text.endswith("**"):
+                return Text(text.strip("*"), style="bold")
+            return Text(text)
+
+        def build(node, parent) -> None:
+            if node.text is None:
+                parent.add_leaf(" ")
+                return
+            label = render_label(node.text)
+            if node.children:
+                child_node = parent.add(label, expand=True)
+                for child in node.children:
+                    build(child, child_node)
+            else:
+                parent.add_leaf(label)
+
+        for child in result.transcript_root.children:
+            build(child, tree.root)
 
     def _entry_label_lookup(self, event: Event) -> dict[UUID, str]:
         participant_lookup = {p.id: p for p in event.participants}
         return {
-            entry.id: event_service.entry_display_label(entry, participant_lookup)
+            entry.id: self._label_first_word(
+                event_service.entry_display_label(entry, participant_lookup)
+            )
             for entry in event.entries
         }
 
@@ -718,12 +807,73 @@ class MatrixScreen(Screen[None]):
             or col >= col_count
         ):
             if row_count > 0 and col_count > 1:
-                table.move_cursor(row=0, column=1)
+                table.move_cursor(row=0, column=2)
             return
         table.move_cursor(row=row, column=col)
 
     def _set_status(self, message: str) -> None:
         self.query_one("#status", Static).update(message)
+
+    def _apply_sidebar_width(self) -> None:
+        sidebar = self.query_one("#sidebar", Vertical)
+        sidebar.styles.width = self._sidebar_width
+
+    def _move_cursor(self, delta_row: int, delta_col: int) -> None:
+        table = self.query_one("#matrix", DataTable)
+        row = table.cursor_row
+        col = table.cursor_column
+        if row is None or col is None:
+            return
+        if table.row_count == 0 or len(table.columns) == 0:
+            return
+        target_row = max(0, min(table.row_count - 1, row + delta_row))
+        target_col = max(0, min(len(table.columns) - 1, col + delta_col))
+        table.move_cursor(row=target_row, column=target_col)
+
+    def _judge_index_for_column(self, column: int) -> int | None:
+        if column < 2:
+            return None
+        start = 2
+        end = start + len(self._visible_judge_ids) - 1
+        if column < start or column > end:
+            return None
+        return column - start
+
+    def _label_first_word(self, label: str) -> str:
+        cleaned = label.strip()
+        return cleaned.split()[0] if cleaned else label
+
+    def _entry_label(
+        self,
+        entry: Entry,
+        participant_lookup: dict[UUID, Participant],
+    ) -> str:
+        label = event_service.entry_display_label(entry, participant_lookup)
+        if self._compact_labels:
+            return self._label_first_word(label)
+        return label
+
+    def _judge_header_labels(
+        self,
+        event: Event,
+        competition: Competition,
+    ) -> list[str]:
+        participant_lookup = {p.id: p for p in event.participants}
+        letters = judge_letters(len(competition.judge_ids))
+        labels: list[str] = []
+        for index, judge_id in enumerate(competition.judge_ids):
+            letter = letters[index] if index < len(letters) else "?"
+            participant = participant_lookup.get(judge_id)
+            if participant is None:
+                label = letter
+            else:
+                label = (
+                    f"{letter} {participant.first_name} {participant.last_name}".strip()
+                )
+            if self._compact_labels:
+                label = letter
+            labels.append(label)
+        return labels
 
     def _commit_change(self) -> list[str]:
         app = cast(AppState, self.app)

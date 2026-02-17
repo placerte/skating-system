@@ -11,6 +11,7 @@ from skating_system.services import event_service
 from skating_system.services.ranking_service import compute_results
 from skating_system.ui.app_state import AppState
 from skating_system.ui.modals.text_prompt import TextPrompt
+from skating_system.ui.figlet_helpers import render_figlet
 
 
 class RankingScreen(Screen[None]):
@@ -30,9 +31,8 @@ class RankingScreen(Screen[None]):
         self._visible_judge_ids: list[UUID] = []
 
     def compose(self):
-        yield Static("Ranking", id="title")
-        yield Static("", id="event-info")
-        yield Static("", id="competition-info")
+        yield Static("", id="event-title")
+        yield Static("", id="competition-title")
         yield DataTable(id="matrix")
         yield Static("", id="results")
         yield Static("", id="status")
@@ -215,18 +215,21 @@ class RankingScreen(Screen[None]):
     def _refresh_headers(self) -> None:
         app = cast(AppState, self.app)
         event = app.event
-        if event:
-            self.query_one("#event-info", Static).update(f"Event: {event.name}")
-        else:
-            self.query_one("#event-info", Static).update("Event: None")
-
+        event_widget = self.query_one("#event-title", Static)
+        event_width = event_widget.size.width or self.size.width or 80
+        event_name = event.name if event else "No event"
+        event_title = render_figlet(
+            event_name, font="smslant", width=event_width, align="center"
+        )
         _, competition = self._get_event_competition()
-        if competition is None:
-            self.query_one("#competition-info", Static).update("Competition: None")
-        else:
-            self.query_one("#competition-info", Static).update(
-                f"Competition: {competition.name}"
-            )
+        competition_widget = self.query_one("#competition-title", Static)
+        competition_width = competition_widget.size.width or event_width
+        competition_name = competition.name if competition else "No competition"
+        competition_title = render_figlet(
+            competition_name, font="mini", width=competition_width, align="left"
+        )
+        event_widget.update(event_title)
+        competition_widget.update(competition_title)
 
     def _ensure_columns(self) -> None:
         if self._columns_built:
@@ -328,8 +331,15 @@ class RankingScreen(Screen[None]):
 
     def _entry_label_lookup(self, event: Event) -> dict[UUID, str]:
         participant_lookup = {p.id: p for p in event.participants}
+
+        def first_word(label: str) -> str:
+            cleaned = label.strip()
+            return cleaned.split()[0] if cleaned else label
+
         return {
-            entry.id: event_service.entry_display_label(entry, participant_lookup)
+            entry.id: first_word(
+                event_service.entry_display_label(entry, participant_lookup)
+            )
             for entry in event.entries
         }
 

@@ -16,6 +16,7 @@ from skating_system.ui.modals.competition_form import (
 from skating_system.ui.modals.text_prompt import TextPrompt
 from skating_system.ui.app_state import AppState
 from skating_system.ui.screens.competition_edit import MatrixScreen
+from skating_system.ui.figlet_helpers import render_figlet
 
 
 class CompetitionsScreen(Screen[None]):
@@ -36,8 +37,8 @@ class CompetitionsScreen(Screen[None]):
         self._visible_competition_ids: list[UUID] = []
 
     def compose(self):
-        yield Static("Competitions", id="title")
-        yield Static("", id="event-info")
+        yield Static("", id="event-title")
+        yield Static("", id="screen-subtitle")
         yield Static("", id="filters")
         yield DataTable(id="competitions")
         yield Static("", id="status")
@@ -161,11 +162,19 @@ class CompetitionsScreen(Screen[None]):
     def _refresh_event_info(self) -> None:
         app = cast(AppState, self.app)
         event = app.event
-        file_path = app.file_path
         event_name = event.name if event else "No event"
-        path = str(file_path) if file_path else "No file"
-        info = f"Event: {event_name} | File: {path}"
-        self.query_one("#event-info", Static).update(info)
+        event_widget = self.query_one("#event-title", Static)
+        event_width = event_widget.size.width or self.size.width or 80
+        title = render_figlet(
+            event_name, font="smslant", width=event_width, align="center"
+        )
+        subtitle_widget = self.query_one("#screen-subtitle", Static)
+        subtitle_width = subtitle_widget.size.width or event_width
+        subtitle = render_figlet(
+            "Competitions", font="mini", width=subtitle_width, align="left"
+        )
+        event_widget.update(title)
+        subtitle_widget.update(subtitle)
 
     def _refresh_table(self) -> None:
         table = self.query_one("#competitions", DataTable)
