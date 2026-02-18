@@ -1,65 +1,56 @@
-# A simple scoring helper APP written in Python
+# Skating System
 
-## CLI
+Terminal UI for managing skating competitions and computing placements using the official skating system rules.
 
-Run the Textual app via the installed script:
+## Installation
 
-```bash
-skating-system --help
-```
-
-Open an event file:
+Download the latest Linux binary and install it in `/usr/local/bin`:
 
 ```bash
-skating-system ./path/to/event-file.json
+curl -L -o skating-system \
+  https://github.com/placerte/skating-system/releases/latest/download/skating-system-linux-x86_64
+
+chmod +x skating-system
+sudo mv skating-system /usr/local/bin/skating-system
 ```
 
-From a directory, auto-pick `event.json` (or the only `.json` file):
+## Usage
+
+Launch the app:
 
 ```bash
 skating-system
+```
+
+Open a specific event file:
+
+```bash
+skating-system ./path/to/event.json
+```
+
+Start from a directory (auto-picks `event.json` or the only `.json` file):
+
+```bash
 skating-system .
 ```
 
-## Build (PyInstaller)
+## Development
 
-Install dev dependencies, then run PyInstaller via uv:
+Create a virtual environment and install deps:
 
 ```bash
-uv sync --dev
-uv run pyinstaller --help
+uv venv --python 3.13
+uv sync
 ```
 
-## TODOs
+Run the app:
 
-- [x] Basic Models
-- [ ] Create competitor role (LEAD - FOLLOW - SOLO - OTHER) RETHINK THIS AND GROUP TYPE...
-- [ ] Create group model (list of participants/competitors)
-    - [ ] group should have a type (SOLO - COUPLE - TROUP)
-- [ ] Implement scores at group level and not competitor level
-- [ ] Build Minimal CLI app
-    - [ ] Create an event
-    - [ ] Build a competitor list
-    - [ ] Print competitors list
-    - [ ] Build a judges list
-    - [ ] Print judges list
-    - [ ] Create a competition
-    - [ ] Register competitors 
-- [ ] Test basic features:
-- [ ] Implement Rules:
-  - [ ] Rule 1
-  - [ ] Rule 2
-  - [ ] Rule 3
-  - [ ] Rule 4
-  - [ ] Rule 5
-  - [ ] Rule 6
-  - [ ] Rule 7
-  - [ ] Rule 8
-  - [ ] Rule 9
-  - [ ] Rule 10
-  - [ ] Rule 11
-- [x] Implement SQLite DB
-- [ ] Implement unicity on competitor: participant-number
-- [ ] Implement unicity on judge: participant-number
-- [ ] Implement auto numbering of competitors
-- [ ] Implement auto identification of judges
+```bash
+uv run python -m skating_system
+```
+
+Run tests:
+
+```bash
+uv run python -m pytest
+```
