@@ -1,0 +1,2312 @@
+{
+  "app_version": null,
+  "competitions": [
+    {
+      "entry_ids": [
+        "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+        "6f532d17-5b4c-4b98-987a-01b98532b76a",
+        "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+        "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+        "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+        "07fdb914-69e1-492e-97b7-7ca2849cf388"
+      ],
+      "id": "9539fb5b-8d0f-4a93-8ce6-9a1085b4ae6a",
+      "is_obsolete": false,
+      "judge_ids": [
+        "207a9e8c-828b-4131-853a-b4616464d299",
+        "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+        "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+        "944de627-2de3-425b-a50e-20752811c6a4",
+        "a952f435-b35c-43c3-af38-6f4756762a5d"
+      ],
+      "name": "Rule 5 Test  -  PDF  Rulebook",
+      "rank_marks": [
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 6
+        }
+      ]
+    },
+    {
+      "entry_ids": [
+        "c89b4959-ea6b-4521-a887-675715ca0f87",
+        "64f2debd-7955-475e-a16d-82ae703eaf7d",
+        "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+        "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+        "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+        "7b30e18c-897f-4feb-8ed7-929e49cb5598"
+      ],
+      "id": "cace6752-8940-4ba8-ac5c-b48201436630",
+      "is_obsolete": true,
+      "judge_ids": [
+        "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+        "a6f00061-150b-4213-a69d-f4d5ceab3565",
+        "6db15717-f271-415d-9222-16d2b3371669",
+        "55a8a243-f522-431f-a6e7-9949fb587131",
+        "4a95715c-6bf0-4b90-8064-738665b52941",
+        "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+        "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880"
+      ],
+      "name": "Rule 6 Test",
+      "rank_marks": [
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 6
+        }
+      ]
+    },
+    {
+      "entry_ids": [
+        "c89b4959-ea6b-4521-a887-675715ca0f87",
+        "64f2debd-7955-475e-a16d-82ae703eaf7d",
+        "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+        "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+        "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+        "7b30e18c-897f-4feb-8ed7-929e49cb5598"
+      ],
+      "id": "bae1d3f0-0b5d-4b36-a66d-b64e15381a0d",
+      "is_obsolete": true,
+      "judge_ids": [
+        "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+        "a6f00061-150b-4213-a69d-f4d5ceab3565",
+        "6db15717-f271-415d-9222-16d2b3371669",
+        "55a8a243-f522-431f-a6e7-9949fb587131",
+        "4a95715c-6bf0-4b90-8064-738665b52941",
+        "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+        "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880"
+      ],
+      "name": "Rule 7 Test",
+      "rank_marks": [
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "6db15717-f271-415d-9222-16d2b3371669",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "55a8a243-f522-431f-a6e7-9949fb587131",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "4a95715c-6bf0-4b90-8064-738665b52941",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+          "judge_id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+          "notes": null,
+          "rank": 5
+        }
+      ]
+    },
+    {
+      "entry_ids": [
+        "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+        "6f532d17-5b4c-4b98-987a-01b98532b76a",
+        "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+        "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+        "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+        "07fdb914-69e1-492e-97b7-7ca2849cf388"
+      ],
+      "id": "9154c6e6-6e82-4b24-9d2d-22d0a7b8df88",
+      "is_obsolete": false,
+      "judge_ids": [
+        "207a9e8c-828b-4131-853a-b4616464d299",
+        "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+        "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+        "944de627-2de3-425b-a50e-20752811c6a4",
+        "a952f435-b35c-43c3-af38-6f4756762a5d",
+        "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+        "2fee94f4-1f83-4f63-8dfc-65eeba29d17e"
+      ],
+      "name": "Rule 6 Test  -  PDF  Rulebook",
+      "rank_marks": [
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 6
+        }
+      ]
+    },
+    {
+      "entry_ids": [
+        "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+        "6f532d17-5b4c-4b98-987a-01b98532b76a",
+        "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+        "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+        "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+        "07fdb914-69e1-492e-97b7-7ca2849cf388"
+      ],
+      "id": "2ab9e442-0e03-427a-bf4c-ffe32f8f655c",
+      "is_obsolete": false,
+      "judge_ids": [
+        "207a9e8c-828b-4131-853a-b4616464d299",
+        "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+        "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+        "944de627-2de3-425b-a50e-20752811c6a4",
+        "a952f435-b35c-43c3-af38-6f4756762a5d",
+        "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+        "2fee94f4-1f83-4f63-8dfc-65eeba29d17e"
+      ],
+      "name": "Rule 7 Test  -  PDF  Rulebook",
+      "rank_marks": [
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 6
+        },
+        {
+          "entry_id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+          "judge_id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+          "notes": null,
+          "rank": 5
+        }
+      ]
+    },
+    {
+      "entry_ids": [],
+      "id": "0f57609b-8f12-4e39-95ac-a20188e750d0",
+      "is_obsolete": true,
+      "judge_ids": [],
+      "name": "Clear Majority - Wikipedia",
+      "rank_marks": []
+    },
+    {
+      "entry_ids": [
+        "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+        "6f532d17-5b4c-4b98-987a-01b98532b76a",
+        "06521a9d-d4f1-4680-9910-d68a382ce0a3"
+      ],
+      "id": "7975716e-5598-4449-a5de-e2cbf302fb92",
+      "is_obsolete": false,
+      "judge_ids": [
+        "207a9e8c-828b-4131-853a-b4616464d299",
+        "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+        "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+        "944de627-2de3-425b-a50e-20752811c6a4",
+        "a952f435-b35c-43c3-af38-6f4756762a5d"
+      ],
+      "name": "Clear Majority  -  Wikipedia",
+      "rank_marks": [
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "entry_ids": [
+        "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+        "6f532d17-5b4c-4b98-987a-01b98532b76a",
+        "06521a9d-d4f1-4680-9910-d68a382ce0a3"
+      ],
+      "id": "f6bfba0a-fa29-4291-a7de-f3095c29f45b",
+      "is_obsolete": true,
+      "judge_ids": [
+        "207a9e8c-828b-4131-853a-b4616464d299",
+        "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+        "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+        "944de627-2de3-425b-a50e-20752811c6a4",
+        "a952f435-b35c-43c3-af38-6f4756762a5d"
+      ],
+      "name": "Multiple Majorities  -  Wikipedia",
+      "rank_marks": [
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 3
+        }
+      ]
+    },
+    {
+      "entry_ids": [
+        "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+        "6f532d17-5b4c-4b98-987a-01b98532b76a",
+        "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+        "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+        "b729c8e3-56c3-449e-8c0d-00c642643bbe"
+      ],
+      "id": "a5e57395-a89e-4cf9-a66f-906babca1e8e",
+      "is_obsolete": false,
+      "judge_ids": [
+        "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+        "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+        "944de627-2de3-425b-a50e-20752811c6a4",
+        "a952f435-b35c-43c3-af38-6f4756762a5d",
+        "207a9e8c-828b-4131-853a-b4616464d299"
+      ],
+      "name": "Multiple Majorities  -  Wikipedia",
+      "rank_marks": [
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 5
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 4
+        }
+      ]
+    },
+    {
+      "entry_ids": [
+        "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+        "6f532d17-5b4c-4b98-987a-01b98532b76a",
+        "06521a9d-d4f1-4680-9910-d68a382ce0a3"
+      ],
+      "id": "aeb5dc74-2c76-4eed-a7de-2f7192f86d26",
+      "is_obsolete": false,
+      "judge_ids": [
+        "207a9e8c-828b-4131-853a-b4616464d299",
+        "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+        "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+        "944de627-2de3-425b-a50e-20752811c6a4",
+        "a952f435-b35c-43c3-af38-6f4756762a5d"
+      ],
+      "name": "No Majority  -  Wikipedia",
+      "rank_marks": [
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "entry_ids": [
+        "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+        "6f532d17-5b4c-4b98-987a-01b98532b76a",
+        "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+        "16c641e9-b0dd-4af3-9cef-c779ec43a21e"
+      ],
+      "id": "866b28e2-f40d-41de-8d7c-3522b9197ea8",
+      "is_obsolete": false,
+      "judge_ids": [
+        "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+        "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+        "944de627-2de3-425b-a50e-20752811c6a4",
+        "a952f435-b35c-43c3-af38-6f4756762a5d",
+        "207a9e8c-828b-4131-853a-b4616464d299"
+      ],
+      "name": "Shared Places  -  Wikipedia",
+      "rank_marks": [
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 3
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "944de627-2de3-425b-a50e-20752811c6a4",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+          "notes": null,
+          "rank": 4
+        },
+        {
+          "entry_id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 2
+        },
+        {
+          "entry_id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 1
+        },
+        {
+          "entry_id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+          "judge_id": "207a9e8c-828b-4131-853a-b4616464d299",
+          "notes": null,
+          "rank": 3
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-01-22T05:44:03.852426",
+  "entries": [
+    {
+      "id": "77f2c560-fde1-4ce4-8fcf-9464e8f2a807",
+      "is_obsolete": true,
+      "members": [
+        {
+          "participant_id": "8d0bcf64-74f9-42c0-80fc-4ceec71534cd",
+          "role": "Leader"
+        },
+        {
+          "participant_id": "89eeee53-bd2e-4822-870f-0a34267026e0",
+          "role": null
+        }
+      ],
+      "name": ""
+    },
+    {
+      "id": "2700cf4a-735c-41f7-aba4-499d65008259",
+      "is_obsolete": true,
+      "members": [
+        {
+          "participant_id": "ebe09ee1-b38d-42f6-bded-de0e67e2a122",
+          "role": null
+        },
+        {
+          "participant_id": "af6d5a5c-f25e-4d00-8b01-907bd399c3cb",
+          "role": "Leader"
+        }
+      ],
+      "name": ""
+    },
+    {
+      "id": "c89b4959-ea6b-4521-a887-675715ca0f87",
+      "is_obsolete": false,
+      "members": [
+        {
+          "participant_id": "89eeee53-bd2e-4822-870f-0a34267026e0",
+          "role": null
+        }
+      ],
+      "name": ""
+    },
+    {
+      "id": "64f2debd-7955-475e-a16d-82ae703eaf7d",
+      "is_obsolete": false,
+      "members": [
+        {
+          "participant_id": "af6d5a5c-f25e-4d00-8b01-907bd399c3cb",
+          "role": null
+        }
+      ],
+      "name": ""
+    },
+    {
+      "id": "9cb4ea66-d896-4e5e-9673-c3fa79b8e066",
+      "is_obsolete": false,
+      "members": [
+        {
+          "participant_id": "ebe09ee1-b38d-42f6-bded-de0e67e2a122",
+          "role": null
+        }
+      ],
+      "name": ""
+    },
+    {
+      "id": "c9e7f315-dcbc-4aa1-b86c-c75184c0e54b",
+      "is_obsolete": false,
+      "members": [
+        {
+          "participant_id": "10ae087d-857f-461a-a0b8-89a90d7086f3",
+          "role": null
+        }
+      ],
+      "name": ""
+    },
+    {
+      "id": "ad150dcf-3149-46fd-ac3a-bc1af5f521ca",
+      "is_obsolete": false,
+      "members": [
+        {
+          "participant_id": "8e31ff38-320b-47eb-bde5-f8edda7ceaee",
+          "role": null
+        }
+      ],
+      "name": ""
+    },
+    {
+      "id": "7b30e18c-897f-4feb-8ed7-929e49cb5598",
+      "is_obsolete": false,
+      "members": [
+        {
+          "participant_id": "754f0335-7ae3-40a8-8b49-bdf3f0fcb213",
+          "role": null
+        }
+      ],
+      "name": ""
+    },
+    {
+      "id": "9606aa49-9d3e-4048-ae75-eb327dc8825a",
+      "is_obsolete": false,
+      "members": [],
+      "name": "Andr\u00e9anne Dion"
+    },
+    {
+      "id": "2c4d898b-4e0a-4020-9879-d51eb56edc82",
+      "is_obsolete": false,
+      "members": [],
+      "name": "101 Ariane Vincent"
+    },
+    {
+      "id": "6f532d17-5b4c-4b98-987a-01b98532b76a",
+      "is_obsolete": false,
+      "members": [],
+      "name": "102 Pierre Lacerte"
+    },
+    {
+      "id": "06521a9d-d4f1-4680-9910-d68a382ce0a3",
+      "is_obsolete": false,
+      "members": [],
+      "name": "103 Cathy Hochu"
+    },
+    {
+      "id": "16c641e9-b0dd-4af3-9cef-c779ec43a21e",
+      "is_obsolete": false,
+      "members": [],
+      "name": "104 Alexandre Larouche"
+    },
+    {
+      "id": "b729c8e3-56c3-449e-8c0d-00c642643bbe",
+      "is_obsolete": false,
+      "members": [],
+      "name": "105 Caroline Fondacci"
+    },
+    {
+      "id": "07fdb914-69e1-492e-97b7-7ca2849cf388",
+      "is_obsolete": false,
+      "members": [],
+      "name": "106 Martin Bourbeau"
+    }
+  ],
+  "id": "ccb48681-266c-4507-b3f3-74b1bd378f89",
+  "name": "#  Rule Testing  #",
+  "participants": [
+    {
+      "email": "placerte@gmai.com",
+      "first_name": "Pierre",
+      "id": "8d0bcf64-74f9-42c0-80fc-4ceec71534cd",
+      "is_obsolete": true,
+      "last_name": "Laceret",
+      "number": 100
+    },
+    {
+      "email": "ap@gmail.com",
+      "first_name": "Audrey",
+      "id": "89eeee53-bd2e-4822-870f-0a34267026e0",
+      "is_obsolete": false,
+      "last_name": "Poulin",
+      "number": 101
+    },
+    {
+      "email": "jpg@gmai.com",
+      "first_name": "Jean-Philippe",
+      "id": "af6d5a5c-f25e-4d00-8b01-907bd399c3cb",
+      "is_obsolete": false,
+      "last_name": "Gagn\u00e9",
+      "number": 102
+    },
+    {
+      "email": "ag@pos.com",
+      "first_name": "Adr\u00e9anne",
+      "id": "ebe09ee1-b38d-42f6-bded-de0e67e2a122",
+      "is_obsolete": false,
+      "last_name": "Germain",
+      "number": 103
+    },
+    {
+      "email": "fg@pos.com",
+      "first_name": "Florent",
+      "id": "10ae087d-857f-461a-a0b8-89a90d7086f3",
+      "is_obsolete": false,
+      "last_name": "Gauthier",
+      "number": 104
+    },
+    {
+      "email": "amv@pos.com",
+      "first_name": "Anne-Marie",
+      "id": "8e31ff38-320b-47eb-bde5-f8edda7ceaee",
+      "is_obsolete": false,
+      "last_name": "Villeneuve",
+      "number": 105
+    },
+    {
+      "email": "jeff@pos.com",
+      "first_name": "Jeff",
+      "id": "754f0335-7ae3-40a8-8b49-bdf3f0fcb213",
+      "is_obsolete": false,
+      "last_name": "Mynamis",
+      "number": 106
+    },
+    {
+      "email": "ludo@pos.com",
+      "first_name": "Ludo",
+      "id": "ef124519-aabc-46a6-9080-dd916be6daf3",
+      "is_obsolete": false,
+      "last_name": "Lefranc",
+      "number": 107
+    },
+    {
+      "email": "stacy@pos.com",
+      "first_name": "Stacy",
+      "id": "5050f8d2-08ab-454e-94bf-baf31229e8ea",
+      "is_obsolete": false,
+      "last_name": "Lafranc",
+      "number": 108
+    },
+    {
+      "email": "av@gmail.com",
+      "first_name": "Ariane",
+      "id": "179cf7ab-7993-41d4-9c9e-ae0093f0c597",
+      "is_obsolete": false,
+      "last_name": "Vincent",
+      "number": 109
+    },
+    {
+      "email": "jg@gmail.com",
+      "first_name": "J\u00e9r\u00f4me",
+      "id": "db9e5377-9fc5-4c24-a0b0-75e232926610",
+      "is_obsolete": false,
+      "last_name": "Guillement",
+      "number": 110
+    },
+    {
+      "email": null,
+      "first_name": "A",
+      "id": "9a7befb8-bf07-4d60-b4ae-54687b5cff4d",
+      "is_obsolete": false,
+      "last_name": "Juge",
+      "number": 111
+    },
+    {
+      "email": null,
+      "first_name": "B",
+      "id": "a6f00061-150b-4213-a69d-f4d5ceab3565",
+      "is_obsolete": false,
+      "last_name": "Juge",
+      "number": 112
+    },
+    {
+      "email": null,
+      "first_name": "C",
+      "id": "6db15717-f271-415d-9222-16d2b3371669",
+      "is_obsolete": false,
+      "last_name": "Juge",
+      "number": 113
+    },
+    {
+      "email": null,
+      "first_name": "D",
+      "id": "55a8a243-f522-431f-a6e7-9949fb587131",
+      "is_obsolete": false,
+      "last_name": "Juge",
+      "number": 114
+    },
+    {
+      "email": null,
+      "first_name": "E",
+      "id": "4a95715c-6bf0-4b90-8064-738665b52941",
+      "is_obsolete": false,
+      "last_name": "Juge",
+      "number": 115
+    },
+    {
+      "email": null,
+      "first_name": "F",
+      "id": "09eb5a0e-8a5e-43eb-9902-1150dda4a0c1",
+      "is_obsolete": false,
+      "last_name": "Juge",
+      "number": 116
+    },
+    {
+      "email": null,
+      "first_name": "G",
+      "id": "a292cbf2-1ec2-4a48-819a-1c6ea4cf1880",
+      "is_obsolete": false,
+      "last_name": "Juge",
+      "number": 117
+    },
+    {
+      "email": "ps@gmail.com",
+      "first_name": "Paul",
+      "id": "5d2bd80f-6a64-4478-8036-2daa65be02ac",
+      "is_obsolete": true,
+      "last_name": "Smith",
+      "number": 118
+    },
+    {
+      "email": null,
+      "first_name": "Ludovic Chanton",
+      "id": "207a9e8c-828b-4131-853a-b4616464d299",
+      "is_obsolete": false,
+      "last_name": "",
+      "number": 119
+    },
+    {
+      "email": null,
+      "first_name": "Stacy Aurel",
+      "id": "cfbc9ae2-fec0-442e-a36d-74842d72458d",
+      "is_obsolete": false,
+      "last_name": "",
+      "number": 120
+    },
+    {
+      "email": null,
+      "first_name": "Anne-Marie Villeneuve",
+      "id": "4d9f80e4-b653-4b7f-a2d6-808a60cfc9ac",
+      "is_obsolete": false,
+      "last_name": "",
+      "number": 121
+    },
+    {
+      "email": null,
+      "first_name": "Florent Gauthier",
+      "id": "944de627-2de3-425b-a50e-20752811c6a4",
+      "is_obsolete": false,
+      "last_name": "",
+      "number": 122
+    },
+    {
+      "email": null,
+      "first_name": "Jean-Fran\u00e7ois Roy",
+      "id": "a952f435-b35c-43c3-af38-6f4756762a5d",
+      "is_obsolete": false,
+      "last_name": "",
+      "number": 123
+    },
+    {
+      "email": null,
+      "first_name": "Ir\u00e8ne Mauvais",
+      "id": "800beabb-8bb5-4271-9fe9-79f88167c7b2",
+      "is_obsolete": false,
+      "last_name": "",
+      "number": 124
+    },
+    {
+      "email": null,
+      "first_name": "Lionel Mauvais",
+      "id": "2fee94f4-1f83-4f63-8dfc-65eeba29d17e",
+      "is_obsolete": false,
+      "last_name": "",
+      "number": 125
+    }
+  ],
+  "schema_version": 1,
+  "updated_at": "2026-02-18T02:50:21.505450+00:00"
+}

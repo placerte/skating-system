@@ -245,3 +245,27 @@ def test_transcript_rule_7_fixture() -> None:
 
     transcript = render_transcript(result.transcript_root)
     assert transcript == RULE_7_TRANSCRIPT
+
+
+def test_rule_7_cutoff_for_block_auto_entry() -> None:
+    marks_by_entry = [
+        [3, 1, 6, 1, 1, 2, 1],
+        [2, 2, 1, 5, 3, 1, 3],
+        [1, 5, 4, 2, 2, 6, 2],
+        [5, 4, 2, 4, 6, 5, 4],
+        [4, 6, 3, 3, 5, 4, 6],
+        [6, 3, 5, 6, 4, 3, 5],
+    ]
+    competition, labels = _build_competition(
+        judge_count=7,
+        entry_labels=["101", "102", "103", "104", "105", "106"],
+        marks_by_entry=marks_by_entry,
+        name="Rule 7",
+    )
+
+    result, errors = compute_solve_result(competition, entry_labels=labels)
+    assert not errors
+    assert result is not None
+
+    entry_id = next(entry for entry, label in labels.items() if label == "103")
+    assert result.derived_table.cutoff_by_entry[entry_id] == 2

@@ -7,19 +7,14 @@ def render_figlet(text: str, *, font: str, width: int, align: str = "left") -> s
     safe_width = max(1, width)
     rendered = pyfiglet.figlet_format(text, font=font, width=safe_width)
     lines = _strip_blank_lines(rendered.splitlines())
+    max_len = max(len(line) for line in lines)
     if align == "center":
-        centered = []
-        for line in lines:
-            trimmed = line.rstrip()
-            padding = max(0, (safe_width - len(trimmed)) // 2)
-            centered.append(" " * padding + trimmed)
+        padding = max(0, (safe_width - max_len) // 2)
+        centered = [" " * padding + line.rstrip().ljust(max_len) for line in lines]
         return "\n".join(centered)
     if align == "right":
-        aligned = []
-        for line in lines:
-            trimmed = line.rstrip()
-            padding = max(0, safe_width - len(trimmed))
-            aligned.append(" " * padding + trimmed)
+        padding = max(0, safe_width - max_len)
+        aligned = [" " * padding + line.rstrip().ljust(max_len) for line in lines]
         return "\n".join(aligned)
     return "\n".join(line.rstrip() for line in lines)
 

@@ -21,6 +21,12 @@ from skating_system.ui.figlet_helpers import render_figlet
 from skating_system.ui.modals.keybind_help import KeybindHelp
 from skating_system.ui.modals.text_prompt import TextPrompt
 from skating_system.ui.app_state import AppState
+from skating_system.ui.datatable_export import (
+    build_export_path,
+    datatable_to_tsv_text,
+    default_export_dir,
+    export_datatable_to_csv,
+)
 
 
 class MatrixScreen(Screen[None]):
@@ -65,6 +71,8 @@ class MatrixScreen(Screen[None]):
         Binding("c", "clear_cell", "Clear rank"),
         Binding("C", "compute", "Compute"),
         Binding("d", "remove", "Remove"),
+        Binding("x", "export_csv", "Export CSV"),
+        Binding("y", "yank", "", show=False),
         Binding("t", "toggle_labels", "Toggle labels"),
         Binding("?", "toggle_help", "Help"),
         Binding("escape", "back", "Back"),
@@ -94,7 +102,7 @@ class MatrixScreen(Screen[None]):
         self._visible_entry_ids: list[UUID] = []
         self._visible_judge_ids: list[UUID] = []
         self._compact_labels = False
-        self._sidebar_collapsed = False
+        self._sidebar_collapsed = True
         self._sidebar_width = 45
 
     def compose(self):
@@ -120,6 +128,7 @@ class MatrixScreen(Screen[None]):
         table.add_columns("Entry")
         table.zebra_stripes = True
         self._apply_sidebar_width()
+        self.set_class(self._sidebar_collapsed, "sidebar-collapsed")
 
     def on_show(self) -> None:
         self._refresh_headers()
@@ -128,6 +137,9 @@ class MatrixScreen(Screen[None]):
         self._refresh_results()
         self._refresh_empty_overlay()
         self._restore_cursor(None, None)
+
+    def on_resize(self) -> None:
+        self._refresh_headers()
 
     def action_back(self) -> None:
         self.app.pop_screen()
@@ -254,7 +266,9 @@ class MatrixScreen(Screen[None]):
         entry_labels = self._entry_label_lookup(event)
         result, errors = compute_results(competition, entry_labels=entry_labels)
         if errors or result is None:
-            self._set_status("; ".join(errors) if errors else "Unable to compute.")
+            friendly = self._friendly_validation_errors(event, competition)
+            message = friendly or errors or ["Unable to compute."]
+            self._set_status("; ".join(message))
             return
 
         app = cast(AppState, self.app)
@@ -328,14 +342,17 @@ class MatrixScreen(Screen[None]):
     def action_toggle_panel(self) -> None:
         self._sidebar_collapsed = not self._sidebar_collapsed
         self.set_class(self._sidebar_collapsed, "sidebar-collapsed")
+        self.call_after_refresh(self._refresh_headers)
 
     def action_sidebar_narrower(self) -> None:
         self._sidebar_width = max(25, self._sidebar_width - 5)
         self._apply_sidebar_width()
+        self.call_after_refresh(self._refresh_headers)
 
     def action_sidebar_wider(self) -> None:
         self._sidebar_width = min(90, self._sidebar_width + 5)
         self._apply_sidebar_width()
+        self.call_after_refresh(self._refresh_headers)
 
     def action_move_left(self) -> None:
         self._move_cursor(delta_row=0, delta_col=-1)
@@ -351,6 +368,29 @@ class MatrixScreen(Screen[None]):
 
     def action_toggle_help(self) -> None:
         self.app.push_screen(KeybindHelp())
+
+    def action_export_csv(self) -> None:
+        table = self.query_one("#matrix", DataTable)
+        event, competition = self._get_event_competition()
+        event_name = event.name if event else "event"
+        competition_name = competition.name if competition else "competition"
+        output_path = build_export_path(
+            default_export_dir(),
+            event_name=event_name,
+            competition_name=competition_name,
+        )
+        try:
+            export_datatable_to_csv(table, output_path)
+        except OSError as exc:
+            self._set_status(f"Export failed: {exc}")
+            return
+        self._set_status(f"Exported table to {output_path}")
+
+    def action_yank(self) -> None:
+        table = self.query_one("#matrix", DataTable)
+        text = datatable_to_tsv_text(table)
+        self.app.copy_to_clipboard(text)
+        self._set_status("Table copied to clipboard")
 
     def action_quick_rank(self, rank: int) -> None:
         """Quick rank entry: press 1-9 to set rank on selected cell."""
@@ -754,6 +794,79 @@ class MatrixScreen(Screen[None]):
         if place % 1 != 0:
             return f"{place:.1f}"
         return f"{int(place)}"
+
+    def _friendly_validation_errors(
+        self, event: Event, competition: Competition
+    ) -> list[str]:
+        entry_ids = list(competition.entry_ids)
+        judge_ids = list(competition.judge_ids)
+        entry_count = len(entry_ids)
+
+        participant_lookup = {p.id: p for p in event.participants}
+        entry_lookup = {e.id: e for e in event.entries}
+
+        def judge_label(judge_id: UUID) -> str:
+            participant = participant_lookup.get(judge_id)
+            if participant is None:
+                return "Unknown judge"
+            name = f"{participant.first_name} {participant.last_name}".strip()
+            return name or "Unknown judge"
+
+        def entry_label(entry_id: UUID) -> str:
+            entry = entry_lookup.get(entry_id)
+            if entry is None:
+                return "Unknown entry"
+            return event_service.entry_display_label(entry, participant_lookup)
+
+        errors: list[str] = []
+        entry_set = set(entry_ids)
+        judge_set = set(judge_ids)
+
+        for mark in competition.rank_marks:
+            if mark.judge_id not in judge_set:
+                errors.append("Unknown judge in rank marks.")
+            if mark.entry_id not in entry_set:
+                errors.append("Unknown entry in rank marks.")
+            if mark.rank < 1 or mark.rank > entry_count:
+                errors.append(
+                    f"Rank {mark.rank} out of range for entry {entry_label(mark.entry_id)}."
+                )
+
+        for judge_id in judge_ids:
+            seen_entries: set[UUID] = set()
+            ranks: list[int] = []
+            for mark in competition.rank_marks:
+                if mark.judge_id != judge_id:
+                    continue
+                if mark.entry_id in seen_entries:
+                    errors.append(
+                        "Duplicate rank mark for judge "
+                        f"{judge_label(judge_id)} and entry {entry_label(mark.entry_id)}."
+                    )
+                    continue
+                if mark.entry_id not in entry_set:
+                    continue
+                seen_entries.add(mark.entry_id)
+                ranks.append(mark.rank)
+
+            missing = [
+                entry_id for entry_id in entry_ids if entry_id not in seen_entries
+            ]
+            if missing:
+                labels = ", ".join(entry_label(entry_id) for entry_id in missing)
+                errors.append(
+                    "Judge "
+                    f"{judge_label(judge_id)} missing ranks for {len(missing)} entries: "
+                    f"{labels}."
+                )
+
+            if len(ranks) != len(set(ranks)):
+                errors.append(f"Judge {judge_label(judge_id)} has duplicate ranks.")
+
+        if not entry_ids or not judge_ids:
+            errors.append("Competition requires at least one judge and one entry.")
+
+        return errors
 
     def _clear_transcript_tree(self) -> None:
         tree = self.query_one("#transcript-tree", Tree)

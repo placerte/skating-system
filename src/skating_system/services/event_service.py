@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from datetime import datetime, timezone
 from uuid import UUID, uuid4
 
@@ -134,6 +135,7 @@ def add_competition(
         entry_ids=list(entry_ids),
         rank_marks=[],
         results=None,
+        is_obsolete=False,
     )
     event.competitions.append(competition)
     event.updated_at = datetime.now(timezone.utc)
@@ -156,6 +158,25 @@ def update_competition(
     competition.entry_ids = list(entry_ids)
     event.updated_at = datetime.now(timezone.utc)
     return competition
+
+
+def duplicate_competition(event: Event, competition_id: UUID) -> Competition | None:
+    competition = find_competition(event, competition_id)
+    if competition is None:
+        return None
+
+    new_competition = Competition(
+        id=uuid4(),
+        name=_copy_competition_name(competition.name),
+        judge_ids=list(competition.judge_ids),
+        entry_ids=list(competition.entry_ids),
+        rank_marks=list(competition.rank_marks),
+        results=competition.results,
+        is_obsolete=False,
+    )
+    event.competitions.append(new_competition)
+    event.updated_at = datetime.now(timezone.utc)
+    return new_competition
 
 
 def set_rank_mark(
@@ -343,6 +364,27 @@ def _find_rank_mark(
         ),
         None,
     )
+
+
+_COPY_SUFFIX_RE = re.compile(r"^(?P<base>.*)\s\(copy(?:\s(?P<num>\d+))?\)$")
+
+
+def _copy_competition_name(name: str) -> str:
+    cleaned = name.strip()
+    if not cleaned:
+        cleaned = "Competition"
+    match = _COPY_SUFFIX_RE.match(cleaned)
+    if match:
+        base = match.group("base").strip()
+        num = match.group("num")
+        if num is None:
+            return f"{base} (copy 2)" if base else "Competition (copy 2)"
+        try:
+            next_num = int(num) + 1
+        except ValueError:
+            next_num = 2
+        return f"{base} (copy {next_num})" if base else f"Competition (copy {next_num})"
+    return f"{cleaned} (copy)"
 
 
 def _leader_member(members: list[EntryMember]) -> EntryMember:

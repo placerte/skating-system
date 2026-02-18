@@ -156,6 +156,7 @@ def _load_competitions(
                 ),
                 rank_marks=_load_rank_marks(raw.get("rank_marks", []), warnings),
                 results=None,
+                is_obsolete=bool(raw.get("is_obsolete", False)),
             )
         )
     return competitions
@@ -241,6 +242,7 @@ def _dump_competition(competition: Competition) -> dict[str, Any]:
             }
             for mark in competition.rank_marks
         ],
+        "is_obsolete": competition.is_obsolete,
     }
 
 

@@ -58,6 +58,7 @@ class Competition:
     entry_ids: list[UUID] = field(default_factory=list)
     rank_marks: list[RankMark] = field(default_factory=list)
     results: CompetitionResults | None = None
+    is_obsolete: bool = False
 
 
 @dataclass

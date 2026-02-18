@@ -2,7 +2,14 @@ from __future__ import annotations
 
 from uuid import uuid4
 
-from skating_system.domain.models import Entry, EntryMember, Event, Participant
+from skating_system.domain.models import (
+    CompetitionResults,
+    Entry,
+    EntryMember,
+    Event,
+    Participant,
+    Placement,
+)
 from skating_system.services import event_service
 
 
@@ -115,3 +122,59 @@ def test_clear_rank_mark_removes_existing_mark() -> None:
     )
     assert removed is True
     assert not competition.rank_marks
+
+
+def test_duplicate_competition_creates_new_object() -> None:
+    event = Event(id=uuid4(), name="Test")
+    judge = event_service.add_participant(event, first_name="J", last_name="1")
+    entry_participant = event_service.add_participant(
+        event, first_name="E", last_name="1"
+    )
+    entry = event_service.add_entry(
+        event,
+        name="",
+        members=[EntryMember(participant_id=entry_participant.id)],
+    )
+    competition = event_service.add_competition(
+        event,
+        name="Comp",
+        judge_ids=[judge.id],
+        entry_ids=[entry.id],
+    )
+    event_service.set_rank_mark(
+        event,
+        competition.id,
+        judge_id=judge.id,
+        entry_id=entry.id,
+        rank=1,
+    )
+    competition.results = CompetitionResults(
+        placements=[Placement(entry_id=entry.id, final_place=1.0)]
+    )
+
+    duplicate = event_service.duplicate_competition(event, competition.id)
+
+    assert duplicate is not None
+    assert duplicate.id != competition.id
+    assert duplicate.name != competition.name
+    assert duplicate in event.competitions
+    assert duplicate.judge_ids == competition.judge_ids
+    assert duplicate.entry_ids == competition.entry_ids
+    assert duplicate.rank_marks == competition.rank_marks
+    assert duplicate.rank_marks[0] is competition.rank_marks[0]
+    assert duplicate.results is competition.results
+
+
+def test_duplicate_competition_increments_copy_suffix() -> None:
+    event = Event(id=uuid4(), name="Test")
+    competition = event_service.add_competition(
+        event,
+        name="Comp (copy)",
+        judge_ids=[],
+        entry_ids=[],
+    )
+
+    duplicate = event_service.duplicate_competition(event, competition.id)
+
+    assert duplicate is not None
+    assert duplicate.name == "Comp (copy 2)"

@@ -49,6 +49,7 @@ class PlaceResult:
     cutoff_by_entry: dict[UUID, int]
     transcript_node: DecisionNode
     transcript_skip_next: int = 0
+    carryover_cutoff_by_entry: dict[UUID, int] = field(default_factory=dict)
 
 
 def _column_label(t: int) -> str:
@@ -110,6 +111,7 @@ def compute_solve_result(
 
     placements: list[Placement] = []
     cutoff_by_entry: dict[UUID, int] = {}
+    pending_cutoffs: dict[UUID, int] = {}
     unplaced = set(entry_ids)
     current_place = 1
     transcript_skip_remaining = 0
@@ -138,6 +140,8 @@ def compute_solve_result(
             label_for_entry,
             pending_prelude,
         )
+        if result.carryover_cutoff_by_entry:
+            pending_cutoffs.update(result.carryover_cutoff_by_entry)
         pending_prelude = False
         if transcript_skip_remaining > 0:
             transcript_skip_remaining -= 1
@@ -153,7 +157,9 @@ def compute_solve_result(
                     final_place=result.final_place,
                 )
             )
-            cutoff_by_entry[entry_id] = result.cutoff_by_entry[entry_id]
+            cutoff_by_entry[entry_id] = pending_cutoffs.pop(
+                entry_id, result.cutoff_by_entry[entry_id]
+            )
             unplaced.remove(entry_id)
 
         current_place += len(result.placed_entries)
@@ -481,6 +487,7 @@ def _find_place(
             )
 
             transcript_skip_next = 0
+            carryover_cutoff_by_entry: dict[UUID, int] = {}
             if block_candidates is not None:
                 remaining = [entry for entry in block_candidates if entry != entry_id]
                 if len(remaining) == 1:
@@ -514,6 +521,7 @@ def _find_place(
                         )
                         block_node.children.append(next_node)
                     transcript_skip_next = 1
+                    carryover_cutoff_by_entry[next_entry] = t
 
             return PlaceResult(
                 placed_entries=[entry_id],
@@ -521,6 +529,7 @@ def _find_place(
                 cutoff_by_entry={entry_id: t},
                 transcript_node=node,
                 transcript_skip_next=transcript_skip_next,
+                carryover_cutoff_by_entry=carryover_cutoff_by_entry,
             )
 
         if t == entry_count:
