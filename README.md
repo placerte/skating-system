@@ -1,6 +1,7 @@
 # Skating System
 
-Terminal UI for managing skating competitions and computing placements using the official skating system rules.
+Command-line tools for validating skating competition workbooks, computing
+placements, and generating printable PDFs.
 
 ## Installation
 
@@ -14,24 +15,22 @@ chmod +x skating-system
 sudo mv skating-system /usr/local/bin/skating-system
 ```
 
-## Usage
+## Current development usage
 
-Launch the app:
+Show the workbook-oriented command surface:
 
 ```bash
-skating-system
+skating-system --help
 ```
 
-Open a specific event file:
+The workbook redesign is in progress. Commands that are not implemented yet
+exit nonzero and identify their tracking issue. The intended workflow is:
 
 ```bash
-skating-system ./path/to/event.json
-```
-
-Start from a directory (auto-picks `event.json` or the only `.json` file):
-
-```bash
-skating-system .
+skating-system validate event.xlsx
+skating-system build-sheets event.xlsx
+skating-system compute event.xlsx
+skating-system report all event.xlsx
 ```
 
 ## Development
@@ -43,10 +42,10 @@ uv venv --python 3.13
 uv sync
 ```
 
-Run the app:
+Inspect the CLI:
 
 ```bash
-uv run python -m skating_system
+uv run python -m skating_system --help
 ```
 
 Run tests:

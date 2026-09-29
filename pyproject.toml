@@ -9,10 +9,8 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "black>=25.9.0",
-    "pyfiglet>=1.0.4",
-    "produm>=0.1.0",
-    "textual>=6.6.0",
-    "ttkbootstrap>=1.14.2",
+    "openpyxl>=3.1.5",
+    "reportlab>=4.4.4",
 ]
 
 [build-system]
@@ -23,7 +21,6 @@ build-backend = "uv_build"
 dev = [
     "pyinstaller>=6.11.0",
     "pytest>=9.0.2",
-    "pytest-asyncio>=0.25.3",
 ]
 
 [project.scripts]

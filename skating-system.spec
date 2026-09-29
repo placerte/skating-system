@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
 # -*- mode: python ; coding: utf-8 -*-
 
-from PyInstaller.utils.hooks import collect_data_files, collect_submodules
-
-hiddenimports = collect_submodules("textual")
-datas = collect_data_files("pyfiglet")
-
 a = Analysis(
     ["src/skating_system/__main__.py"],
     pathex=[],
     binaries=[],
-    datas=datas,
-    hiddenimports=hiddenimports,
+    datas=[],
+    hiddenimports=[],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

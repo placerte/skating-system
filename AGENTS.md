@@ -1,5 +1,28 @@
 # AGENTS.md
 
+### LLM Context Blocks
+
+These files contain reusable instructions and workflows
+that may be relevant when working in this repository.
+
+<!-- agmod:start -->
+
+- llm/agent_executor_instructions_v_1.md
+- llm/app_dev_execution_starter_v1.md
+- llm/code_style.md
+- llm/decision_log.md
+- llm/general_executor_instructions_v1.md
+- llm/git_hosting_toolbox.md
+- llm/pdf_toolbox.md
+- llm/project_handoff_standard_v1.md
+- llm/project_operating_model_v1.md
+- llm/python_toolbox.md
+- llm/sessions_logger.md
+- llm/user-persona.md
+
+<!-- agmod:end -->
+
+
 This file orients agentic coders working in this repository.
 Follow project conventions and keep changes aligned with the domain specs.
 
@@ -7,8 +30,8 @@ Follow project conventions and keep changes aligned with the domain specs.
 
 - Language: Python 3.13 (see `pyproject.toml`).
 - Package root: `src/skating_system`.
-- UI: Textual (terminal UI).
-- Persistence: JSON (one Event per file).
+- Interface: command-oriented CLI (workbook workflow under development).
+- Persistence: Excel workbook; legacy JSON remains temporarily during migration.
 - Formatting: Black.
 - Type checking: Pyright config present (`pyrightconfig.json`).
 
@@ -36,14 +59,16 @@ Authoritative docs:
 
 ## Repository layout
 
-Expected package layout from `docs/implementation.md`:
+Current package layout:
 
 - `src/skating_system/domain`: dataclasses + validation.
-- `src/skating_system/persistence`: file I/O and migrations.
-- `src/skating_system/services`: orchestration used by UI.
-- `src/skating_system/ui`: Textual app, screens, and modals.
+- `src/skating_system/persistence`: legacy JSON file I/O and migrations.
+- `src/skating_system/services`: legacy orchestration retained during migration.
+- `src/skating_system/workbook`: workbook schema, parsing, and safe updates.
+- `src/skating_system/scoring`: method-specific scoring engines.
+- `src/skating_system/reports`: generated PDF documents.
 
-Keep these boundaries strict. Avoid UI imports in domain/persistence.
+Keep these boundaries strict. Avoid I/O imports in domain/scoring.
 
 ## Build, lint, and test commands
 
@@ -56,9 +81,9 @@ Prefer uv, but include pip/venv fallback where needed.
 - Install deps (uv): `uv sync`
 - Fallback (pip): `python -m venv .venv && .venv/bin/pip install -e .`
 
-### Run the app
+### Inspect the CLI
 
-- Textual app (uv): `uv run python -m skating_system`
+- CLI help (uv): `uv run python -m skating_system --help`
 - Fallback: `.venv/bin/python -m skating_system`
 
 ### Formatting (Black)
@@ -107,8 +132,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from uuid import UUID
 
-from textual import on
-
 from skating_system.domain.models import Event
 ```
 
@@ -145,8 +168,10 @@ from skating_system.domain.models import Event
 
 - `domain/*`: pure data + validation only (no UI or I/O).
 - `persistence/*`: file I/O + migrations only.
-- `services/*`: orchestration and convenience for UI.
-- `ui/*`: Textual widgets, screens, and user flows.
+- `services/*`: orchestration used by the CLI.
+- `workbook/*`: workbook schema, models, parsing, validation, and safe updates.
+- `scoring/*`: method-specific scoring models and engines.
+- `reports/*`: generated PDF documents.
 
 ### Comments and documentation
 

@@ -14,8 +14,6 @@ from skating_system.services.skating_scorer import (
     classify_cell,
     compute_solve_result,
 )
-from skating_system.ui.app import SkatingApp
-from skating_system.ui.helpers import judge_letters
 
 
 def test_cutoff_correctness() -> None:
@@ -132,74 +130,3 @@ def test_persistence_saves_inputs_only(tmp_path) -> None:
 
     raw = file_path.read_text(encoding="utf-8")
     assert '"results"' not in raw
-
-
-def test_auto_recompute_on_load_complete(tmp_path) -> None:
-    judge = Participant(id=uuid4(), number=100, first_name="J", last_name="")
-    entry_a = Entry(id=uuid4(), name="A", members=[])
-    entry_b = Entry(id=uuid4(), name="B", members=[])
-    competition = Competition(
-        id=uuid4(),
-        name="Comp",
-        judge_ids=[judge.id],
-        entry_ids=[entry_a.id, entry_b.id],
-        rank_marks=[
-            RankMark(judge.id, entry_a.id, 1),
-            RankMark(judge.id, entry_b.id, 2),
-        ],
-    )
-    event = Event(
-        id=uuid4(),
-        name="Event",
-        participants=[judge],
-        entries=[entry_a, entry_b],
-        competitions=[competition],
-        schema_version=1,
-    )
-    repo = JsonEventRepo()
-    file_path = tmp_path / "event.json"
-    repo.save_event(file_path, event)
-
-    app = SkatingApp()
-    app.auto_recompute = True
-    warnings = app.load_event(file_path)
-    assert warnings == []
-    result = app.get_competition_result(competition.id)
-    assert result is not None
-    assert app.competition_is_stale(competition.id) is False
-
-
-def test_load_incomplete_marks_stale(tmp_path) -> None:
-    judge = Participant(id=uuid4(), number=100, first_name="J", last_name="")
-    entry_a = Entry(id=uuid4(), name="A", members=[])
-    entry_b = Entry(id=uuid4(), name="B", members=[])
-    competition = Competition(
-        id=uuid4(),
-        name="Comp",
-        judge_ids=[judge.id],
-        entry_ids=[entry_a.id, entry_b.id],
-        rank_marks=[RankMark(judge.id, entry_a.id, 1)],
-    )
-    event = Event(
-        id=uuid4(),
-        name="Event",
-        participants=[judge],
-        entries=[entry_a, entry_b],
-        competitions=[competition],
-        schema_version=1,
-    )
-    repo = JsonEventRepo()
-    file_path = tmp_path / "event.json"
-    repo.save_event(file_path, event)
-
-    app = SkatingApp()
-    app.auto_recompute = True
-    app.load_event(file_path)
-    result = app.get_competition_result(competition.id)
-    assert result is None
-    assert app.competition_is_stale(competition.id) is True
-
-
-def test_judge_lettering_repacks() -> None:
-    assert judge_letters(3) == ["A", "B", "C"]
-    assert judge_letters(2) == ["A", "B"]
