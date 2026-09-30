@@ -10,6 +10,9 @@ from skating_system.reports import (
     generate_judge_cards,
     generate_pre_event_documents,
 )
+from skating_system.scoring.callback import CallbackResult
+from skating_system.services.workbook_compute import compute_workbook
+from skating_system.services.skating_scorer import SolveResult
 from skating_system.workbook.score_sheets import build_score_sheets
 from skating_system.workbook.validation import validate_workbook
 
@@ -68,7 +71,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _add_workbook_argument(compute)
     _add_competition_filter(compute)
-    _set_pending_handler(compute, issue=12)
+    compute.set_defaults(handler=_compute_command)
 
     report = commands.add_parser(
         "report",
@@ -146,6 +149,33 @@ def _judge_cards_command(args: argparse.Namespace) -> int:
 
 def _pre_event_command(args: argparse.Namespace) -> int:
     return _print_generation_result(generate_pre_event_documents(args.workbook))
+
+
+def _compute_command(args: argparse.Namespace) -> int:
+    result = compute_workbook(args.workbook, args.competition)
+    for finding in result.findings:
+        print(finding.format())
+    for computed in result.competitions:
+        print(f'COMPETITION: "{computed.competition.name}"')
+        if isinstance(computed.result, SolveResult):
+            for placement in computed.result.placements:
+                label = computed.entry_labels[placement.entry_id]
+                print(f"PLACE: {placement.final_place:g} | {label}")
+        elif isinstance(computed.result, CallbackResult):
+            advancing = set(computed.result.selection.advancing_entry_ids)
+            for tally in computed.result.selection.ordered_tallies:
+                status = "ADVANCE" if tally.entry_id in advancing else "NOT ADVANCING"
+                label = computed.entry_labels[tally.entry_id]
+                print(
+                    f"CALLBACK: {status} | {tally.total:g} | "
+                    f"Y={tally.yes_count} A={tally.alternate_count} | {label}"
+                )
+            policy = computed.result.policy
+            print(
+                "POLICY: Y=1 A=0.5 N=0; order=total,yes,alternate; "
+                f"advance_count={policy.advance_count}; boundary_ties=advance"
+            )
+    return 1 if result.has_errors else 0
 
 
 def _print_generation_result(result: ReportGenerationResult) -> int:
