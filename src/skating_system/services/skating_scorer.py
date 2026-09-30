@@ -14,6 +14,10 @@ class DecisionNode:
     rule_applied: str
     subset_entry_ids: list[UUID]
     children: list["DecisionNode"] = field(default_factory=list)
+    threshold: int | None = None
+    counts_by_entry: dict[UUID, int] = field(default_factory=dict)
+    sums_by_entry: dict[UUID, int] = field(default_factory=dict)
+    reason: str | None = None
 
 
 @dataclass
@@ -377,6 +381,9 @@ def _find_place(
                     text="Rule 5 – No majority found",
                     rule_applied="Rule 5",
                     subset_entry_ids=list(entries_to_check),
+                    threshold=t,
+                    counts_by_entry=dict(counts),
+                    reason=(f"No entry reached the majority threshold of {majority}."),
                 )
             )
             if t < entry_count:
@@ -385,6 +392,9 @@ def _find_place(
                         text=(f'Escalating to column "{_column_label(t + 1)}" counts'),
                         rule_applied="Rule 5",
                         subset_entry_ids=list(entries_to_check),
+                        threshold=t + 1,
+                        counts_by_entry=dict(counts),
+                        reason="No majority was found at the preceding threshold.",
                     )
                 )
                 skip_next_column_declaration = True
@@ -402,6 +412,12 @@ def _find_place(
                     ),
                     rule_applied="Rule 5",
                     subset_entry_ids=[entry_id],
+                    threshold=t,
+                    counts_by_entry={entry_id: counts[entry_id]},
+                    reason=(
+                        f"This was the only entry to reach the majority threshold "
+                        f"of {majority}."
+                    ),
                 )
             )
             container.children.append(
@@ -431,6 +447,14 @@ def _find_place(
                     ),
                     rule_applied="Rule 5",
                     subset_entry_ids=list(block_candidates),
+                    threshold=t,
+                    counts_by_entry={
+                        entry_id: counts[entry_id] for entry_id in block_candidates
+                    },
+                    reason=(
+                        "Multiple entries reached the majority threshold and require "
+                        "Rules 6–8."
+                    ),
                 )
             )
             block_end = current_place + len(block_candidates) - 1
@@ -472,6 +496,11 @@ def _find_place(
                     text="Rule 5 – Majority tie persists",
                     rule_applied="Rule 5",
                     subset_entry_ids=list(candidates),
+                    threshold=t,
+                    counts_by_entry={
+                        entry_id: counts[entry_id] for entry_id in candidates
+                    },
+                    reason="Multiple entries still have a majority at this threshold.",
                 )
             )
 
@@ -543,11 +572,19 @@ def _find_place(
             shared_place = sum(
                 range(current_place, current_place + len(winners))
             ) / len(winners)
+            terminal_counts = _compute_counts(
+                set(winners), ranks_by_judge, judge_ids, t
+            )
+            terminal_sums = _compute_sums(winners, ranks_by_judge, judge_ids, t)
             resolution_node.children.append(
                 DecisionNode(
                     text=(f"Unbreakable tie; shared place={shared_place}"),
                     rule_applied="Rule 7",
                     subset_entry_ids=list(winners),
+                    threshold=t,
+                    counts_by_entry=terminal_counts,
+                    sums_by_entry=terminal_sums,
+                    reason="Count and sum remained equal through the final threshold.",
                 )
             )
             return PlaceResult(
@@ -562,6 +599,8 @@ def _find_place(
                 text=(f'Escalating to next column "{_column_label(t + 1)}" counts'),
                 rule_applied="Rule 5",
                 subset_entry_ids=list(winners),
+                threshold=t + 1,
+                reason="Rules 6 and 7 did not resolve the tie.",
             )
         )
         candidates_to_check = list(winners)
@@ -632,6 +671,11 @@ def _resolve_majority_tie(
                 ),
                 rule_applied="Rule 6",
                 subset_entry_ids=[entry_id],
+                threshold=t,
+                counts_by_entry={
+                    candidate_id: counts[candidate_id] for candidate_id in candidates
+                },
+                reason="This entry had the greatest majority count.",
             )
         )
         return winners, nodes
@@ -641,6 +685,9 @@ def _resolve_majority_tie(
             text="Rule 6 – Equal majority persists",
             rule_applied="Rule 6",
             subset_entry_ids=list(winners),
+            threshold=t,
+            counts_by_entry={entry_id: counts[entry_id] for entry_id in winners},
+            reason="The greatest majority count was shared.",
         )
     )
     nodes.append(
@@ -648,6 +695,9 @@ def _resolve_majority_tie(
             text="Escalating to Rule 7 (sum comparison)",
             rule_applied="Rule 7",
             subset_entry_ids=list(winners),
+            threshold=t,
+            counts_by_entry={entry_id: counts[entry_id] for entry_id in winners},
+            reason="Rule 6 left entries tied on majority count.",
         )
     )
     nodes.append(
@@ -669,6 +719,11 @@ def _resolve_majority_tie(
                 text=(f"Rule 7 – Smaller sum: {label_for_entry(entry_id)} (alone)"),
                 rule_applied="Rule 7",
                 subset_entry_ids=[entry_id],
+                threshold=t,
+                sums_by_entry={
+                    candidate_id: sums[candidate_id] for candidate_id in winners
+                },
+                reason="This entry had the smallest sum at the active threshold.",
             )
         )
         return final_winners, nodes
@@ -678,6 +733,9 @@ def _resolve_majority_tie(
             text="Rule 7 – Equal sum persists",
             rule_applied="Rule 7",
             subset_entry_ids=list(final_winners),
+            threshold=t,
+            sums_by_entry={entry_id: sums[entry_id] for entry_id in final_winners},
+            reason="The smallest sum was shared, so the tie remains unresolved.",
         )
     )
     return final_winners, nodes
