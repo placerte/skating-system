@@ -82,6 +82,12 @@ def test_sample_workbook_matches_contract() -> None:
         if row[0].value is not None
     }
     assert methods == {"skating", "callback"}
+    callback_row = next(
+        row
+        for row in workbook["Competitions"].iter_rows(min_row=2, values_only=True)
+        if row[1] == "callback"
+    )
+    assert callback_row[5] == 1
 
 
 def _headers(sheet) -> tuple[str, ...]:

@@ -36,8 +36,8 @@ def main() -> None:
         competitions,
         COMPETITIONS_CONTRACT.columns,
         [
-            ("Open Mix & Match", "skating", False, "setup", "Final"),
-            ("Solo Jazz Prelims", "callback", True, "setup", "Preliminary"),
+            ("Open Mix & Match", "skating", False, "setup", "Final", None),
+            ("Solo Jazz Prelims", "callback", True, "setup", "Preliminary", 1),
         ],
     )
 

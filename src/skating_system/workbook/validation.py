@@ -129,6 +129,18 @@ def _validate_competitions(
                     competition=competition.name,
                 )
             )
+        if (
+            competition.scoring_method == SCORING_METHOD_CALLBACK
+            and competition.callback_advance_count is None
+        ):
+            findings.append(
+                Finding(
+                    Severity.ERROR,
+                    f"{competition.name}: callback_advance_count is required for callback competitions.",
+                    sheet="Competitions",
+                    competition=competition.name,
+                )
+            )
     return lookup
 
 

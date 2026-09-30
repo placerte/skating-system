@@ -43,7 +43,12 @@ EVENT_CONTRACT: Final = SheetContract(
 COMPETITIONS_CONTRACT: Final = SheetContract(
     name=COMPETITIONS_SHEET,
     required_columns=("competition", "scoring_method"),
-    optional_columns=("alternate_enabled", "status", "notes"),
+    optional_columns=(
+        "alternate_enabled",
+        "status",
+        "notes",
+        "callback_advance_count",
+    ),
 )
 JUDGES_CONTRACT: Final = SheetContract(
     name=JUDGES_SHEET,

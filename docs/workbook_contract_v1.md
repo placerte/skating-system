@@ -31,6 +31,7 @@ One row per competition.
 | `alternate_enabled` | Optional; boolean, ignored for skating |
 | `status` | Optional organizer-controlled text |
 | `notes` | Optional organizer notes |
+| `callback_advance_count` | Required positive integer for callback competitions; ignored for skating |
 
 ### `CompetitionJudges`
 
@@ -112,7 +113,8 @@ reported and left untouched for manual recovery.
 
 ## Scoring-policy boundary
 
-This contract records the scoring method and whether callback Alternate marks
-are available. It deliberately does not define Alternate weighting, callback
-cutoffs, tie policy, or Skating System calculations. Those policies belong to
-the scoring layer and must be explicit in computed results and reports.
+This contract records the scoring method, whether callback Alternate marks are
+available, and the callback advancement count. Callback aggregation and tie
+handling are defined in `docs/callback_policy.md`; computed results and reports
+must include that policy explicitly. Skating System calculations remain in the
+scoring layer.

@@ -241,6 +241,14 @@ def _read_competitions(
                 alternate_enabled=alternate,
                 status=_optional_text(sheet, row_number, columns.get("status")),
                 notes=_optional_text(sheet, row_number, columns.get("notes")),
+                callback_advance_count=_read_positive_integer(
+                    sheet,
+                    row_number,
+                    columns.get("callback_advance_count"),
+                    findings,
+                    competition=name,
+                    field="callback_advance_count",
+                ),
                 source_row=row_number,
             )
         )
@@ -483,6 +491,44 @@ def _read_order(
             sheet=sheet.title,
             cell=sheet.cell(row_number, column_number).coordinate,
             competition=competition,
+        )
+    )
+    return None
+
+
+def _read_positive_integer(
+    sheet: Worksheet,
+    row_number: int,
+    column_number: int | None,
+    findings: list[Finding],
+    *,
+    competition: str,
+    field: str,
+) -> int | None:
+    if column_number is None:
+        return None
+    cell = sheet.cell(row_number, column_number)
+    value = cell.value
+    if value is None or normalize_text(value) == "":
+        return None
+    if isinstance(value, bool):
+        parsed = None
+    elif isinstance(value, int):
+        parsed = value
+    elif isinstance(value, float) and value.is_integer():
+        parsed = int(value)
+    else:
+        text = normalize_text(value)
+        parsed = int(text) if text.isdigit() else None
+    if parsed is not None and parsed > 0:
+        return parsed
+    findings.append(
+        Finding(
+            Severity.ERROR,
+            f"{competition or 'Competition row'}: {field} must be a positive integer.",
+            sheet=sheet.title,
+            cell=cell.coordinate,
+            competition=competition or None,
         )
     )
     return None

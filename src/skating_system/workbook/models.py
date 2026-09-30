@@ -21,6 +21,7 @@ class Competition:
     alternate_enabled: bool = False
     status: str = ""
     notes: str = ""
+    callback_advance_count: int | None = None
     source_row: int = 0
 
 

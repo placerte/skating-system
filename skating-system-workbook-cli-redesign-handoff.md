@@ -298,8 +298,18 @@ If `alternate_enabled = FALSE`, `A` must be rejected.
 
 ### Callback aggregation
 
-The exact numerical treatment of Alternate and the cutoff rule are a
-**product decision that must be explicit before live use**.
+The owner-approved schema-version-1 policy is:
+
+-   Yes = 1;
+-   Alternate = 0.5 when enabled;
+-   No = 0;
+-   order by total, then Yes count, then Alternate count;
+-   advance the configured number of entries and include every entry tied
+    at the boundary on all three ordering values.
+
+Blank or unknown marks block final computation. The Alternate value is an
+event policy, not a claimed universal Lindy Hop standard. Each callback
+competition records `callback_advance_count` in its `Competitions` row.
 
 For implementation, separate:
 
@@ -309,18 +319,8 @@ For implementation, separate:
 
 Do not bury these rules in worksheet formulas.
 
-Until the owner confirms the desired policy, implement the engine so the
-weighting/selection policy is explicit and tested, and flag the
-unresolved default in documentation.
-
-A sensible initial configurable model is:
-
--   Yes = 1
--   No = 0
--   Alternate = configurable intermediate weight
-
-However, do not assume a specific Alternate weight is an official Lindy
-Hop standard.
+The engine and every result report must expose these policy values rather
+than relying on hidden worksheet formulas or defaults.
 
 ------------------------------------------------------------------------
 
@@ -1085,34 +1085,18 @@ Publish the resulting anonymous report.
 
 ------------------------------------------------------------------------
 
-# 20. Open Product Decisions
+# 20. Product Decisions
 
-Do not silently decide these during implementation.
+### O-1 --- Callback Alternate weighting (resolved)
 
-### O-1 --- Callback Alternate weighting
+Yes = 1, No = 0, and optional Alternate = 0.5. Reports identify this as an
+event policy rather than a universal Lindy Hop standard.
 
-We have decided:
+### O-2 --- Callback advancement cutoff (resolved)
 
--   Yes is supported.
--   No is supported.
--   Alternate is optional per competition.
-
-Still required:
-
--   exact aggregation value/behavior of Alternate.
-
-Keep this configurable/testable until owner confirms the event rule.
-
-### O-2 --- Callback advancement cutoff
-
-Need to define whether the workbook stores:
-
--   number of advancing entries;
--   minimum callback score;
--   organizer-selected cutoff after viewing results;
--   another explicit rule.
-
-Do not hard-code an assumption.
+Each callback competition stores a positive `callback_advance_count`. Entries
+are ordered by total, Yes count, then Alternate count. Every entry tied at the
+boundary on those values advances.
 
 ### O-3 --- Public skating explanation depth
 
