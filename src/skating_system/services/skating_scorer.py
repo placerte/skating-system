@@ -172,19 +172,26 @@ def compute_solve_result(
         majority,
         cutoff_by_entry,
     )
-    return SolveResult(
-        placements=placements,
-        derived_table=derived_table,
-        transcript_root=root,
-    ), []
+    return (
+        SolveResult(
+            placements=placements,
+            derived_table=derived_table,
+            transcript_root=root,
+        ),
+        [],
+    )
 
 
 def validate_competition_ranks(competition: Competition) -> list[str]:
     # reference [S-260210-1.7]
+    # GitHub issue #8: event policy requires an odd judging panel.
     errors: list[str] = []
     entry_ids = list(competition.entry_ids)
     judge_ids = list(competition.judge_ids)
     entry_count = len(entry_ids)
+
+    if judge_ids and len(judge_ids) % 2 == 0:
+        errors.append("Competition requires an odd number of judges.")
 
     entry_set = set(entry_ids)
     judge_set = set(judge_ids)

@@ -3,3 +3,4 @@ diagnostic.txt
 archive/
 __pycache__/
 *-dump-*
+scratch-prompt.md

@@ -20,6 +20,7 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "pyinstaller>=6.11.0",
+    "pypdf>=6.1.1",
     "pytest>=9.0.2",
 ]
 

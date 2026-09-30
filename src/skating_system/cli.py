@@ -1,10 +1,15 @@
 from __future__ import annotations
 
 import argparse
-import sys
 from collections.abc import Callable, Sequence
 from pathlib import Path
 
+from skating_system.reports import (
+    ReportGenerationResult,
+    generate_call_sheets,
+    generate_judge_cards,
+    generate_pre_event_documents,
+)
 from skating_system.workbook.score_sheets import build_score_sheets
 from skating_system.workbook.validation import validate_workbook
 
@@ -48,14 +53,14 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="DOCUMENT",
         required=True,
     )
-    for name, description, issue in (
-        ("call-sheets", "Generate competitor call sheets.", 6),
-        ("judge-cards", "Generate judge scorecards.", 7),
-        ("pre-event", "Generate all pre-event documents.", 7),
+    for name, description, handler in (
+        ("call-sheets", "Generate competitor call sheets.", _call_sheets_command),
+        ("judge-cards", "Generate judge scorecards.", _judge_cards_command),
+        ("pre-event", "Generate all pre-event documents.", _pre_event_command),
     ):
         document = generate_commands.add_parser(name, help=description)
         _add_workbook_argument(document)
-        _set_pending_handler(document, issue=issue)
+        document.set_defaults(handler=handler)
 
     compute = commands.add_parser(
         "compute",
@@ -131,7 +136,29 @@ def _build_sheets_command(args: argparse.Namespace) -> int:
     return 1 if result.has_errors else 0
 
 
+def _call_sheets_command(args: argparse.Namespace) -> int:
+    return _print_generation_result(generate_call_sheets(args.workbook))
+
+
+def _judge_cards_command(args: argparse.Namespace) -> int:
+    return _print_generation_result(generate_judge_cards(args.workbook))
+
+
+def _pre_event_command(args: argparse.Namespace) -> int:
+    return _print_generation_result(generate_pre_event_documents(args.workbook))
+
+
+def _print_generation_result(result: ReportGenerationResult) -> int:
+    for output_path in result.output_paths:
+        print(f"OUTPUT: {output_path}")
+    for finding in result.findings:
+        print(finding.format())
+    return 1 if result.has_errors else 0
+
+
 def _pending_command(args: argparse.Namespace) -> int:
+    import sys
+
     command = " ".join(
         value
         for value in (

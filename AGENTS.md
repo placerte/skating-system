@@ -13,6 +13,7 @@ that may be relevant when working in this repository.
 - llm/decision_log.md
 - llm/general_executor_instructions_v1.md
 - llm/git_hosting_toolbox.md
+- llm/image_ingestion_toolbox.md
 - llm/pdf_toolbox.md
 - llm/project_handoff_standard_v1.md
 - llm/project_operating_model_v1.md

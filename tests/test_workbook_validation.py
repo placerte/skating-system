@@ -157,6 +157,30 @@ def test_callback_aliases_are_normalized_and_disabled_alternate_is_rejected(
     )
 
 
+def test_excel_boolean_formulas_are_supported(tmp_path: Path) -> None:
+    false_path = _write_workbook(
+        tmp_path,
+        competition_rows=[("Open", "skating", "=FALSE()", "setup", "")],
+    )
+
+    false_result = read_workbook(false_path)
+
+    assert false_result.data is not None
+    assert not false_result.findings
+    assert false_result.data.competitions[0].alternate_enabled is False
+
+    true_path = _write_workbook(
+        tmp_path,
+        competition_rows=[("Open", "skating", "=TRUE()", "setup", "")],
+    )
+
+    true_result = read_workbook(true_path)
+
+    assert true_result.data is not None
+    assert not true_result.findings
+    assert true_result.data.competitions[0].alternate_enabled is True
+
+
 def _write_workbook(
     tmp_path: Path,
     *,

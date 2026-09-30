@@ -439,9 +439,9 @@ def _read_boolean(
     if isinstance(cell.value, bool):
         return cell.value
     value = comparison_key(cell.value)
-    if value in {"true", "yes", "1"}:
+    if value in {"true", "yes", "1", "=true()"}:
         return True
-    if value in {"false", "no", "0"}:
+    if value in {"false", "no", "0", "=false()"}:
         return False
     findings.append(
         Finding(

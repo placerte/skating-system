@@ -169,29 +169,25 @@ def test_equal_majority_sum_break():
 def test_unbreakable_tie_fractional():
     """
     Test 4: Unbreakable tie with fractional rank.
-    4 judges, 4 entries. Entries 0 and 1 have identical rank distributions.
+    3 judges, 4 entries. Entries 0 and 1 have identical rank distributions.
     They remain tied through all thresholds and share place 1.5.
     """
-    judges = [uuid4() for _ in range(4)]
+    judges = [uuid4() for _ in range(3)]
     entries = [uuid4() for _ in range(4)]
 
     rank_marks = [
         RankMark(judges[0], entries[0], 1),
         RankMark(judges[0], entries[1], 2),
-        RankMark(judges[0], entries[2], 4),
-        RankMark(judges[0], entries[3], 3),
+        RankMark(judges[0], entries[2], 3),
+        RankMark(judges[0], entries[3], 4),
         RankMark(judges[1], entries[0], 2),
-        RankMark(judges[1], entries[1], 1),
-        RankMark(judges[1], entries[2], 3),
-        RankMark(judges[1], entries[3], 4),
+        RankMark(judges[1], entries[1], 3),
+        RankMark(judges[1], entries[2], 4),
+        RankMark(judges[1], entries[3], 1),
         RankMark(judges[2], entries[0], 3),
-        RankMark(judges[2], entries[1], 2),
-        RankMark(judges[2], entries[2], 4),
-        RankMark(judges[2], entries[3], 1),
-        RankMark(judges[3], entries[0], 2),
-        RankMark(judges[3], entries[1], 3),
-        RankMark(judges[3], entries[2], 1),
-        RankMark(judges[3], entries[3], 4),
+        RankMark(judges[2], entries[1], 1),
+        RankMark(judges[2], entries[2], 2),
+        RankMark(judges[2], entries[3], 4),
     ]
 
     competition = Competition(

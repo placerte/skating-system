@@ -22,7 +22,6 @@ def test_root_help_describes_workbook_workflow(
 @pytest.mark.parametrize(
     ("argv", "command"),
     [
-        (["generate", "call-sheets", "event.xlsx"], "generate call-sheets"),
         (["compute", "event.xlsx"], "compute"),
         (["report", "public", "event.xlsx"], "report public"),
     ],
