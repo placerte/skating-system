@@ -1,9 +1,12 @@
 """Generate operational and results PDF documents."""
 
 from skating_system.reports.data import prepare_report_data
+from skating_system.reports.all_results import generate_all_results
 from skating_system.reports.call_sheets import generate_call_sheets
 from skating_system.reports.generation import ReportGenerationResult
 from skating_system.reports.judge_cards import generate_judge_cards
+from skating_system.reports.management_results import generate_management_results
+from skating_system.reports.mc_results import generate_mc_results
 from skating_system.reports.models import CompetitionReportData, EventReportData
 from skating_system.reports.pre_event import generate_pre_event_documents
 from skating_system.reports.public_results import generate_public_results
@@ -27,7 +30,10 @@ __all__ = [
     "PdfTheme",
     "build_pdf",
     "generate_call_sheets",
+    "generate_all_results",
     "generate_judge_cards",
+    "generate_management_results",
+    "generate_mc_results",
     "generate_pre_event_documents",
     "generate_public_results",
     "heading",

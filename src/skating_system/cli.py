@@ -6,8 +6,11 @@ from pathlib import Path
 
 from skating_system.reports import (
     ReportGenerationResult,
+    generate_all_results,
     generate_call_sheets,
     generate_judge_cards,
+    generate_management_results,
+    generate_mc_results,
     generate_pre_event_documents,
     generate_public_results,
 )
@@ -85,9 +88,14 @@ def build_parser() -> argparse.ArgumentParser:
     )
     for name, description, issue, handler in (
         ("public", "Generate anonymous public results.", 13, _public_report_command),
-        ("management", "Generate a management audit report.", 14, None),
-        ("mc", "Generate announcement-ready results.", 14, None),
-        ("all", "Generate all results reports.", 14, None),
+        (
+            "management",
+            "Generate a management audit report.",
+            14,
+            _management_report_command,
+        ),
+        ("mc", "Generate announcement-ready results.", 14, _mc_report_command),
+        ("all", "Generate all results reports.", 14, _all_reports_command),
     ):
         report_type = report_commands.add_parser(name, help=description)
         _add_workbook_argument(report_type)
@@ -185,6 +193,33 @@ def _compute_command(args: argparse.Namespace) -> int:
 def _public_report_command(args: argparse.Namespace) -> int:
     return _print_generation_result(
         generate_public_results(
+            args.workbook,
+            competition_name=args.competition,
+        )
+    )
+
+
+def _management_report_command(args: argparse.Namespace) -> int:
+    return _print_generation_result(
+        generate_management_results(
+            args.workbook,
+            competition_name=args.competition,
+        )
+    )
+
+
+def _mc_report_command(args: argparse.Namespace) -> int:
+    return _print_generation_result(
+        generate_mc_results(
+            args.workbook,
+            competition_name=args.competition,
+        )
+    )
+
+
+def _all_reports_command(args: argparse.Namespace) -> int:
+    return _print_generation_result(
+        generate_all_results(
             args.workbook,
             competition_name=args.competition,
         )

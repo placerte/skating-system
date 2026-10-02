@@ -19,23 +19,13 @@ def test_root_help_describes_workbook_workflow(
     assert "legacy-ui" not in output
 
 
-@pytest.mark.parametrize(
-    ("argv", "command"),
-    [
-        (["report", "management", "event.xlsx"], "report management"),
-    ],
-)
-def test_pending_commands_fail_clearly(
-    argv: list[str],
-    command: str,
+def test_report_command_fails_clearly_for_missing_workbook(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    assert main(argv) == 2
+    assert main(["report", "management", "event.xlsx"]) == 1
 
-    error = capsys.readouterr().err
-    assert command in error
-    assert "not implemented yet" in error
-    assert "GitHub issue" in error
+    output = capsys.readouterr().out
+    assert "Could not open workbook" in output
 
 
 def test_compute_accepts_competition_filter() -> None:
