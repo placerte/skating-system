@@ -115,7 +115,6 @@ def compute_solve_result(
 
     placements: list[Placement] = []
     cutoff_by_entry: dict[UUID, int] = {}
-    pending_cutoffs: dict[UUID, int] = {}
     unplaced = set(entry_ids)
     current_place = 1
     transcript_skip_remaining = 0
@@ -144,8 +143,6 @@ def compute_solve_result(
             label_for_entry,
             pending_prelude,
         )
-        if result.carryover_cutoff_by_entry:
-            pending_cutoffs.update(result.carryover_cutoff_by_entry)
         pending_prelude = False
         if transcript_skip_remaining > 0:
             transcript_skip_remaining -= 1
@@ -161,12 +158,23 @@ def compute_solve_result(
                     final_place=result.final_place,
                 )
             )
-            cutoff_by_entry[entry_id] = pending_cutoffs.pop(
-                entry_id, result.cutoff_by_entry[entry_id]
-            )
+            cutoff_by_entry[entry_id] = result.cutoff_by_entry[entry_id]
             unplaced.remove(entry_id)
 
-        current_place += len(result.placed_entries)
+        carryover_entries = list(result.carryover_cutoff_by_entry)
+        for offset, entry_id in enumerate(carryover_entries):
+            placements.append(
+                Placement(
+                    entry_id=entry_id,
+                    final_place=float(
+                        current_place + len(result.placed_entries) + offset
+                    ),
+                )
+            )
+            cutoff_by_entry[entry_id] = result.carryover_cutoff_by_entry[entry_id]
+            unplaced.remove(entry_id)
+
+        current_place += len(result.placed_entries) + len(carryover_entries)
 
     placements.sort(key=lambda p: (p.final_place, str(p.entry_id)))
     derived_table = _build_derived_table(
@@ -556,7 +564,6 @@ def _find_place(
                             )
                         )
                         block_node.children.append(next_node)
-                    transcript_skip_next = 1
                     carryover_cutoff_by_entry[next_entry] = t
 
             return PlaceResult(

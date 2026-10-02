@@ -42,3 +42,24 @@ synthetic marks as source facts.
 
 Creating expected matrices for those sources would invent evidence. They can be
 added when an inspectable primary source and complete marks are available.
+
+## Wikipedia secondary-source regressions
+
+The English Wikipedia article `Skating system`, revision
+`oldid=1067820918` dated 2022-01-25, contains five additional complete matrices:
+
+- clear majority for each place;
+- multiple majorities, including an equal-count sum comparison;
+- no majority at the first threshold;
+- a competitor winning with five second places while two others share `2.5`;
+- a tied subgroup that must advance without admitting another competitor who
+  reaches a majority at the intervening threshold.
+
+They are preserved in `tests/test_skating_wikipedia_examples.py` as useful
+secondary-source regressions. They are intentionally separate from
+`OFFICIAL_EXAMPLES` because Wikipedia is not governing authority.
+
+The article's arithmetic-average illustration is excluded. It assigns ranks 1
+and 7 in a two-competitor comparison and does not provide a complete strict
+permutation from each judge, so it is an explanation of outlier averages rather
+than a valid Rules 2–4 ballot for the engine.

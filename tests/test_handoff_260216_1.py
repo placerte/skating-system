@@ -75,9 +75,7 @@ RULE_6_TRANSCRIPT = """- Attempting to attribute rank 1:
 
 - Attempting to attribute rank 5:
   - Candidates entering this round: 105, 106
-  - Using column "1–4" counts
-  - Rule 5 – No majority found
-  - Escalating to column "1–5" counts
+  - Using column "1–5" counts
   - Rule 5 – Majority tie: 105 and 106
   - Rank block detected for ranks 5 and 6
 
@@ -120,9 +118,7 @@ RULE_7_TRANSCRIPT = """- Attempting to attribute rank 1:
 
 - Attempting to attribute rank 4:
   - Candidates entering this round: 104, 105, 106
-  - Using column "1–3" counts
-  - Rule 5 – No majority found
-  - Escalating to column "1–4" counts
+  - Using column "1–4" counts
   - Rule 5 – Majority tie: 104 and 105
   - Rank block detected for ranks 4 and 5
 
