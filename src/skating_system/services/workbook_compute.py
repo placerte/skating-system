@@ -31,12 +31,15 @@ IDENTITY_NAMESPACE = UUID("ee18de08-2793-46e2-8659-aa083bc08886")
 class ComputedCompetition:
     competition: Competition
     entry_labels: dict[UUID, str]
+    entry_numbers: dict[UUID, str]
     judge_labels: dict[UUID, str]
+    raw_marks_by_entry: dict[UUID, tuple[object, ...]]
     result: SolveResult | CallbackResult
 
 
 @dataclass(frozen=True)
 class ComputeResult:
+    event_name: str
     competitions: tuple[ComputedCompetition, ...]
     findings: tuple[Finding, ...]
 
@@ -52,20 +55,26 @@ def compute_workbook(
     validation = validate_workbook(path)
     relevant_validation = _relevant_findings(validation.findings, competition_name)
     if any(item.severity is Severity.ERROR for item in relevant_validation):
-        return ComputeResult(competitions=(), findings=relevant_validation)
+        return ComputeResult(
+            event_name="", competitions=(), findings=relevant_validation
+        )
 
     read_result = read_workbook(path)
     relevant_read = _relevant_findings(read_result.findings, competition_name)
     if read_result.data is None or any(
         item.severity is Severity.ERROR for item in relevant_read
     ):
-        return ComputeResult(competitions=(), findings=relevant_read)
+        return ComputeResult(event_name="", competitions=(), findings=relevant_read)
 
     selected, selection_findings = _select_competitions(
         read_result.data, competition_name
     )
     if selection_findings:
-        return ComputeResult(competitions=(), findings=tuple(selection_findings))
+        return ComputeResult(
+            event_name=read_result.data.metadata.event_name,
+            competitions=(),
+            findings=tuple(selection_findings),
+        )
 
     computed: list[ComputedCompetition] = []
     findings: list[Finding] = []
@@ -81,7 +90,11 @@ def compute_workbook(
                     competition=competition.name,
                 )
             )
-    return ComputeResult(competitions=tuple(computed), findings=tuple(findings))
+    return ComputeResult(
+        event_name=read_result.data.metadata.event_name,
+        competitions=tuple(computed),
+        findings=tuple(findings),
+    )
 
 
 def _select_competitions(
@@ -129,6 +142,7 @@ def _compute_competition(
     entry_ids = [_stable_id(competition.name, "entry", item.entry) for item in entries]
     judge_ids = [_stable_id(competition.name, "judge", item.judge) for item in judges]
     entry_labels = dict(zip(entry_ids, (item.entry for item in entries), strict=True))
+    entry_numbers = dict(zip(entry_ids, (item.number for item in entries), strict=True))
     judge_labels = dict(zip(judge_ids, (item.judge for item in judges), strict=True))
     rows = {comparison_key(row.entry): row for row in score_sheet.rows}
 
@@ -182,11 +196,34 @@ def _compute_competition(
 
     if result is None:
         return None, errors
+    raw_marks_by_entry: dict[UUID, tuple[object, ...]] = {}
+    if isinstance(result, SolveResult):
+        for entry, entry_id in zip(entries, entry_ids, strict=True):
+            raw_marks_by_entry[entry_id] = tuple(
+                int(
+                    _mark_for_judge(
+                        rows[comparison_key(entry.entry)].marks, judge.judge
+                    )
+                )
+                for judge in judges
+            )
+    else:
+        for entry_id in entry_ids:
+            raw_marks_by_entry[entry_id] = tuple(
+                next(
+                    mark.value
+                    for mark in result.marks
+                    if mark.entry_id == entry_id and mark.judge_id == judge_id
+                )
+                for judge_id in judge_ids
+            )
     return (
         ComputedCompetition(
             competition=competition,
             entry_labels=entry_labels,
+            entry_numbers=entry_numbers,
             judge_labels=judge_labels,
+            raw_marks_by_entry=raw_marks_by_entry,
             result=result,
         ),
         [],

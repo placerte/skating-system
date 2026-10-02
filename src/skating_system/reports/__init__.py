@@ -6,6 +6,7 @@ from skating_system.reports.generation import ReportGenerationResult
 from skating_system.reports.judge_cards import generate_judge_cards
 from skating_system.reports.models import CompetitionReportData, EventReportData
 from skating_system.reports.pre_event import generate_pre_event_documents
+from skating_system.reports.public_results import generate_public_results
 from skating_system.reports.pdf import (
     PdfMetadata,
     PdfTheme,
@@ -28,6 +29,7 @@ __all__ = [
     "generate_call_sheets",
     "generate_judge_cards",
     "generate_pre_event_documents",
+    "generate_public_results",
     "heading",
     "new_page",
     "paragraph",

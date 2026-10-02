@@ -22,7 +22,7 @@ def test_root_help_describes_workbook_workflow(
 @pytest.mark.parametrize(
     ("argv", "command"),
     [
-        (["report", "public", "event.xlsx"], "report public"),
+        (["report", "management", "event.xlsx"], "report management"),
     ],
 )
 def test_pending_commands_fail_clearly(

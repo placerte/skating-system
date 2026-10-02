@@ -9,6 +9,7 @@ from skating_system.reports import (
     generate_call_sheets,
     generate_judge_cards,
     generate_pre_event_documents,
+    generate_public_results,
 )
 from skating_system.scoring.callback import CallbackResult
 from skating_system.services.workbook_compute import compute_workbook
@@ -82,16 +83,19 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="REPORT",
         required=True,
     )
-    for name, description, issue in (
-        ("public", "Generate anonymous public results.", 13),
-        ("management", "Generate a management audit report.", 14),
-        ("mc", "Generate announcement-ready results.", 14),
-        ("all", "Generate all results reports.", 14),
+    for name, description, issue, handler in (
+        ("public", "Generate anonymous public results.", 13, _public_report_command),
+        ("management", "Generate a management audit report.", 14, None),
+        ("mc", "Generate announcement-ready results.", 14, None),
+        ("all", "Generate all results reports.", 14, None),
     ):
         report_type = report_commands.add_parser(name, help=description)
         _add_workbook_argument(report_type)
         _add_competition_filter(report_type)
-        _set_pending_handler(report_type, issue=issue)
+        if handler is None:
+            _set_pending_handler(report_type, issue=issue)
+        else:
+            report_type.set_defaults(handler=handler)
 
     return parser
 
@@ -176,6 +180,15 @@ def _compute_command(args: argparse.Namespace) -> int:
                 f"advance_count={policy.advance_count}; boundary_ties=advance"
             )
     return 1 if result.has_errors else 0
+
+
+def _public_report_command(args: argparse.Namespace) -> int:
+    return _print_generation_result(
+        generate_public_results(
+            args.workbook,
+            competition_name=args.competition,
+        )
+    )
 
 
 def _print_generation_result(result: ReportGenerationResult) -> int:
