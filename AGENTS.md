@@ -32,7 +32,7 @@ Follow project conventions and keep changes aligned with the domain specs.
 - Language: Python 3.13 (see `pyproject.toml`).
 - Package root: `src/skating_system`.
 - Interface: command-oriented CLI (workbook workflow under development).
-- Persistence: Excel workbook; legacy JSON remains temporarily during migration.
+- Persistence: Excel workbook only for the supported competition-day workflow.
 - Formatting: Black.
 - Type checking: Pyright config present (`pyrightconfig.json`).
 
@@ -63,8 +63,7 @@ Authoritative docs:
 Current package layout:
 
 - `src/skating_system/domain`: dataclasses + validation.
-- `src/skating_system/persistence`: legacy JSON file I/O and migrations.
-- `src/skating_system/services`: legacy orchestration retained during migration.
+- `src/skating_system/services`: workbook compute orchestration and verified skating solver.
 - `src/skating_system/workbook`: workbook schema, parsing, and safe updates.
 - `src/skating_system/scoring`: method-specific scoring engines.
 - `src/skating_system/reports`: generated PDF documents.
@@ -168,7 +167,6 @@ from skating_system.domain.models import Event
 ### Boundaries and dependencies
 
 - `domain/*`: pure data + validation only (no UI or I/O).
-- `persistence/*`: file I/O + migrations only.
 - `services/*`: orchestration used by the CLI.
 - `workbook/*`: workbook schema, models, parsing, validation, and safe updates.
 - `scoring/*`: method-specific scoring models and engines.

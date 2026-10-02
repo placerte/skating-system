@@ -9,6 +9,7 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 from openpyxl.styles import Font
+from openpyxl.utils import get_column_letter
 from openpyxl.workbook.workbook import Workbook
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.worksheet import Worksheet
@@ -275,7 +276,7 @@ def _write_score_sheet(
     sheet.column_dimensions["A"].width = 32
     sheet.column_dimensions["B"].width = 12
     for column_number in range(3, 3 + len(judges)):
-        column_letter = sheet.cell(1, column_number).column_letter
+        column_letter = get_column_letter(column_number)
         sheet.column_dimensions[column_letter].width = 18
     _add_mark_validation(sheet, competition, len(entries), len(judges))
 

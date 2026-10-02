@@ -1,14 +1,7 @@
 {
-  "app_version": null,
-  "competitions": [],
-  "created_at": null,
-  "entries": [],
-  "id": "0f0b7e8d-ff0c-4b5e-b40d-cc1cf2ff2c42",
-  "name": "Test Event",
-  "participants": [],
+  "include": ["src", "tests"],
+  "pythonVersion": "3.13",
   "reportMissingTypeStubs": "none",
-  "schema_version": null,
-  "updated_at": null,
   "venv": ".venv",
   "venvPath": "."
 }

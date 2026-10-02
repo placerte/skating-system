@@ -86,24 +86,20 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="REPORT",
         required=True,
     )
-    for name, description, issue, handler in (
-        ("public", "Generate anonymous public results.", 13, _public_report_command),
+    for name, description, handler in (
+        ("public", "Generate anonymous public results.", _public_report_command),
         (
             "management",
             "Generate a management audit report.",
-            14,
             _management_report_command,
         ),
-        ("mc", "Generate announcement-ready results.", 14, _mc_report_command),
-        ("all", "Generate all results reports.", 14, _all_reports_command),
+        ("mc", "Generate announcement-ready results.", _mc_report_command),
+        ("all", "Generate all results reports.", _all_reports_command),
     ):
         report_type = report_commands.add_parser(name, help=description)
         _add_workbook_argument(report_type)
         _add_competition_filter(report_type)
-        if handler is None:
-            _set_pending_handler(report_type, issue=issue)
-        else:
-            report_type.set_defaults(handler=handler)
+        report_type.set_defaults(handler=handler)
 
     return parser
 
@@ -127,10 +123,6 @@ def _add_competition_filter(parser: argparse.ArgumentParser) -> None:
         "--competition",
         help="Limit the command to one competition name.",
     )
-
-
-def _set_pending_handler(parser: argparse.ArgumentParser, *, issue: int) -> None:
-    parser.set_defaults(handler=_pending_command, implementation_issue=issue)
 
 
 def _validate_command(args: argparse.Namespace) -> int:
@@ -232,23 +224,3 @@ def _print_generation_result(result: ReportGenerationResult) -> int:
     for finding in result.findings:
         print(finding.format())
     return 1 if result.has_errors else 0
-
-
-def _pending_command(args: argparse.Namespace) -> int:
-    import sys
-
-    command = " ".join(
-        value
-        for value in (
-            args.command,
-            getattr(args, "generate_command", None),
-            getattr(args, "report_command", None),
-        )
-        if value is not None
-    )
-    print(
-        f"error: '{command}' is not implemented yet; see GitHub issue "
-        f"#{args.implementation_issue}.",
-        file=sys.stderr,
-    )
-    return 2

@@ -193,7 +193,9 @@ def _write_workbook(
     include_score_sheet: bool = True,
 ) -> Path:
     workbook = Workbook()
-    workbook.remove(workbook.active)
+    active_sheet = workbook.active
+    assert active_sheet is not None
+    workbook.remove(active_sheet)
     _add_sheet(
         workbook,
         "Event",

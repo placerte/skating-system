@@ -151,10 +151,9 @@ def _compute_competition(
             RankMark(
                 judge_id,
                 entry_id,
-                int(
-                    _mark_for_judge(
-                        rows[comparison_key(entry.entry)].marks, judge.judge
-                    )
+                _rank_for_judge(
+                    rows[comparison_key(entry.entry)].marks,
+                    judge.judge,
                 ),
             )
             for entry, entry_id in zip(entries, entry_ids, strict=True)
@@ -200,10 +199,9 @@ def _compute_competition(
     if isinstance(result, SolveResult):
         for entry, entry_id in zip(entries, entry_ids, strict=True):
             raw_marks_by_entry[entry_id] = tuple(
-                int(
-                    _mark_for_judge(
-                        rows[comparison_key(entry.entry)].marks, judge.judge
-                    )
+                _rank_for_judge(
+                    rows[comparison_key(entry.entry)].marks,
+                    judge.judge,
                 )
                 for judge in judges
             )
@@ -239,3 +237,16 @@ def _mark_for_judge(marks: dict[str, MarkValue], judge: str) -> object:
         if comparison_key(actual_judge) == comparison_key(judge):
             return mark.value
     raise KeyError(judge)
+
+
+def _rank_for_judge(marks: dict[str, MarkValue], judge: str) -> int:
+    value = _mark_for_judge(marks, judge)
+    if isinstance(value, bool):
+        raise ValueError(f'Invalid rank for judge "{judge}".')
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    if isinstance(value, str) and value.strip().isdigit():
+        return int(value.strip())
+    raise ValueError(f'Invalid rank for judge "{judge}".')

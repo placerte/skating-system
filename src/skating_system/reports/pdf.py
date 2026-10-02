@@ -5,7 +5,7 @@ import tempfile
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Final
+from typing import Any, Final
 
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
@@ -52,7 +52,7 @@ class PdfTheme:
 
 
 class _InvariantCanvas(Canvas):
-    def __init__(self, *args: object, **kwargs: object) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         kwargs["invariant"] = 1
         kwargs["pageCompression"] = 1
         super().__init__(*args, **kwargs)

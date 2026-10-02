@@ -77,7 +77,7 @@ def test_sample_workbook_matches_contract() -> None:
     }
 
     methods = {
-        row[1].value
+        str(row[1].value)
         for row in workbook["Competitions"].iter_rows(min_row=2)
         if row[0].value is not None
     }

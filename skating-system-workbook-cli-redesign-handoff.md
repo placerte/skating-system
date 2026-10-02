@@ -799,8 +799,9 @@ Likely valuable:
 -   separate Participant/Entry management UX;
 -   TUI-based score entry.
 
-Textual code may remain temporarily while migration occurs, but the
-finished v1 CLI workflow must not depend on it.
+Migration status: the Textual and JSON implementations were retired after the
+verified scoring engine, reference fixtures, and decision transcripts were
+migrated to the workbook CLI architecture.
 
 ## New modules --- suggested
 
@@ -1023,6 +1024,9 @@ a completed workbook.
 -   Remove Textual dependency if no remaining value.
 -   Remove obsolete JSON/UI code only after useful scoring/reference
     code is safely migrated.
+
+Completed: the CLI is the primary interface; Textual and JSON implementation
+code and dependencies have been removed from the supported application.
 
 ------------------------------------------------------------------------
 

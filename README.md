@@ -1,7 +1,8 @@
 # Skating System
 
-Command-line tools for validating skating competition workbooks, computing
-placements, and generating printable PDFs.
+Command-line tools for running an Excel-workbook-based dance competition:
+validate setup and marks, print operational documents, compute callback or
+Skating System results, and generate public, management, and MC PDFs.
 
 ## Installation
 
@@ -15,22 +16,48 @@ chmod +x skating-system
 sudo mv skating-system /usr/local/bin/skating-system
 ```
 
-## Current development usage
+## Competition-day workflow
 
-Show the workbook-oriented command surface:
+The `.xlsx` workbook is the single editable source of truth. JSON files and the
+retired Textual interface are not part of the competition-day workflow.
+
+Prepare the score-entry sheets and printable documents:
 
 ```bash
-skating-system --help
+skating-system build-sheets event.xlsx
+skating-system generate pre-event event.xlsx
 ```
 
-The workbook redesign is in progress. Commands that are not implemented yet
-exit nonzero and identify their tracking issue. The intended workflow is:
+Enter marks directly into the generated `Score - ...` sheets, then validate
+before computing anything final:
 
 ```bash
 skating-system validate event.xlsx
-skating-system build-sheets event.xlsx
 skating-system compute event.xlsx
 skating-system report all event.xlsx
+```
+
+Use `--competition "Competition Name"` with `compute` or any `report` command
+to process one ready competition while others are still incomplete.
+
+See [docs/operator_runbook.md](docs/operator_runbook.md) for workbook setup,
+live-event operation, recovery, and publication procedures. The workbook
+contract is documented in
+[docs/workbook_contract_v1.md](docs/workbook_contract_v1.md).
+
+## Commands
+
+```text
+validate WORKBOOK
+build-sheets WORKBOOK [--rebuild]
+generate call-sheets WORKBOOK
+generate judge-cards WORKBOOK
+generate pre-event WORKBOOK
+compute WORKBOOK [--competition NAME]
+report public WORKBOOK [--competition NAME]
+report management WORKBOOK [--competition NAME]
+report mc WORKBOOK [--competition NAME]
+report all WORKBOOK [--competition NAME]
 ```
 
 ## Development
@@ -52,4 +79,6 @@ Run tests:
 
 ```bash
 uv run python -m pytest
+uv run python -m black --check .
+uv run pyright
 ```

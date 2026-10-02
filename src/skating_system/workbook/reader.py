@@ -139,7 +139,8 @@ def _read_columns(
                 )
             )
             continue
-        columns[header] = cell.column
+        if isinstance(cell.column, int):
+            columns[header] = cell.column
 
     for required in contract.required_columns:
         if required not in columns:

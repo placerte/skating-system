@@ -21,6 +21,7 @@ build-backend = "uv_build"
 dev = [
     "pyinstaller>=6.11.0",
     "pypdf>=6.1.1",
+    "pyright>=1.1.414",
     "pytest>=9.0.2",
 ]
 

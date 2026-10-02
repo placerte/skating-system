@@ -19,6 +19,7 @@ FIXTURE_PATH = Path(__file__).with_name("sample_event.xlsx")
 def main() -> None:
     workbook = Workbook()
     default_sheet = workbook.active
+    assert default_sheet is not None
     workbook.remove(default_sheet)
 
     event = workbook.create_sheet(EVENT_CONTRACT.name)

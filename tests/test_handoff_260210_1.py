@@ -2,14 +2,7 @@ from __future__ import annotations
 
 from uuid import uuid4
 
-from skating_system.domain.models import (
-    Competition,
-    Entry,
-    Event,
-    Participant,
-    RankMark,
-)
-from skating_system.persistence.json_repo import JsonEventRepo
+from skating_system.domain.models import Competition, RankMark
 from skating_system.services.skating_scorer import (
     classify_cell,
     compute_solve_result,
@@ -104,29 +97,3 @@ def test_transcript_structure_contains_tie_break() -> None:
     rules_seen: set[str] = set()
     walk(result.transcript_root, rules_seen)
     assert "Rule 6" in rules_seen
-
-
-def test_persistence_saves_inputs_only(tmp_path) -> None:
-    judge = Participant(id=uuid4(), number=100, first_name="J", last_name="")
-    entry = Entry(id=uuid4(), name="E", members=[])
-    competition = Competition(
-        id=uuid4(),
-        name="Comp",
-        judge_ids=[judge.id],
-        entry_ids=[entry.id],
-        rank_marks=[RankMark(judge.id, entry.id, 1)],
-    )
-    event = Event(
-        id=uuid4(),
-        name="Event",
-        participants=[judge],
-        entries=[entry],
-        competitions=[competition],
-        schema_version=1,
-    )
-    repo = JsonEventRepo()
-    file_path = tmp_path / "event.json"
-    repo.save_event(file_path, event)
-
-    raw = file_path.read_text(encoding="utf-8")
-    assert '"results"' not in raw
