@@ -206,6 +206,45 @@ def test_even_judge_panel_is_rejected() -> None:
     assert "odd number of judges" in " ".join(errors)
 
 
+def test_official_three_way_terminal_tie_outcome() -> None:
+    """The federation text says places 3–5 share 4.0 when inseparable.
+
+    The source gives the outcome but no ballot matrix. This derived matrix keeps
+    the first two entries unanimous, while the last three receive identical
+    rank distributions and therefore remain tied through the final column.
+    """
+
+    judge_ids = [uuid4() for _ in range(3)]
+    entry_ids = [uuid4() for _ in range(5)]
+    marks_by_entry = (
+        (1, 1, 1),
+        (2, 2, 2),
+        (3, 4, 5),
+        (4, 5, 3),
+        (5, 3, 4),
+    )
+    competition = Competition(
+        id=uuid4(),
+        name="Derived ballot for official three-way terminal tie",
+        judge_ids=judge_ids,
+        entry_ids=entry_ids,
+        rank_marks=[
+            RankMark(judge_id, entry_ids[entry_index], rank)
+            for entry_index, entry_marks in enumerate(marks_by_entry)
+            for judge_id, rank in zip(judge_ids, entry_marks, strict=True)
+        ],
+    )
+
+    result, errors = compute_solve_result(competition)
+
+    assert not errors
+    assert result is not None
+    placements = {item.entry_id: item.final_place for item in result.placements}
+    assert placements[entry_ids[0]] == 1.0
+    assert placements[entry_ids[1]] == 2.0
+    assert {placements[entry_id] for entry_id in entry_ids[2:]} == {4.0}
+
+
 # Independently entered from seven physical Short Showcase judge sheets by the
 # event owner, then compared with the first-pass image transcription.
 def test_retro_boreal_2026_short_showcase_reconstruction() -> None:
